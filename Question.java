@@ -45,7 +45,17 @@ public class Question {
 		this.weight = weight;
 	}
 
-	// Maybe add equals method as well? To test if questions already exist?
+	public boolean equals(Object o) {
+		boolean equal = false;
+		if (o instanceof Question) {
+			Question ques = (Question) o;
+			if (this.prompt.equalsIgnoreCase(ques.prompt) && this.responses == ques.responses && 
+				this.answer == ques.answer && this.weight == ques.weight) {
+				equal = true;
+			}
+		}
+		return equal;
+	}
 
 	public String toString() {
 		String format = "Question{prompt = %s, responses = [";
