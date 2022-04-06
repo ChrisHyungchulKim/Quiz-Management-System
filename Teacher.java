@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 //I need the User and the Course class to actually go in detail for these methods.
 //For now, I'll just comment the sections that I need from the other classes.
+//Comment any methods that you think could be useful. 
 public class Teacher implements User {
     Scanner scanner = new Scanner(System.in);
 
