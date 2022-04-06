@@ -42,6 +42,8 @@ public class Quiz {
 
 	public int calcMaxScore(ArrayList<Question> questions) {
 		// Not sure if this method is necessary yet
+		//Chris: CalculateScore method could be useful for grading I think. 
+		
 		return maxScore;
 	}
 
@@ -56,5 +58,7 @@ public class Quiz {
 	}
 	// No deleteQuiz or addQuiz methods 
 	// addQuiz should just use a constructor and write method
+	//Chris: So here you mean the teacher class should have the add/delete Quiz methods and doing so by calling the Quiz constructor you wrote above right?
+	
 	// If course class includes arraylist of quizzes, deleteQuiz should just remove one from list 
 }
