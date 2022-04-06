@@ -5,17 +5,24 @@ import java.util.Scanner;
 
 //I need the User and the Course class to actually go in detail for these methods.
 //For now, I'll just comment the sections that I need from the other classes.
-//Comment any methods that you think could be useful. 
+//Comment any methods that you think could be useful.
 public class Teacher implements User {
     Scanner scanner = new Scanner(System.in);
 
     private String name;
     private ArrayList<Question> questions;
 
-    private ArrayList<String> Courses = new ArrayList<String>();
+    private ArrayList<String> courses = new ArrayList<String>();
 
-    //Quiz constructor
+    //calling Quiz constructor
     Quiz quiz = new Quiz(name, questions);
+    
+
+    //temporary constructor
+    public Teacher(String name, ArrayList<String> courses) {
+        this.name = name;
+        this.courses = courses;
+    }
 
     //Maybe I should just call the Course constructor to begin with, but for now I just made one.
     public boolean createCourse(String filename, ArrayList<Quiz> quizzes) {
@@ -44,8 +51,8 @@ public class Teacher implements User {
 
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(filename));
-            Courses.add(i, quiz.getName()); //Adds the name of the Quiz in the Course arraylist.
-            //** does not really add the actual quiz (file)
+            courses.add(i, quiz.getName()); //Adds the name of the Quiz in the Course arraylist.
+            //** does not really add the actual quiz (file), will work on this
 
 
         } catch (FileNotFoundException f) {
@@ -65,7 +72,7 @@ public class Teacher implements User {
                 if (choices == 1) {
                     BufferedReader bufferedReader = new BufferedReader(new FileReader(filename));
                     bufferedReader.readLine();
-                    //gonna work on this part more
+                    //Will work on this part more
 
 
                     break;
