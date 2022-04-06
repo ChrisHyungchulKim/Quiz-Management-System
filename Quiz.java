@@ -125,7 +125,7 @@ public class Quiz {
 		}
 	}
 
-	// calculates max score of quiz, not sure if necessary yet
+	// calculates max score of quiz
 	public int calcMaxScore(ArrayList<Question> questions) {
 		int maxScore = 0;
 		int inScore;
