@@ -2,11 +2,12 @@ import java.util.ArrayList;
 
 public class Course {
     private String courseName;
-
+    private User owner;
     private ArrayList<Quiz> quizzes = new ArrayList<Quiz>();
 
     public Course(String courseName, User owner, ArrayList<Quiz> quizzes) {
         this.courseName = courseName;
+        this.owner = owner;
         this.quizzes = quizzes;
     }
 
@@ -28,6 +29,14 @@ public class Course {
 
     public void addQuiz(Quiz quiz) {
         quizzes.add(quiz);
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public void removeQuiz(String name) {
