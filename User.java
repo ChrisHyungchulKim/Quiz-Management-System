@@ -1,10 +1,34 @@
-public interface User {
-    public String getFirstName();        //returns first name
-    public void setFirstName(String firstName);   // sets first name
-    public String getLastName();        //returns last name
-    public void setLastName(String lastName);   // sets last name
-    public String getPassword();    //returns password
-    public void setPassword(String password);   //sets a new password
-    public int getUserID();     //returns the UserID
-    public void setUserID(int userID);  //sets UserID
+public class User {
+    private String username;
+    private String password;
+    private boolean teacher;
+    public User (String username, String password, boolean teacher) {
+        this.username = username;
+        this.password = password;
+        this.teacher = teacher;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(boolean teacher) {
+        this.teacher = teacher;
+    }
 }
