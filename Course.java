@@ -2,15 +2,12 @@ import java.util.ArrayList;
 
 public class Course {
     private String courseName;
-    private Teacher owner;
-    private int quizzes;
-    private ArrayList<Quiz> quizList = new ArrayList<Quiz>();
 
-    public Course(String courseName, Teacher owner, int quizzes, ArrayList<Quiz> quizList) {
+    private ArrayList<Quiz> quizzes = new ArrayList<Quiz>();
+
+    public Course(String courseName, User owner, ArrayList<Quiz> quizzes) {
         this.courseName = courseName;
-        this.owner = owner;
         this.quizzes = quizzes;
-        this.quizList = quizList;
     }
 
     public String getCourseName() {
@@ -21,27 +18,19 @@ public class Course {
         this.courseName = courseName;
     }
 
-    public Teacher getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Teacher owner) {
-        this.owner = owner;
-    }
-
-    public int getQuizzes() {
+    public ArrayList<Quiz> getQuizzes() {
         return quizzes;
     }
 
-    public void setQuizzes(int quizzes) {
+    public void setQuizzes(ArrayList<Quiz> quizzes) {
         this.quizzes = quizzes;
     }
 
-    public ArrayList<Quiz> getQuizList() {
-        return quizList;
+    public void addQuiz(Quiz quiz) {
+        quizzes.add(quiz);
     }
 
-    public void setQuizList(ArrayList<Quiz> quizList) {
-        this.quizList = quizList;
+    public void removeQuiz(String name) {
+        quizzes.removeIf(quiz -> quiz.getName().equals(name));
     }
 }
