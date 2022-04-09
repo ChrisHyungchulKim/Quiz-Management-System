@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 
 public class Question {
 	private String prompt;
@@ -43,6 +43,10 @@ public class Question {
 
 	public void setWeight(int weight) {
 		this.weight = weight;
+	}
+
+	public void randomize() {
+		Collections.shuffle(this.responses);
 	}
 
 	public boolean equals(Object o) {

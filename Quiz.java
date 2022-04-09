@@ -1,6 +1,5 @@
 import java.io.*;
-import java.util.ArrayList; 
-import java.util.Scanner;
+import java.util.*;
 
 public class Quiz {
 	// Two Quiz fields, name of quiz and arraylist of questions
@@ -13,8 +12,10 @@ public class Quiz {
 		this.questions = questions;
 	}
 
+	// Following constructors & methods not necessary anymore, but I'll leave code here for reference
+
 	// second constructor reads in quiz details from file to create object
-	public Quiz(String fileName) {
+	/*public Quiz(String fileName) {
 		String readName = null;
 		ArrayList<Question> quest = new ArrayList<>();
 
@@ -64,7 +65,7 @@ public class Quiz {
 	public Quiz(Scanner scan) {
 		//this.name =
 		//this.questions = 
-	}
+	} */
 
 	// accessors and mutators
 	public String getName() {
@@ -102,8 +103,10 @@ public class Quiz {
 		}
 	}
 
+	// writeFile method not necessary anymore
+
 	// method writes Quiz object to file in same format file is read in
-	public void writeFile(String fileName) {
+	/*public void writeFile(String fileName) {
 		try (PrintWriter pw = new PrintWriter(new FileWriter(fileName))) {
 			pw.write(this.name);
 			for (int q = 0; q < questions.size(); q++) {
@@ -123,27 +126,41 @@ public class Quiz {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	} */
 
 	// calculates max score of quiz
-	public int calcMaxScore(ArrayList<Question> questions) {
+	public int calcMaxScore() {
 		int maxScore = 0;
 		int inScore;
-		for (int m = 0; m < questions.size(); m++) {
-			inScore = questions.get(m).getWeight();
+		for (int m = 0; m < this.questions.size(); m++) {
+			inScore = this.questions.get(m).getWeight();
 			maxScore += inScore;
 		}
 		return maxScore;
 	}
 
+	// given submission details, creates submission trace string that can be written to file
+	public String addSubmission(String userName, int score) {
+		String format = "Submission{User = %s, Score = %d, Maximum Score = %d";
+		int maxScore = calcMaxScore();
+		return String.format(format, userName, score, maxScore);
+	}
+
+	// shuffles order of quiz questions
+	public void randomize() {
+		Collections.shuffle(this.questions);
+	}
+
+	// takeQuiz method not necessary anymore either
+
 	// will include all console I/O for taking an existing quiz
 	// may add randomize method to question class to help randomize individual questions' responses
-	public int takeQuiz(boolean random, Scanner scan) {
+	/*public int takeQuiz(boolean random, Scanner scan) {
 		// Will probably handle console I/O from this method directly
 		// Will return score which can be written to specific course file?
 		int score = 0;
 		return score;
-	}
+	}*/
 
 	// substitute for deleteQuiz method 
 	// equals method allows course class to simply delete quiz from arraylist of quiz objects
@@ -168,7 +185,6 @@ public class Quiz {
 		return String.format(format, this.name);
 	}
 	// No deleteQuiz or addQuiz methods 
-	// addQuiz should just use a constructor and write methods
-	// If course class includes arraylist of quizzes, deleteQuiz should just remove one from list 
-	// As of now both quiz and question classes compile
+	// addQuiz should just use constructor
+	// If course class includes arraylist of quizzes, deleteQuiz should just remove one from list
 }
