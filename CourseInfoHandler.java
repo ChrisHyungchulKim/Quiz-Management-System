@@ -17,10 +17,22 @@ public class CourseInfoHandler {
         this.courseList = courseList;
     }
 
+    public ArrayList<Course> getUsersCourses(User user) {
+        ArrayList<Course> courses = new ArrayList<Course>();
+
+        for(int i = 0; i < this.courseList.size(); i++) {
+            if (this.courseList.get(i).getOwner().equals(user)) {
+                courses.add(this.courseList.get(i));
+            }
+        }
+        
+        return courses;
+    }
+
     public void deleteCourse(Course deleteCourse) {
         for(int i = 0; i < this.courseList.size(); i++) {
-            if (courseList.get(i).getCourseName().equals(deleteCourse.getCourseName()) &&
-                    courseList.get(i).getOwner().equals(deleteCourse.getOwner())) {
+            if (this.courseList.get(i).getCourseName().equals(deleteCourse.getCourseName()) &&
+                    this.courseList.get(i).getOwner().equals(deleteCourse.getOwner())) {
                 this.courseList.remove(this.courseList.get(i));
             }
         }    }
@@ -161,3 +173,4 @@ public class CourseInfoHandler {
     }
 
 }
+
