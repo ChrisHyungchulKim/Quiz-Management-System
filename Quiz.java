@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.sql.Timestamp;
 
 public class Quiz {
 	// Two Quiz fields, name of quiz and arraylist of questions
@@ -63,6 +64,7 @@ public class Quiz {
 
 	// third constructor will create new object by asking teacher for quiz questions etc.
 	public Quiz(Scanner scan) {
+		
 		//this.name =
 		//this.questions = 
 	} */
@@ -141,9 +143,11 @@ public class Quiz {
 
 	// given submission details, creates submission trace string that can be written to file
 	public String addSubmission(String userName, int score) {
-		String format = "Submission{User = %s, Score = %d, Maximum Score = %d";
+		String format = "Submission{User = %s, Score = %d, Maximum Score = %d, Time = %s";
 		int maxScore = calcMaxScore();
-		return String.format(format, userName, score, maxScore);
+		Date date = new Date();
+		Timestamp ts = new Timestamp(date.getTime());
+		return String.format(format, userName, score, maxScore, ts);
 	}
 
 	// shuffles order of quiz questions
@@ -186,5 +190,6 @@ public class Quiz {
 	}
 	// No deleteQuiz or addQuiz methods 
 	// addQuiz should just use constructor
-	// If course class includes arraylist of quizzes, deleteQuiz should just remove one from list
+	// If course class includes arraylist of quizzes, deleteQuiz should just remove one from list 
+	// As of now both quiz and question classes compile
 }
