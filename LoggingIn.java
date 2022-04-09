@@ -129,13 +129,13 @@ public class LoggingIn {
                 writer.write(userDetailFile.get(i) + "\n");
             }
             writer.close();
-            
+
             for(int i = 0; i < userList.size(); i++) {
                 if (username.equals(userList.get(i).getUsername())) {
                     userList.get(i).setPassword(newPassword);
                 }
             }
-            
+
             return worked;
         } catch (IOException e) {
             e.printStackTrace();
@@ -250,4 +250,43 @@ public class LoggingIn {
             }
         }
     }
+
+    public static void readUserInfo() {
+
+        String username;
+        String password;
+        boolean teacher;
+        String line;
+
+        try {
+
+            File courseInfoFile = new File("CourseDetails.txt");
+            FileReader fileReader = new FileReader(courseInfoFile);
+            BufferedReader bfr = new BufferedReader(fileReader);
+
+            line = bfr.readLine();
+            username = "";
+            password = "";
+
+
+            while (line != null) {
+                username = line.substring(line.indexOf(' ') + 1);
+                line = bfr.readLine();
+                password = line.substring(line.indexOf(' ') + 1);
+                line = bfr.readLine();
+                if (line.substring(line.indexOf(' ') + 1).equals("true")) {
+                    teacher = true;
+                } else {
+                    teacher = false;
+                }
+                userList.add(new User(username, password, teacher));
+                line = bfr.readLine();
+            }
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+    }
+
 }
