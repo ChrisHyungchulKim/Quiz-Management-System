@@ -9,10 +9,10 @@ To accomplish this, we have constructed a total of seven classes: MainMenu, Logi
 The MainMenu class is the main menu where the user will login or create an account. 
 It will ask the user whether he/she is a teacher, and depending on the answer the menu will display different options.
 If the user is a teacher, he/she has the access to the quiz menu where he/she may modify(edit/create/delete) quizzes and view student submissions.
-The User class provides a constructor that helps the system differentiate between the teacher and the student. 
 The general features of the main menu are account settings and quizzes, which will be explained in further detail in the Login class and the Quiz class, respectively.
 The Login class provides several useful methods that are used in the account settings.
 Along with the general account modifications, it also checks for any redundant user details and removes them. 
+The User class provides a constructor that helps the system differentiate between the teacher and the student. 
 
 
 
