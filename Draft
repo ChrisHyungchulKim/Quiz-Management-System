@@ -13,6 +13,9 @@ The general features of the main menu are account settings and quizzes, which wi
 The Login class provides several useful methods that are used in the account settings.
 Along with the general account modifications, it also checks for any redundant user details and removes them. 
 The User class provides a constructor that helps the system differentiate between the teacher and the student. 
-
+The Quiz class and the Question class each delivers a formatted string to the Course class using the toString method. 
+The Question class provides a question constructor that stores the prompt, the weight, the answer and the student's response of a question.
+The Quiz class provides a quiz constructor that stores the name of the quiz and the a list of questions to the corresponing quiz. 
+//Will include functionalities if they are used
 
 
