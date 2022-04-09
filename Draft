@@ -5,7 +5,7 @@ Include both required and optional features, along with descriptions of each.
 
 For this project, our team has chosen the option 2.
 The second option is to implement a learning management system quiz tool, which allows teachers to present information in a variety of formats to evaluate student progress. 
-In order to accomplish this, we have constructed a total of seven classes: MainMenu, Login, User, Course, CourseInfoHandler, Question and Quiz.
+To accomplish this, we have constructed a total of seven classes: MainMenu, Login, User, Course, CourseInfoHandler, Question and Quiz.
 The MainMenu class is the main menu where the user will utilize to login or create an account. 
 It will ask the user whether he/she is a teacher, and depending on the answer the menu will display different options.
 If the user is a teacher, he/she has the access to the quiz menu where he/she may modify(edit/create/delete) quizzes and view student submissions.
