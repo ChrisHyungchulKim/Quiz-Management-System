@@ -2,53 +2,54 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class CourseInfoHandler {
-    private ArrayList<Course> courseList;
+
+    private static ArrayList<Course> courseList;
 
 
-    public ArrayList<Course> getCourseList() {
+    public static ArrayList<Course> getCourseList() {
         return courseList;
     }
 
-    public void addCourse(Course course) {
+    public static void addCourse(Course course) {
         courseList.add(course);
     }
 
-    public void setCourseList(ArrayList<Course> courseList) {
-        this.courseList = courseList;
+    public static void setCourseList(ArrayList<Course> list) {
+        courseList = list;
     }
 
-    public ArrayList<Course> getUsersCourses(User user) {
+    public static ArrayList<Course> getUsersCourses(User user) {
         ArrayList<Course> courses = new ArrayList<Course>();
 
-        for(int i = 0; i < this.courseList.size(); i++) {
-            if (this.courseList.get(i).getOwner().equals(user)) {
-                courses.add(this.courseList.get(i));
+        for(int i = 0; i < courseList.size(); i++) {
+            if (courseList.get(i).getOwner().equals(user)) {
+                courses.add(courseList.get(i));
             }
         }
-        
+
         return courses;
     }
 
-    public void deleteCourse(Course deleteCourse) {
-        for(int i = 0; i < this.courseList.size(); i++) {
-            if (this.courseList.get(i).getCourseName().equals(deleteCourse.getCourseName()) &&
-                    this.courseList.get(i).getOwner().equals(deleteCourse.getOwner())) {
-                this.courseList.remove(this.courseList.get(i));
+    public static void deleteCourse(Course deleteCourse) {
+        for(int i = 0; i < courseList.size(); i++) {
+            if (courseList.get(i).getCourseName().equals(deleteCourse.getCourseName()) &&
+                    courseList.get(i).getOwner().equals(deleteCourse.getOwner())) {
+                courseList.remove(courseList.get(i));
             }
         }    }
 
-    public void editCourseList(Course editedCourse) {
-        for(int i = 0; i < this.courseList.size(); i++) {
-            if (courseList.get(i).getCourseName().equals(editedCourse.getCourseName()) &&
-                    courseList.get(i).getOwner().equals(editedCourse.getOwner())) {
-                this.courseList.remove(courseList.get(i));
-                this.courseList.add(i, editedCourse);
+    public static void editCourseList(Course course, Course editedCourse) {
+        for(int i = 0; i < courseList.size(); i++) {
+            if (courseList.get(i).getCourseName().equals(course.getCourseName()) &&
+                    courseList.get(i).getOwner().equals(course.getOwner())) {
+                courseList.remove(courseList.get(i));
+                courseList.add(i, editedCourse);
             }
         }
     }
 
-    public boolean checkIfDuplicate(Course course) {
-        for (int i = 0; i < this.courseList.size(); i++) {
+    public static boolean checkIfDuplicate(Course course) {
+        for (int i = 0; i < courseList.size(); i++) {
             if (courseList.get(i).getCourseName().equals(course.getCourseName()) &&
                     courseList.get(i).getOwner().equals(course.getOwner())) {
                 return true;
@@ -57,7 +58,7 @@ public class CourseInfoHandler {
         return false;
     }
 
-    public void writeCourseInfo() {
+    public static void writeCourseInfo() {
 
         String courseDetails = "";
         int index = 0;
@@ -67,7 +68,7 @@ public class CourseInfoHandler {
             FileWriter fileWriter = new FileWriter(courseInfoFile);
             PrintWriter printWriter = new PrintWriter(fileWriter);
 
-            for (Course c : this.courseList) {
+            for (Course c : courseList) {
                 if (index == 0) {
                     courseDetails += "Course: " + c.getCourseName();
                 } else {
@@ -100,7 +101,7 @@ public class CourseInfoHandler {
         }
     }
 
-    public void ReadCourseInfo() {
+    public static void ReadCourseInfo() {
 
         String line;
         String courseName;
@@ -123,6 +124,7 @@ public class CourseInfoHandler {
             weight = 0;
             answer = 0;
             courseNumber = 0;
+            owner = "";
             line = bfr.readLine();
 
             while (line != null) {
@@ -161,7 +163,7 @@ public class CourseInfoHandler {
                         quizList.add(new Quiz(quizName, questionList));
                     }
                     //TODO:Once a method is added for the returns a user given a username
-                    //courseList.add(new Course(courseName,,quizList));
+                    courseList.add(new Course(courseName,LoggingIn.getUser(owner),quizList));
                 }
 
                 courseNumber++;
@@ -173,4 +175,3 @@ public class CourseInfoHandler {
     }
 
 }
-
