@@ -1,11 +1,14 @@
 import java.util.*;
 
 public class Question {
+	// Four question fields: question prompt, arraylist of answer choices
+	// integer indicating whih choice is correct, and point value/weight
 	private String prompt;
 	private ArrayList<String> responses;
 	private int answer;
 	private int weight;
 	
+	// Single constructor
 	public Question(String prompt, ArrayList<String> responses, int answer, int weight) {
 		this.prompt = prompt;
 		this.responses = responses;
@@ -13,6 +16,7 @@ public class Question {
 		this.weight = weight;
 	}
 
+	// accessors and mutators
 	public String getPrompt() {
 		return prompt;
 	}
@@ -45,10 +49,18 @@ public class Question {
 		this.weight = weight;
 	}
 
+	// randomizes order of answer choices and ensures index changes with it
 	public void randomize() {
-		Collections.shuffle(this.responses);
+		String correctResponse = responses.get(answer);
+		Collections.shuffle(responses);
+		for (int i = 0; i < responses.size(); i++) {
+			if (responses.get(i).equals(correctResponse)) {
+				this.answer = i;
+			}
+		}
 	}
 
+	// equals method ensures correct objects can be removed from arraylist of questions
 	public boolean equals(Object o) {
 		boolean equal = false;
 		if (o instanceof Question) {
@@ -61,6 +73,7 @@ public class Question {
 		return equal;
 	}
 
+	// toString allows question to be printed all at once if anyone wants to see it
 	public String toString() {
 		String format = "Question{prompt = %s, responses = [";
 		for (int i = 0; i < responses.size(); i++) {

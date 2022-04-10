@@ -3,71 +3,56 @@ import java.util.*;
 import java.sql.Timestamp;
 
 public class Quiz {
-	// Two Quiz fields, name of quiz and arraylist of questions
+	// Three Quiz fields, name of quiz, arraylist of questions, and arraylist of submissions
 	private String name;
 	private ArrayList<Question> questions;
+	private ArrayList<String> submissions;
 
 	// first constructor creates quiz object from existing name and arraylist
-	public Quiz(String name, ArrayList<Question> questions) {
+	public Quiz(String name, ArrayList<Question> questions, ArrayList<String> submissions) {
 		this.name = name;
 		this.questions = questions;
+		this.submissions = submissions;
 	}
 
-	// Following constructors & methods not necessary anymore, but I'll leave code here for reference
-
 	// second constructor reads in quiz details from file to create object
-	/*public Quiz(String fileName) {
-		String readName = null;
-		ArrayList<Question> quest = new ArrayList<>();
-
+	public Quiz(String fileName) {
+		String name = null;
+		ArrayList<Question> questions = new ArrayList<>();
 		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-			readName = br.readLine();
-			String line;
-			ArrayList<String> contents = new ArrayList<>();
-			while ((line = br.readLine()) != null) {
-				contents.add(line);
-			}
-			for (int i = 0; i < contents.size(); i++) {
-				int count = 0;
-				String prompt = null;
-				int numResponses = 0;
-				int answer = -1;
-				int weight = -1;
-				prompt = contents.get(count);
-				count++;
-				numResponses = Integer.parseInt(contents.get(count));
-				count++;
-				ArrayList<String> responses = new ArrayList<>();
-				for (int x = 0; x < numResponses; x++) {
-					responses.add(contents.get(count));
-					count++;
-				}
-				answer = Integer.parseInt(contents.get(count));
-				count++;
-				weight = Integer.parseInt(contents.get(count));
-				if (prompt != null && numResponses != 0 && answer != -1 && weight != -1) {
-					Question question = new Question(prompt, responses, answer, weight);
-					quest.add(question);
-					for (int y = 0; y < (count + 1); y++) {
-						contents.remove(y);
+			String readName = br.readLine();
+			name = readName.substring(readName.indexOf(' ') + 1);
+			String line = br.readLine();
+			while (line != null) {
+				while (line.contains("Question: ")) {
+					int weight = 0;
+					int answer = 0;
+					ArrayList<String> responses = new ArrayList<>();
+					String prompt = line.substring(line.indexOf(' ') + 1);
+					line = br.readLine();
+					if (line.contains("Weight: ")) {
+						weight = Integer.parseInt(line.substring(line.indexOf(' ') + 1));
+						line = br.readLine();
+						while(line.contains("Answer: ")) {
+							if (line.contains("Correct_Answer: ")) {
+								answer = responses.size() - 1;
+							}
+							responses.add(line.substring(line.indexOf(' ') + 1));
+							line = br.readLine();
+						}
 					}
+					questions.add(new Question(prompt, responses, answer, weight));
 				}
-			}	
+			}
 		} catch (IOException i) {
 			i.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		this.name = readName;
-		this.questions = quest;
+		this.name = name;
+		this.questions = questions;
+		this.submissions = new ArrayList<String>();
 	}
-
-	// third constructor will create new object by asking teacher for quiz questions etc.
-	public Quiz(Scanner scan) {
-		
-		//this.name =
-		//this.questions = 
-	} */
 
 	// accessors and mutators
 	public String getName() {
@@ -78,12 +63,20 @@ public class Quiz {
 		return questions;
 	}
 
+	public ArrayList<String> getAllSubmissions() {
+		return submissions;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	public void setQuestions(ArrayList<Question> questions) {
 		this.questions = questions;
+	}
+
+	public void setSubmissions(ArrayList<String> submissions) {
+		this.submissions = submissions;
 	}
 
 	// no editQuiz method, can just add and remove questions
@@ -105,49 +98,61 @@ public class Quiz {
 		}
 	}
 
-	// writeFile method not necessary anymore
-
-	// method writes Quiz object to file in same format file is read in
-	/*public void writeFile(String fileName) {
-		try (PrintWriter pw = new PrintWriter(new FileWriter(fileName))) {
-			pw.write(this.name);
-			for (int q = 0; q < questions.size(); q++) {
-				pw.write(questions.get(q).getPrompt());
-				int numResponses = questions.get(q).getResponses().size();
-				pw.write(Integer.toString(numResponses));
-				for (int w = 0; w < numResponses; w++) {
-					pw.write(questions.get(q).getResponses().get(w));
-				}
-				int answer = questions.get(q).getAnswer();
-				pw.write(Integer.toString(answer));
-				int weight = questions.get(q).getWeight();
-				pw.write(Integer.toString(weight));
-			}
-		} catch (IOException i) {
-			i.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	} */
-
 	// calculates max score of quiz
 	public int calcMaxScore() {
 		int maxScore = 0;
 		int inScore;
-		for (int m = 0; m < this.questions.size(); m++) {
+		for (int m = 0; m < questions.size(); m++) {
 			inScore = this.questions.get(m).getWeight();
 			maxScore += inScore;
 		}
 		return maxScore;
 	}
 
-	// given submission details, creates submission trace string that can be written to file
-	public String addSubmission(String userName, int score) {
-		String format = "Submission{User = %s, Score = %d, Maximum Score = %d, Time = %s";
+	// creates submission trace string that includes all results of quiz taken
+	public void addSubmission(String userName, ArrayList<Question> correctAnswers) {
+		String format = "Submission{User = %s";
+		ArrayList<Question> results = new ArrayList<>();
+		int pointsEarned = 0;
+		int score = 0;
+		String quesNum;
+		String points;
+		String prompt;
+		String correct;
+		for (int q = 0; q < questions.size(); q++) {
+			for (int c = 0; c < correctAnswers.size(); c++) {
+				if (questions.get(q) == correctAnswers.get(c)) {
+					pointsEarned = questions.get(q).getWeight();
+				} else {
+					pointsEarned = 0;
+				}
+			}
+			quesNum = Integer.toString(q + 1);
+			prompt = questions.get(q).getPrompt();
+			correct = questions.get(q).getResponses().get(questions.get(q).getAnswer());
+			points = Integer.toString(pointsEarned);
+			format += ", Question " + quesNum + "{prompt = " + prompt;
+			format += ", correct answer = " + correct + ", points earned = " + points + "}";
+			score += pointsEarned;
+		}
+		format += ", Score = %d, Maximum Score = %d, Time = %s}";
 		int maxScore = calcMaxScore();
 		Date date = new Date();
 		Timestamp ts = new Timestamp(date.getTime());
-		return String.format(format, userName, score, maxScore, ts);
+		String.format(format, userName, score, maxScore, ts);
+		submissions.add(format);
+	}
+
+	// retrieves submissions pertaining to specific student's username
+	public ArrayList<String> getStudentSubmissions(String userName) {
+		ArrayList<String> userSubs = new ArrayList<>();
+		for (int i = 0; i < submissions.size(); i++) {
+			String user = "User = " + userName;
+			if (submissions.get(i).contains(user)) {
+				userSubs.add(submissions.get(i));
+			}
+		}
+		return userSubs;
 	}
 
 	// shuffles order of quiz questions
@@ -155,24 +160,14 @@ public class Quiz {
 		Collections.shuffle(this.questions);
 	}
 
-	// takeQuiz method not necessary anymore either
-
-	// will include all console I/O for taking an existing quiz
-	// may add randomize method to question class to help randomize individual questions' responses
-	/*public int takeQuiz(boolean random, Scanner scan) {
-		// Will probably handle console I/O from this method directly
-		// Will return score which can be written to specific course file?
-		int score = 0;
-		return score;
-	}*/
-
 	// substitute for deleteQuiz method 
 	// equals method allows course class to simply delete quiz from arraylist of quiz objects
 	public boolean equals(Object o) {
 		boolean equal = false;
 		if (o instanceof Quiz) {
 			Quiz quiz = (Quiz) o;
-			if (this.name.equalsIgnoreCase(quiz.name) && this.questions == quiz.questions) {
+			if (this.name.equalsIgnoreCase(quiz.name) && this.questions == quiz.questions && 
+				this.submissions == quiz.submissions) {
 				equal = true;
 			}
 		}
@@ -188,8 +183,4 @@ public class Quiz {
 		format = format.substring(0, format.length() - 2) + "}";
 		return String.format(format, this.name);
 	}
-	// No deleteQuiz or addQuiz methods 
-	// addQuiz should just use constructor
-	// If course class includes arraylist of quizzes, deleteQuiz should just remove one from list 
-	// As of now both quiz and question classes compile
 }
