@@ -1,11 +1,14 @@
 import java.io.*;
 import java.util.ArrayList;
+
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class LoggingIn {
 
-    private static ArrayList<User> userList;
+    private static ArrayList<User> userList = new ArrayList<>();
 
     public static boolean checkUser(User user) {
         try {
@@ -72,6 +75,14 @@ public class LoggingIn {
             for(int i = 0; i < userDetailFile.size(); i++) {
                 writer.write(userDetailFile.get(i) + "\n");
             }
+
+            //Add by Rishab
+            for(int i = 0; i < userList.size(); i++) {
+                if (user.equals(userList.get(i))) {
+                    userList.get(i).setPassword(newPassword);
+                }
+            }
+
             writer.close();
             return worked;
         } catch (IOException e) {
@@ -110,10 +121,19 @@ public class LoggingIn {
                     worked = true;
                 }
             }
+
             FileWriter writer = new FileWriter("UserDetails.txt");
             for(int i = 0; i < userDetailFile.size(); i++) {
                 writer.write(userDetailFile.get(i) + "\n");
             }
+
+            //Add by Rishab
+            for(int i = 0; i < userList.size(); i++) {
+                if (user.equals(userList.get(i))) {
+                    userList.get(i).setUsername(newUsername);
+                }
+            }
+
             writer.close();
             return worked;
         } catch (IOException e) {
@@ -133,7 +153,11 @@ public class LoggingIn {
                 return false;
             } else {
                 String userDetails = String.format("Username: %s\nPassword: %s\nTeacher: %s\n",
-                                                    user.getUsername(), user.getPassword(), user.isTeacher());
+                        user.getUsername(), user.getPassword(), user.isTeacher());
+
+                //Add by Rishab
+                userList.add(user);
+
                 writer.write(userDetails);
                 writer.close();
                 return true;
@@ -172,6 +196,15 @@ public class LoggingIn {
             for(int i = 0; i < userDetailFile.size(); i++) {
                 writer.write(userDetailFile.get(i) + "\n");
             }
+
+            //Add By Rishab
+            for (User u : userList) {
+                if(user.equals(u)) {
+                    userList.remove(u);
+                }
+            }
+
+
             writer.close();
             return worked;
 
@@ -208,4 +241,51 @@ public class LoggingIn {
         }
         return null;
     }
+
+    public static void removeUser(String username) {
+        for (User u : userList) {
+            if(username.equals(u.getUsername())) {
+                userList.remove(u);
+            }
+        }
+    }
+
+    public static void readUserInfo() {
+
+        String username;
+        String password;
+        boolean teacher;
+        String line;
+
+        try {
+
+            File courseInfoFile = new File("UserDetails.txt");
+            FileReader fileReader = new FileReader(courseInfoFile);
+            BufferedReader bfr = new BufferedReader(fileReader);
+
+            line = bfr.readLine();
+            username = "";
+            password = "";
+
+
+            while (line != null) {
+                username = line.substring(line.indexOf(' ') + 1);
+                line = bfr.readLine();
+                password = line.substring(line.indexOf(' ') + 1);
+                line = bfr.readLine();
+                if (line.substring(line.indexOf(' ') + 1).equals("true")) {
+                    teacher = true;
+                } else {
+                    teacher = false;
+                }
+                userList.add(new User(username, password, teacher));
+                line = bfr.readLine();
+            }
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+    }
+
 }
