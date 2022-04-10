@@ -19,9 +19,9 @@ The class features some useful methods as getters and setters and an equals meth
 The class also provides a randomization method that the teachers can choose to implement to change the potential options for a question. 
 The Quiz class has a similar structure to that of the Question class and provides a quiz constructor that initializes the following attributes: the name of the quiz and the a list of questions to the corresponing quiz.
 The class features the basic getters and setters, an equals method that checks whether the given object is an instance of the Quiz class, and an addSubmission method which returns a string of student's submission details. 
-Same, a randomization method is included to change the order of questions.
+Similar to that of the Question class, a randomization method is included to change the order of questions.
 Both of the classes deliver a formatted string to the Course class using the toString method.
 The Course class mainly features the addQuiz and the removeQuiz methods that add and remove quizzes from the list.
 The class provides a course constructor that initialzies the following attributes: the name of the course, the owner (user), and a list of quizzes.
 Lastly, the CourseInfoHandler handles the general File I/O of courses and processes course data.   
-The class reads in a file containing a combined string of course details and writes the data into a newly organised file.
+//The class reads in a file containing a combined string of course details and writes the data into a newly organised file.
