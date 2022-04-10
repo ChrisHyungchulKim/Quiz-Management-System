@@ -33,7 +33,7 @@ public class Testing {
     }
 
     @Test(timeout = 1000)
-    public void testMethod() {
+    public void testMethod() throws InstantiationException {
         Class<?> extension = Student.class;
         try {
 
