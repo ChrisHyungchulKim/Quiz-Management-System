@@ -39,7 +39,7 @@ public class Course {
         this.owner = owner;
     }
 
-    public void removeQuiz(String name) {
-        quizzes.removeIf(quiz -> quiz.getName().equals(name));
+    public boolean removeQuiz(String name) {
+        return quizzes.removeIf(quiz -> quiz.getName().equals(name));
     }
 }
