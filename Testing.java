@@ -5,6 +5,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
+//for reference purposes:
+
 public class Testing {
 
     @Test(timeout = 1000)
@@ -62,3 +64,64 @@ public class Testing {
     }
 
 }
+
+//real test codes
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+
+public class Testing {
+
+        //testing for right modifiers
+        //if necessary
+        @Test(timeout = 1000)
+        public void simpleTest() {
+            Class<?> quizClazz = Quiz.class;
+            Class<?> questionClazz = Question.class;
+            Class<?> quizMenuClazz = QuizMenu.class;
+            Class<?> courseClazz = Course.class;
+            Class<?> courseInfoHandlerClazz = CourseInfoHandler.class;
+            Class<?> userClazz = User.class;
+            Class<?> loginClazz = LoggingIn.class;
+
+
+            if (quizClazz.getModifiers() != Modifier.PUBLIC) {
+                Assert.fail("Was not the right modifiers!");
+                return;
+            }
+            if (questionClazz.getModifiers() != Modifier.PUBLIC) {
+                Assert.fail("Was not the right modifiers!");
+                return;
+            }
+            if (quizMenuClazz.getModifiers() != Modifier.PUBLIC) {
+                Assert.fail("Was not the right modifiers!");
+                return;
+            }
+            if (courseClazz.getModifiers() != Modifier.PUBLIC) {
+                Assert.fail("Was not the right modifiers!");
+                return;
+            }
+            if (courseInfoHandlerClazz.getModifiers() != Modifier.PUBLIC) {
+                Assert.fail("Was not the right modifiers!");
+                return;
+            }
+            if (userClazz.getModifiers() != Modifier.PUBLIC) {
+                Assert.fail("Was not the right modifiers!");
+                return;
+            }
+            if (loginClazz.getModifiers() != Modifier.PUBLIC) {
+                Assert.fail("Was not the right modifiers!");
+                return;
+            }
+
+
+
+        }
+}
+        
+        
+        
