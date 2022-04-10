@@ -4,9 +4,9 @@ import java.sql.Timestamp;
 
 public class Quiz {
 	// Three Quiz fields, name of quiz, arraylist of questions, and arraylist of submissions
-	private String name;
-	private ArrayList<Question> questions;
-	private ArrayList<String> submissions;
+	private static String name;
+	private static ArrayList<Question> questions;
+	private static ArrayList<String> submissions;
 
 	// first constructor creates quiz object from existing name and arraylist
 	public Quiz(String name, ArrayList<Question> questions, ArrayList<String> submissions) {
@@ -55,42 +55,42 @@ public class Quiz {
 	}
 
 	// accessors and mutators
-	public String getName() {
+	public static String getName() {
 		return name;
 	}
 
-	public ArrayList<Question> getQuestions() {
+	public static ArrayList<Question> getQuestions() {
 		return questions;
 	}
 
-	public ArrayList<String> getAllSubmissions() {
+	public static ArrayList<String> getAllSubmissions() {
 		return submissions;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public static void setName(String quizName) {
+		name = quizName;
 	}
 
-	public void setQuestions(ArrayList<Question> questions) {
-		this.questions = questions;
+	public static void setQuestions(ArrayList<Question> quizQuestions) {
+		questions = quizQuestions;
 	}
 
-	public void setSubmissions(ArrayList<String> submissions) {
-		this.submissions = submissions;
+	public static void setSubmissions(ArrayList<String> quizSubmissions) {
+		submissions = quizSubmissions;
 	}
 
 	// no editQuiz method, can just add and remove questions
 	// questions can be added at index or at end of list (if index integer < 0)
-	public void addQuestion(Question question, int index) {
+	public static void addQuestion(Question question, int index) {
 		if (index >= 0) {
-			this.questions.add(index, question);
+			questions.add(index, question);
 		} else {
-			this.questions.add(question);
+			questions.add(question);
 		}
 	}
 
 	// remove method calls question equals method to remove specific question objects from list
-	public void removeQuestion(Question question) {
+	public static void removeQuestion(Question question) {
 		for (int i = 0; i < questions.size(); i++) {
 			if (questions.get(i).equals(question)) {
 				questions.remove(i);
@@ -99,18 +99,18 @@ public class Quiz {
 	}
 
 	// calculates max score of quiz
-	public int calcMaxScore() {
+	public static int calcMaxScore() {
 		int maxScore = 0;
 		int inScore;
 		for (int m = 0; m < questions.size(); m++) {
-			inScore = this.questions.get(m).getWeight();
+			inScore = questions.get(m).getWeight();
 			maxScore += inScore;
 		}
 		return maxScore;
 	}
 
 	// creates submission trace string that includes all results of quiz taken
-	public void addSubmission(String userName, ArrayList<Question> correctAnswers) {
+	public static void addSubmission(String userName, ArrayList<Question> correctAnswers) {
 		String format = "Submission{User = %s";
 		ArrayList<Question> results = new ArrayList<>();
 		int pointsEarned = 0;
@@ -144,7 +144,7 @@ public class Quiz {
 	}
 
 	// retrieves submissions pertaining to specific student's username
-	public ArrayList<String> getStudentSubmissions(String userName) {
+	public static ArrayList<String> getStudentSubmissions(String userName) {
 		ArrayList<String> userSubs = new ArrayList<>();
 		for (int i = 0; i < submissions.size(); i++) {
 			String user = "User = " + userName;
@@ -156,8 +156,8 @@ public class Quiz {
 	}
 
 	// shuffles order of quiz questions
-	public void randomize() {
-		Collections.shuffle(this.questions);
+	public static void randomize() {
+		Collections.shuffle(questions);
 	}
 
 	// substitute for deleteQuiz method 
