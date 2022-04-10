@@ -3,7 +3,58 @@ import java.util.ArrayList;
 
 public class CourseInfoHandler {
 
-    private static ArrayList<Course> courseList;
+/*
+    public static void main(String[] args) {
+        User teacherUser = new User("test", "test password", true);
+        User studentUser = new User("test 2", "test password", false);
+
+        ArrayList<String> responses = new ArrayList<>();
+        responses.add("Test");
+        responses.add("Test");
+        responses.add("Test");
+
+        Question question = new Question("Test Question", responses, 0, 5);
+        Question question1 = new Question("Test Question", responses, 0, 5);
+        Question question2 = new Question("Test Question", responses, 0, 5);
+        Question question3 = new Question("Test Question", responses, 0, 5);
+
+        ArrayList<Question> questions = new ArrayList<>();
+        questions.add(question);
+        //questions.add(question1);
+        //questions.add(question2);
+        //questions.add(question3);
+
+        Quiz quiz1 = new Quiz("Test Quiz", questions);
+        //Quiz quiz2 = new Quiz("Test Quiz 2", questions);
+        //Quiz quiz3 = new Quiz("Test Quiz 3", questions);
+
+        ArrayList<Quiz> quizzes = new ArrayList<>();
+        quizzes.add(quiz1);
+        //quizzes.add(quiz2);
+        //quizzes.add(quiz3);
+
+        Course course = new Course("Test Course", teacherUser, quizzes);
+
+        Course course1 = new Course("Test Course 2", studentUser, quizzes);
+
+        //addCourse(course);
+        addCourse(course1);
+        addCourse(course);
+
+        System.out.println(getCourseList());
+
+        System.out.println(getUsersCourses(studentUser));
+        System.out.println(getUsersCourses(teacherUser));
+
+        //readCourseInfo();
+
+        writeCourseInfo();
+
+
+    }
+*/
+
+    private static ArrayList<Course> courseList = new ArrayList<>();
 
 
     public static ArrayList<Course> getCourseList() {
@@ -60,7 +111,7 @@ public class CourseInfoHandler {
 
     public static void writeCourseInfo() {
 
-        String courseDetails = "";
+        String courseDetails;
         int index = 0;
 
         try {
@@ -68,7 +119,9 @@ public class CourseInfoHandler {
             FileWriter fileWriter = new FileWriter(courseInfoFile);
             PrintWriter printWriter = new PrintWriter(fileWriter);
 
-            for (Course c : courseList) {
+            for (int in = 0; in < courseList.size(); in++) {
+                courseDetails = "";
+                Course c = courseList.get(in);
                 if (index == 0) {
                     courseDetails += "Course: " + c.getCourseName();
                     index++;
@@ -89,11 +142,11 @@ public class CourseInfoHandler {
                             }
                         }
                     }
+                    printWriter.print(courseDetails);
+                    printWriter.flush();
                 }
 
-                printWriter.println(courseDetails);
-                printWriter.flush();
-                printWriter.close();
+
 
             }
         } catch (IOException ioe) {
@@ -114,7 +167,6 @@ public class CourseInfoHandler {
         ArrayList<String> answerChoices;
         ArrayList<Quiz> quizList;
 
-        int courseNumber;
 
         try {
             File courseInfoFile = new File("CourseDetails.txt");
@@ -123,7 +175,6 @@ public class CourseInfoHandler {
 
             weight = 0;
             answer = 0;
-            courseNumber = 0;
             owner = "";
             line = bfr.readLine();
 
@@ -149,6 +200,7 @@ public class CourseInfoHandler {
                                 weight = Integer.parseInt(line.substring(line.indexOf(' ') + 1));
                             }
                             line = bfr.readLine();
+
                             while(line.contains("Answer: ")) {
                                 if (line.contains("Correct_Answer: ")) {
                                     answerChoices.add(line.substring(line.indexOf(' ') + 1));
@@ -157,16 +209,29 @@ public class CourseInfoHandler {
                                     answerChoices.add(line.substring(line.indexOf(' ') + 1));
                                 }
                                 line = bfr.readLine();
+                                if (line == null) {
+                                    break;
+                                }
                             }
                             questionList.add(new Question(prompt, answerChoices, answer, weight));
+                            if (line == null) {
+                                break;
+                            }
                         }
                         quizList.add(new Quiz(quizName, questionList));
+                        if (line == null) {
+                            break;
+                        }
                     }
                     courseList.add(new Course(courseName,LoggingIn.getUser(owner),quizList));
+                    if (line == null) {
+                        break;
+                    }
                 }
 
-                courseNumber++;
             }
+
+            bfr.close();
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
