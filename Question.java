@@ -3,10 +3,10 @@ import java.util.*;
 public class Question {
 	// Four question fields: question prompt, arraylist of answer choices
 	// integer indicating whih choice is correct, and point value/weight
-	private static String prompt;
-	private static ArrayList<String> responses;
-	private static int answer;
-	private static int weight;
+	private String prompt;
+	private ArrayList<String> responses;
+	private int answer;
+	private int weight;
 	
 	// Single constructor
 	public Question(String prompt, ArrayList<String> responses, int answer, int weight) {
@@ -17,45 +17,45 @@ public class Question {
 	}
 
 	// accessors and mutators
-	public static String getPrompt() {
+	public String getPrompt() {
 		return prompt;
 	}
 
-	public static ArrayList<String> getResponses() {
+	public ArrayList<String> getResponses() {
 		return responses;
 	}
 
-	public static int getAnswer() {
+	public int getAnswer() {
 		return answer;
 	}
 
-	public static int getWeight() {
+	public int getWeight() {
 		return weight;
 	}
 
-	public static void setPrompt(String qPrompt) {
-		prompt = qPrompt;
+	public void setPrompt(String prompt) {
+		this.prompt = prompt;
 	}
 
-	public static void setResponses(ArrayList<String> qResponses) {
-		responses = qResponses;
+	public void setResponses(ArrayList<String> responses) {
+		this.responses = responses;
 	}
 
-	public static void setAnswer(int qAnswer) {
-		answer = qAnswer;
+	public void setAnswer(int answer) {
+		this.answer = answer;
 	}
 
-	public static void setWeight(int qWeight) {
-		weight = qWeight;
+	public void setWeight(int weight) {
+		this.weight = weight;
 	}
 
 	// randomizes order of answer choices and ensures index changes with it
-	public static void randomize() {
+	public void randomize() {
 		String correctResponse = responses.get(answer);
 		Collections.shuffle(responses);
 		for (int i = 0; i < responses.size(); i++) {
 			if (responses.get(i).equals(correctResponse)) {
-				answer = i;
+				this.answer = i;
 			}
 		}
 	}
