@@ -71,10 +71,10 @@ public class CourseInfoHandler {
             for (Course c : courseList) {
                 if (index == 0) {
                     courseDetails += "Course: " + c.getCourseName();
+                    index++;
                 } else {
                     courseDetails += "\nCourse: " + c.getCourseName();
                 }
-                    //TODO:PRINT OWNER INFO
                     courseDetails += "\nOwner_Username: " + c.getOwner().getUsername();
                 for (Quiz q : c.getQuizzes()) {
                     courseDetails += "\nQuiz_Name: " + q.getName();
@@ -101,7 +101,7 @@ public class CourseInfoHandler {
         }
     }
 
-    public static void ReadCourseInfo() {
+    public static void readCourseInfo() {
 
         String line;
         String courseName;
@@ -134,27 +134,27 @@ public class CourseInfoHandler {
                     courseName = line.substring(line.indexOf(' ') + 1);
                     line = bfr.readLine();
                     if(line.contains("Owner_Username: ")) {
-                        owner = line.substring(line.indexOf(' '));
+                        owner = line.substring(line.indexOf(' ') + 1);
                     }
                     line = bfr.readLine();
                     while(line.contains("Quiz_Name: ")) {
                         questionList = new ArrayList<Question>();
-                        quizName = line.substring(line.indexOf(' '));
+                        quizName = line.substring(line.indexOf(' ') + 1);
                         line= bfr.readLine();
                         while(line.contains("Question: ")) {
                             answerChoices = new ArrayList<String>();
-                            prompt = line.substring(line.indexOf(' '));
+                            prompt = line.substring(line.indexOf(' ') + 1);
                             line = bfr.readLine();
                             if (line.contains("Weight: ")) {
-                                weight = Integer.parseInt(line.substring(line.indexOf(' ')));
+                                weight = Integer.parseInt(line.substring(line.indexOf(' ') + 1));
                             }
                             line = bfr.readLine();
                             while(line.contains("Answer: ")) {
                                 if (line.contains("Correct_Answer: ")) {
-                                    answerChoices.add(line.substring(line.indexOf(' ')));
+                                    answerChoices.add(line.substring(line.indexOf(' ') + 1));
                                     answer = answerChoices.size() - 1;
                                 } else {
-                                    answerChoices.add(line.substring(line.indexOf(' ')));
+                                    answerChoices.add(line.substring(line.indexOf(' ') + 1));
                                 }
                                 line = bfr.readLine();
                             }
@@ -162,7 +162,6 @@ public class CourseInfoHandler {
                         }
                         quizList.add(new Quiz(quizName, questionList));
                     }
-                    //TODO:Once a method is added for the returns a user given a username
                     courseList.add(new Course(courseName,LoggingIn.getUser(owner),quizList));
                 }
 
