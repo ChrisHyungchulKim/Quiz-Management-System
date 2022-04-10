@@ -7,8 +7,8 @@ public class MainMenu {
 
     public static final String CREATE_ACCOUNT_QUESTION = "1. Log In\n2. Create Account\n";
     public static final String TEACHER_QUESTION = "Are you a teacher?\n";
-    public static final String GENERAL_MENU = "1. Account Settings\n2. Quiz Menu\n" +
-                                                "3. Quizzes\n4. Quit";
+    public static final String GENERAL_MENU_TEACHER = "1. Account Settings\n2. Quiz Menu\n3. Quizzes\n4. Quit";
+    public static final String GENERAL_MENU_STUDENT = "1. Account Settings\n2. Quizzes\n3. View results\n4. Quit";
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -44,7 +44,11 @@ public class MainMenu {
         }
         int generalMenuChoice = 0;
         while (generalMenuChoice != 4) {
-            System.out.println(GENERAL_MENU);
+            if (currentUser.isTeacher()) {
+                System.out.println(GENERAL_MENU_TEACHER);
+            } else {
+                System.out.println(GENERAL_MENU_STUDENT);
+            }
             try {
                 generalMenuChoice = scanner.nextInt();
             } catch (InputMismatchException e) {
@@ -59,9 +63,7 @@ public class MainMenu {
             } else if (generalMenuChoice == 2) {
                 quizMenu(currentUser, scanner);
             }
-
         }
-
     }
 
     public static void quizMenu(User user, Scanner scanner) {
@@ -99,6 +101,7 @@ public class MainMenu {
 
                 if (changeQuizChoice == 1) {
                     //TODO how to determine which quiz to edit
+                    
                 } else if (changeQuizChoice == 2) {
                     //giving the user a choice to upload a quiz or create it manually
                     int choice = 0;
@@ -122,14 +125,22 @@ public class MainMenu {
 
                 } else if (changeQuizChoice == 3) {
                     //TODO there is no delete quiz method in quiz class
+                    System.out.println("Enter the name of the quiz you would like to delete: ");
+                    String name = scanner.nextLine();
+                    if (Course.removeQuiz(name)) {
+                        System.out.println("Quiz removed");
+                    } else {
+                        System.out.println("Could not find the quiz");
+                    }
                 }
             } else if (quizMenuChoice == 2) {
                 //TODO view student submissions
-                System.out.println("Enter students username:");
-                String username = scanner.nextLine();
+                if (Quiz.getAllSubmissions() == null) {
+                    System.out.println("No submissions");
+                } else {
+                    System.out.println(Quiz.getAllSubmissions());
+                }
             }
-        } else {
-            //TODO student menu
         }
     }
 
@@ -355,4 +366,3 @@ public class MainMenu {
         Quiz quiz = new Quiz(name, questions, null);
     }
 }
-
