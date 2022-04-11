@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 /**
- * Project 4
+ * Project 4 - Course.java Class
  *
  * @author Corey Tuinstra
  * @version April 11, 2022
