@@ -70,8 +70,8 @@ public class CourseInfoHandler {
 
 
     /**
-     * This method reads in the data from the CourseDetails.txt file and creates and instantiates all the course, quiz, and question
-     * objects.
+     * This method reads in the data from the CourseDetails.txt file and creates and instantiates all the course, quiz, 
+     * and question objects.
      *
      * @return ArrayList<Course> - This is an array of the state of the course arraylist before the program was turn
      * off based on data from CourseDetails.txt
