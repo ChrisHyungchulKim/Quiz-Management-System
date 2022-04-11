@@ -82,50 +82,50 @@ public class Testing {
     
     //for Submission class
 
-            User student = null;
-            ArrayList<String> responses = new ArrayList<>();
-            ArrayList<Quiz> quizzes = new ArrayList<>();
-            ArrayList<Question> questions = new ArrayList<>();
-            String time = "";
-            boolean graded = true;
-            Quiz quizBeingTaken = new Quiz("Quiz 1", questions);
-            Course courseOfQuiz = null;
-            ArrayList<String> grades = null;
+        User student = null;
+        ArrayList<String> responses = new ArrayList<>();
+        ArrayList<Quiz> quizzes = new ArrayList<>();
+        ArrayList<Question> questions = new ArrayList<>();
+        String time = "";
+        boolean graded = true;
+        Quiz quizBeingTaken = new Quiz("Quiz 1", questions);
+        Course courseOfQuiz = null;
+        ArrayList<String> grades = null;
 
 
 
-            Submission submission = new Submission(student, quizBeingTaken, courseOfQuiz, responses, time, graded, grades);
+        Submission submission = new Submission(student, quizBeingTaken, courseOfQuiz, responses, time, graded, grades);
 
-            grades.set(0, "100");
-            submission.setGrades(grades);
-            submission.getGrades();
-            System.out.println(submission.getGrades());
+        grades.set(0, "100");
+        submission.setGrades(grades);
+        submission.getGrades();
+        System.out.println(submission.getGrades());
 
-            submission.setCourseOfQuiz(new Course("Math", quizzes));
-            submission.getCourseOfQuiz();
-            System.out.println(submission.getCourseOfQuiz());
+        submission.setCourseOfQuiz(new Course("Math", quizzes));
+        submission.getCourseOfQuiz();
+        System.out.println(submission.getCourseOfQuiz());
 
-            submission.setQuizBeingTaken(new Quiz("Quiz 2", questions));
-            submission.getQuizBeingTaken();
-            System.out.println(quizBeingTaken);
+        submission.setQuizBeingTaken(new Quiz("Quiz 2", questions));
+        submission.getQuizBeingTaken();
+        System.out.println(quizBeingTaken);
 
-            submission.setStudent(new User("Teacher", "1122", true));
-            submission.getStudent();
-            System.out.println(submission.getStudent());
+        submission.setStudent(new User("Teacher", "1122", true));
+        submission.getStudent();
+        System.out.println(submission.getStudent());
 
-            responses.set(0, "answers");
-            submission.setResponses(responses);
-            submission.getResponses();
-            System.out.println(submission.getResponses());
+        responses.set(0, "answers");
+        submission.setResponses(responses);
+        submission.getResponses();
+        System.out.println(submission.getResponses());
 
-            submission.setTime("10");
-            submission.getTime();
-            System.out.println(submission.getTime());
+        submission.setTime("10");
+        submission.getTime();
+        System.out.println(submission.getTime());
 
-            submission.setGraded(false);
-            submission.isGraded();
-            System.out.println(submission.isGraded());
-    
+        submission.setGraded(false);
+        submission.isGraded();
+        System.out.println(submission.isGraded());
+
 
 
 }
