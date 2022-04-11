@@ -1,3 +1,9 @@
+/**
+ * Project 4 - User.java Class
+ *
+ * @author Corey Tuinstra
+ * @version April 11, 2022
+ */
 public class User {
     private String username;
     private String password;

@@ -4,6 +4,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import java.sql.Timestamp;
+/**
+ * Project 4 - QuizMenu.java Class
+ *
+ * @author Corey Tuinstra
+ * @version April 11, 2022
+ */
 
 public class QuizMenu {
 
@@ -69,17 +75,13 @@ public class QuizMenu {
                         if (teacherGeneralMenuChoice != 1 && teacherGeneralMenuChoice != 2
                                 && teacherGeneralMenuChoice != 3) {
                             System.out.println("Please enter a number 1-3.");
-                        } else if (teacherGeneralMenuChoice ==  3) {
-                            return;
-                        } else {
-                            break;
                         }
                     } catch (InputMismatchException e) {
-                        System.out.println("Please enter a number 1-3");
+                        System.out.println("Please enter a number 1 - 3.");
                     }
                     scanner.nextLine();
-                } while (teacherGeneralMenuChoice != 1 || teacherGeneralMenuChoice != 2
-                        || teacherGeneralMenuChoice != 3);
+                } while (teacherGeneralMenuChoice != 1 && teacherGeneralMenuChoice != 2
+                            && teacherGeneralMenuChoice != 3);
                 if (teacherGeneralMenuChoice == 1) {
                     boolean deleted = accountSettingsDialog(currentUser, scanner);
                     if (deleted) {
@@ -394,7 +396,7 @@ public class QuizMenu {
             Course newCourse = new Course(newCourseName, new ArrayList<Quiz>());
             currentClass.addCourse(newCourse);
         } else {
-            gradeSubmissions(currentClass, scanner, readSubmissions(currentClass, scanner));
+            gradeSubmissions(currentClass, scanner, Objects.requireNonNull(readSubmissions(currentClass, scanner)));
 
         }
 
@@ -499,20 +501,18 @@ public class QuizMenu {
         //Scanner scanner = new Scanner(System.in);
 
         System.out.println("Please enter your username: ");
-        String username = scanner.nextLine();
 
 
-        return username;
+        return scanner.nextLine();
     }
 
     public static String getPassword(Scanner scanner) {
         //Scanner scanner = new Scanner(System.in);
 
         System.out.println("Please enter your password: ");
-        String password = scanner.nextLine();
 
 
-        return password;
+        return scanner.nextLine();
     }
 
     public static boolean getIfTeacher(Scanner scanner) {
@@ -544,9 +544,7 @@ public class QuizMenu {
         //gets if the User is a teacher
         boolean ifTeacher = getIfTeacher(scanner);
 
-        User user = new User(username, password, ifTeacher);
-
-        return user;
+        return new User(username, password, ifTeacher);
     }
 
     public static Quiz manuallyCreateQuiz(Scanner scanner) {
@@ -828,7 +826,7 @@ public class QuizMenu {
         //giving the user a choice to upload a quiz or create it manually
         int choice = 0;
         do {
-            System.out.printf("1. Create quiz manually\n2. Upload a file\n");
+            System.out.print("1. Create quiz manually\n2. Upload a file\n");
             try {
                 choice = scanner.nextInt();
                 if (choice != 1 && choice != 2) {
@@ -856,8 +854,8 @@ public class QuizMenu {
                         newQuizzes = currentClass.getCourses().get(courseSelection - 1).getQuizzes();
                         newQuizzes.add(quiz);
                         currentClass.getCourses().get(courseSelection - 1).setQuizzes(newQuizzes);
-                    } else if (choice == 2) {
-                        System.out.printf("Please have it in the following format:\n" +
+                    } else {
+                        System.out.print("Please have it in the following format:\n" +
                                 "Quiz_Name: (insert quiz name)\n" +
                                 "Question: (insert question)\n" +
                                 "Weight: (insert weight)\n" +

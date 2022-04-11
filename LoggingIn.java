@@ -5,7 +5,12 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
-
+/**
+ * Project 4 LoggingIn.java class
+ *
+ * @author Corey Tuinstra
+ * @version April 11, 2022
+ */
 public class LoggingIn {
 
     static ArrayList<User> userList = new ArrayList<>();
