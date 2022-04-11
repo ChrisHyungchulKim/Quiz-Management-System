@@ -88,11 +88,11 @@ public class Submission {
             for (int i = 0; i < getResponses().size(); i++) {
                 readableResponses += submission.getResponses().get(i) + ",";
             }
-            String submissionDetail = String.format("Student: %s\nCourse: %s\nQuiz: %s\nResponses: %s\n" +
+            String submissionDetail = String.format("Student: %s\nResponses: %s\nCourse: %s\nQuiz: %s\n" +
                                                     "Time: %s\nGraded: %s\nGrade: %.2f\n",
-                                                    submission.getStudent().getUsername(),
+                                                    submission.getStudent().getUsername(), readableResponses,
                                                     submission.getCourseOfQuiz().getCourseName(),
-                                                    submission.getQuizBeingTaken().getName(), readableResponses,
+                                                    submission.getQuizBeingTaken().getName(),
                                                     submission.getTime(), submission.isGraded(),
                                                     submission.getAssignedGrade());
             bufferedWriter.write(submissionDetail);
