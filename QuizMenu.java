@@ -4,6 +4,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import java.sql.Timestamp;
+/**
+ * Project 4 - QuizMenu.java Class
+ *
+ * @author Corey Tuinstra
+ * @version April 11, 2022
+ */
 
 public class QuizMenu {
 
