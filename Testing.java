@@ -87,12 +87,12 @@ public class Testing {
 
         //Testing createUser method
         LoggingIn.createUser(teacherLoggingIn);
-        LoggingIn.createUser(student);
+        LoggingIn.createUser(studentLoggingIn);
         if (!LoggingIn.checkUser(teacherLoggingIn)) {
             System.out.println("[checkUser] Not the expected output teacher");
             allGood = false;
         }
-        if (!LoggingIn.checkUser(student)) {
+        if (!LoggingIn.checkUser(studentLoggingIn)) {
             System.out.println("[checkUser] Not the expected output student");
             allGood = false;
         }
@@ -140,11 +140,11 @@ public class Testing {
         }
 
         //Testing getUser
-        if (!LoggingIn.getUser("Kasper").equals(teacher)) {
+        if (!LoggingIn.getUser("Kasper").equals(teacherLoggingIn)) {
             System.out.println("[getUser] Not the expected output");
             allGood = false;
         }
-        if (!LoggingIn.getUser("Jasper").equals(student)) {
+        if (!LoggingIn.getUser("Jasper").equals(studentLoggingIn)) {
             System.out.println("[getUser] Not the expected output");
             allGood = false;
         }
@@ -152,8 +152,8 @@ public class Testing {
         if (allGood) {
             System.out.println("All test cases passed!");
         }
-        
-    //Course class
+
+        //Course class
         String courseName = "";
         String Quiz = "";
         User owner = new User("Teacher 1", "1122", true) ;
@@ -179,7 +179,7 @@ public class Testing {
 
         course.removeQuiz(new Course("Math", quiz), new Quiz("Math"));
         System.out.println(courses);
-    
-    
+
+
     }
 }
