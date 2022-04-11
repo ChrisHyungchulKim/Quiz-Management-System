@@ -3,11 +3,10 @@ import java.util.ArrayList;
 public class Course {
     private String courseName;
     private User owner;
-    private ArrayList<Quiz> quizzes = new ArrayList<Quiz>();
+    private ArrayList<Quiz> quizzes;
 
-    public Course(String courseName, User owner, ArrayList<Quiz> quizzes) {
+    public Course(String courseName, ArrayList<Quiz> quizzes) {
         this.courseName = courseName;
-        this.owner = owner;
         this.quizzes = quizzes;
     }
 
@@ -19,7 +18,7 @@ public class Course {
         this.courseName = courseName;
     }
 
-    public ArrayList<Quiz> getQuizzes() {
+    public  ArrayList<Quiz> getQuizzes() {
         return quizzes;
     }
 
@@ -39,7 +38,8 @@ public class Course {
         this.owner = owner;
     }
 
-    public boolean removeQuiz(String name) {
-        return quizzes.removeIf(quiz -> quiz.getName().equals(name));
+
+    public void removeQuiz(Course course, Quiz quiz) {
+        course.getQuizzes().remove(quiz);
     }
 }
