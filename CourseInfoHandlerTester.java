@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
 /**
- * This is a tester class for the CourseInfoHandler class. This class creates a Class class and write it to txt file 
- * called CourseDetails.txt using the writeCourseInfo() method in the CourseInfoHandler class and then reads using the 
+ * This is a tester class for the CourseInfoHandler class. This class creates a Class class and write it to txt file
+ * called CourseDetails.txt using the writeCourseInfo() method in the CourseInfoHandler class and then reads using the
  * readCourseInfo() method in the CourseInfoHandler class which reads from CourseDetails.txt and returns an arraylist
- * of Courses and then using if statements and for loops it checks if the original course arraylist to the one after 
+ * of Courses and then using if statements and for loops it checks if the original course arraylist to the one after
  * writing and reading to see if it's the same
  * <p>
  * <p>
@@ -80,11 +80,11 @@ public class CourseInfoHandlerTester {
                             //Original question
                             Question questionO = quizO.getQuestions().get(qNum);
 
-                            if(questionR.getPrompt().equals(questionO.getPrompt()) && questionO.getWeight() ==
+                            if (questionR.getPrompt().equals(questionO.getPrompt()) && questionO.getWeight() ==
                                     questionR.getWeight() && questionO.getAnswer() == questionR.getAnswer()) {
 
                                 for (int choices = 0; choices < questionR.getResponses().size(); choices++) {
-                                    if(questionR.getResponses().get(choices).equals(questionO.getResponses().
+                                    if (questionR.getResponses().get(choices).equals(questionO.getResponses().
                                             get(choices))) {
                                         allQuizzesEqual = true;
                                     } else {
@@ -111,7 +111,7 @@ public class CourseInfoHandlerTester {
                 }
 
             } else {
-                    System.out.printf("Course %d Test Failed\n", i + 1);
+                System.out.printf("Course %d Test Failed\n", i + 1);
             }
 
 
