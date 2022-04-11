@@ -4,8 +4,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import java.sql.Timestamp;
+
 /**
  * Project 4 - QuizMenu.java Class
+ * <p>
+ * This Class handles all the user I/O for the project and uses the methods from the other classes to
+ * perform the I/O tasks
  *
  * @author Corey Tuinstra
  * @version April 11, 2022
@@ -81,7 +85,7 @@ public class QuizMenu {
                     }
                     scanner.nextLine();
                 } while (teacherGeneralMenuChoice != 1 && teacherGeneralMenuChoice != 2
-                            && teacherGeneralMenuChoice != 3);
+                        && teacherGeneralMenuChoice != 3);
                 if (teacherGeneralMenuChoice == 1) {
                     boolean deleted = accountSettingsDialog(currentUser, scanner);
                     if (deleted) {
@@ -115,7 +119,7 @@ public class QuizMenu {
                 } else if (studentGeneralMenuChoice == 2) {
                     Submission submission = takeQuiz(currentUser, currentClass, scanner);
                     submission.writeSubmission(submission, true);
-                } else if(studentGeneralMenuChoice == 3) {
+                } else if (studentGeneralMenuChoice == 3) {
                     System.out.println("Which Course is the quiz in?");
                     int courseCounter = 0;
                     for (int f = 0; f < currentClass.getCourses().size(); f++) {
@@ -168,8 +172,8 @@ public class QuizMenu {
                                         ArrayList<Submission> submissions) {
 
         int totalQuizScore = 0;
-        for (int i = 0;i < submissions.size(); i++) {
-            if(!submissions.get(i).isGraded()) {
+        for (int i = 0; i < submissions.size(); i++) {
+            if (!submissions.get(i).isGraded()) {
                 for (int f = 0; f < submissions.get(i).getResponses().size(); f++) {
                     System.out.printf("Student Response: %s\n", submissions.get(i).getResponses().get(f));
                     System.out.printf("Correct Response: %s\n", submissions
@@ -635,7 +639,7 @@ public class QuizMenu {
         return changeQuizChoice;
     }
 
-    public static int getQuizMenuChoice (Scanner scanner) {
+    public static int getQuizMenuChoice(Scanner scanner) {
         int quizMenuChoice = 0;
         do {
             System.out.println("1. Change Quizzes (Edit/Create/Delete)\n" +
@@ -835,7 +839,7 @@ public class QuizMenu {
                 } else {
                     System.out.println("Which Course is the quiz in?");
                     int courseCounter = 0;
-                    for(int f = 0; f < currentClass.getCourses().size(); f++) {
+                    for (int f = 0; f < currentClass.getCourses().size(); f++) {
                         System.out.printf("%d. %s\n", courseCounter + 1,
                                 currentClass.getCourses().get(courseCounter).getCourseName());
                         courseCounter++;
@@ -879,7 +883,7 @@ public class QuizMenu {
     public static void ifChooseDelete(Class currentClass, Scanner scanner) {
         System.out.println("Which Course is the quiz in?");
         int courseCounter = 0;
-        for(int f = 0; f < currentClass.getCourses().size(); f++) {
+        for (int f = 0; f < currentClass.getCourses().size(); f++) {
             System.out.printf("%d. %s\n", courseCounter + 1,
                     currentClass.getCourses().get(courseCounter).getCourseName());
             courseCounter++;
