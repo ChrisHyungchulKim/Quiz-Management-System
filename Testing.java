@@ -153,13 +153,13 @@ public class Testing {
             System.out.println("All test cases passed!");
         }
 
-        //Course class
         String courseName = "";
         String Quiz = "";
         User owner = new User("Teacher 1", "1122", true) ;
         ArrayList<Quiz> quiz = new ArrayList<>();
+        ArrayList<Question> question = new ArrayList<>();
         ArrayList<Course> courses = new ArrayList<>();
-        quiz.add(0, new Quiz("Quiz 2", questions));
+        quiz.add(0, new Quiz("Quiz 2", question));
 
 
         Course course = new Course(courseName, quiz);
@@ -167,14 +167,14 @@ public class Testing {
         course.setCourseName("Math");
         System.out.println(course.getCourseName());
 
-        quiz.set(0, new Quiz("Quiz 1", questions));
+        quiz.set(0, new Quiz("Quiz 1", question));
         course.setQuizzes(quiz);
         System.out.println(course.getQuizzes());
 
         course.setOwner(owner);
         System.out.println(course.getOwner());
 
-        course.addQuiz(new Quiz("Quiz 1", questions));
+        course.addQuiz(new Quiz("Quiz 1", question));
         System.out.println(courses);
 
         course.removeQuiz(new Course("Math", quiz), new Quiz("Math"));
