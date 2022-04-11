@@ -52,11 +52,11 @@ public class Testing {
 
 
 //     }
-//for Class class
+//for User class
    public static void main(String[] args) {
 
 
-       //for Class class
+       //for User class
        String username = "";
        String password = "";
        boolean teacher = true;
