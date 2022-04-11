@@ -2,7 +2,12 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-
+/**
+ * Project 4 - Submission.java Class
+ *
+ * @author Corey Tuinstra
+ * @version March 29, 2022
+ */
 public class Submission {
     private User student;
     private ArrayList<String> responses;
