@@ -41,8 +41,8 @@ public class CourseInfoHandler {
                     for (Question question : q.getQuestions()) {
                         courseDetails += "\nQuestion: " + question.getPrompt();
                         courseDetails += "\nWeight: " + question.getWeight();
-                        for (int i = 0; i < question.getResponses().size(); i++){
-                            if(i == question.getAnswer()) {
+                        for (int i = 0; i < question.getResponses().size(); i++) {
+                            if (i == question.getAnswer()) {
                                 courseDetails += "\nCorrect_Answer: " + question.getResponses().get(i);
                             } else {
                                 courseDetails += "\nAnswer: " + question.getResponses().get(i);
@@ -86,18 +86,18 @@ public class CourseInfoHandler {
             answer = 0;
             line = bfr.readLine();
 
-            while (line!= null) {
+            while (line != null) {
 
-                if(line.contains("Course: ")) {
+                if (line.contains("Course: ")) {
                     quizList = new ArrayList<Quiz>();
                     courseName = line.substring(line.indexOf(' ') + 1);
 
                     line = bfr.readLine();
-                    while(line.contains("Quiz_Name: ")) {
+                    while (line.contains("Quiz_Name: ")) {
                         questionList = new ArrayList<Question>();
                         quizName = line.substring(line.indexOf(' ') + 1);
-                        line= bfr.readLine();
-                        while(line.contains("Question: ")) {
+                        line = bfr.readLine();
+                        while (line.contains("Question: ")) {
                             answerChoices = new ArrayList<String>();
                             prompt = line.substring(line.indexOf(' ') + 1);
                             line = bfr.readLine();
@@ -106,7 +106,7 @@ public class CourseInfoHandler {
                             }
                             line = bfr.readLine();
 
-                            while(line.contains("Answer: ")) {
+                            while (line.contains("Answer: ")) {
                                 if (line.contains("Correct_Answer: ")) {
                                     answerChoices.add(line.substring(line.indexOf(' ') + 1));
                                     answer = answerChoices.size() - 1;
