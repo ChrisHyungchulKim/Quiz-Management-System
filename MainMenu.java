@@ -124,13 +124,38 @@ public class QuizMenu {
         }
     }
 
+    public static ArrayList<Integer> gradeSubmissions(Class currentClass, Scanner scanner,
+                                                      ArrayList<Submission> submissions) {
+        ArrayList<Integer> grades = new ArrayList<>();
+        ArrayList<Submission> toGradeSubmissions = new ArrayList<>();
+        for(int i = 0; i < submissions.size(); i++) {
+
+            if (!submissions.get(i).isGraded()) {
+                toGradeSubmissions.add(submissions.get(i));
+            }
+        }
+        int totalQuizScore = 0;
+        for (int i = 0;i < toGradeSubmissions.size(); i++) {
+           for (int f = 0; f < toGradeSubmissions.get(i).getResponses().size(); f++) {
+               System.out.printf("Student Response: %s\n", toGradeSubmissions.get(i).getResponses().get(f));
+               System.out.printf("Correct Response: %s\n", toGradeSubmissions
+                       .get(i).getQuizBeingTaken().getQuestions().get(f).getResponses().get(toGradeSubmissions
+                       .get(i).getQuizBeingTaken().getQuestions().get(f).getAnswer()));
+               System.out.printf("What grade do you want to assign this? (Max Score: %d)\n", toGradeSubmissions
+                       .get(i).getQuizBeingTaken().getQuestions().get(f).getWeight());
+               
+               grades.add(scanner.nextInt());
+           }
+        }
+        return grades;
+    }
+
     public static ArrayList<Submission> readSubmissions(Class currentClass, Scanner scanner) {
         BufferedReader reader;
         try {
             FileReader filereader = new FileReader("SubmissionDetails.txt");
             reader = new BufferedReader(filereader);
             String line = reader.readLine();
-            System.out.println(line);
             ArrayList<User> users = LoggingIn.readUserInfo();
 
 
@@ -144,7 +169,8 @@ public class QuizMenu {
             String quizBeingTaken = "";
             boolean graded = false;
             double grade = 0;
-
+            String currentQuestion = null;
+            Question theQuestion = null;
             Submission newSubmission = null;
             ArrayList<Submission> submissions = new ArrayList<>();
             while (line != null) {
@@ -157,13 +183,12 @@ public class QuizMenu {
                         }
                     }
                     line = reader.readLine();
-                    System.out.println(line);
+
 
                     if (line.contains("Responses: ")) {
                         String[] responsesArray = line.split(",");
                         responses = new ArrayList<String>(Arrays.asList(responsesArray));
                         line = reader.readLine();
-                        System.out.println(line);
                         if (line.contains("Course: ")) {
                             courseName = line.substring(line.indexOf(' ') + 1);
                             for (int i = 0; i < currentClass.getCourses().size(); i++) {
@@ -172,7 +197,7 @@ public class QuizMenu {
                                 }
                             }
                             line = reader.readLine();
-                            System.out.println(line);
+
                             if (line.contains("Quiz: ")) {
                                 quizBeingTaken = line.substring(line.indexOf(' ') + 1);
                                 for (int i = 0; i < courseUsed.getQuizzes().size(); i++) {
@@ -181,24 +206,22 @@ public class QuizMenu {
                                     }
                                 }
                                 line = reader.readLine();
-                                System.out.println(line);
 
-                                if (line.contains("Time: ")) {
-                                    time = line.substring(line.indexOf(' ') + 1);
-                                    line = reader.readLine();
-                                    System.out.println(line);
-                                    if (line.contains("Graded: ")) {
-                                        graded = Boolean.parseBoolean(line.substring(line.indexOf(' ') + 1));
+                                    if (line.contains("Time: ")) {
+                                        time = line.substring(line.indexOf(' ') + 1);
                                         line = reader.readLine();
-                                        System.out.println(line);
+                                        if (line.contains("Graded: ")) {
+                                            graded = Boolean.parseBoolean(line.substring(line.indexOf(' ') + 1));
+                                            line = reader.readLine();
 
-                                        if(line.contains("Grade: ")) {
-                                            grade = Double.parseDouble(line.substring(line.indexOf(' ') + 1));
+                                            if(line.contains("Grade: ")) {
+                                                grade = Double.parseDouble(line.substring(line.indexOf(' ') + 1));
+                                            }
+                                            line = reader.readLine();
+
                                         }
-                                        line = reader.readLine();
-                                        System.out.println(line);
                                     }
-                                }
+
 
                             }
                         }
@@ -247,28 +270,29 @@ public class QuizMenu {
         System.out.printf("Name: %s\n", currentClass.getCourses().get(courseSelection - 1)
                 .getQuizzes().get(quizSelection - 1).getName());
 
-        for(int i = 0;i < currentClass.getCourses().get(courseSelection - 1)
-                        .getQuizzes().get(quizSelection - 1).getQuestions().size(); i++) {
+        for (int i = 0; i < currentClass.getCourses().get(courseSelection - 1)
+                .getQuizzes().get(quizSelection - 1).getQuestions().size(); i++) {
             System.out.println(currentClass.getCourses().get(courseSelection - 1)
                     .getQuizzes().get(quizSelection - 1).getQuestions().get(i).getPrompt());
-           for(int f = 0; f < currentClass.getCourses().get(courseSelection - 1)
-                   .getQuizzes().get(quizSelection - 1).getQuestions().get(i).getResponses().size(); f++) {
-               System.out.println(currentClass.getCourses().get(courseSelection - 1)
-                       .getQuizzes().get(quizSelection - 1).getQuestions().get(i).getResponses().get(f));
-           }
+            for (int f = 0; f < currentClass.getCourses().get(courseSelection - 1)
+                    .getQuizzes().get(quizSelection - 1).getQuestions().get(i).getResponses().size(); f++) {
+                System.out.println(currentClass.getCourses().get(courseSelection - 1)
+                        .getQuizzes().get(quizSelection - 1).getQuestions().get(i).getResponses().get(f));
+            }
 
-           System.out.println("What is your response?");
-           String theirResponse = scanner.nextLine();
-           responses.add(theirResponse);
+            System.out.println("What is your response?");
+            String theirResponse = scanner.nextLine();
+            responses.add(theirResponse);
         }
         int ifSubmit = 2;
+        int questionNumber = 0;
         while (ifSubmit == 2) {
             System.out.println("Do you want to Submit? 1. Yes\n2. No");
             ifSubmit = scanner.nextInt();
             scanner.nextLine();
             if (ifSubmit == 2) {
                 System.out.println("Which Question Number do you want to change?");
-                int questionNumber = scanner.nextInt();
+                questionNumber = scanner.nextInt();
                 scanner.nextLine();
                 System.out.println(currentClass.getCourses()
                         .get(courseSelection - 1).getQuizzes().get(quizSelection - 1).
@@ -281,8 +305,8 @@ public class QuizMenu {
 
         return new Submission(user,
                 currentClass.getCourses().get(courseSelection - 1).getQuizzes()
-                        .get(quizSelection - 1),currentClass.getCourses().get(courseSelection - 1),
-                        responses, timestamp.toString(), false, 0);
+                        .get(quizSelection - 1), currentClass.getCourses().get(courseSelection - 1),
+                responses, timestamp.toString(), false, 0);
     }
 
     public static void teacherCreateMenu(User user, Class currentClass, Scanner scanner) {
@@ -317,7 +341,7 @@ public class QuizMenu {
             Course newCourse = new Course(newCourseName, new ArrayList<Quiz>());
             currentClass.addCourse(newCourse);
         } else {
-            //TODO - Submissions stuff
+            gradeSubmissions(currentClass, scanner, readSubmissions(currentClass, scanner));
         }
 
     }
@@ -559,7 +583,7 @@ public class QuizMenu {
                     "2. Create a Course\n3. View Student Submissions");
             try {
                 quizMenuChoice = scanner.nextInt();
-                if (quizMenuChoice != 1 && quizMenuChoice != 2) {
+                if (quizMenuChoice != 1 && quizMenuChoice != 2 && quizMenuChoice != 3) {
                     System.out.println("Please choose an option from the list");
                 }
             } catch (InputMismatchException e) {
@@ -765,5 +789,4 @@ public class QuizMenu {
                                 .get(quizSelection - 1));
     }
 }
-
 
