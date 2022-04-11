@@ -3,113 +3,7 @@ import java.util.ArrayList;
 
 public class CourseInfoHandler {
 
-/*
-    public static void main(String[] args) {
-        User teacherUser = new User("test", "test password", true);
-        User studentUser = new User("test 2", "test password", false);
-
-        ArrayList<String> responses = new ArrayList<>();
-        responses.add("Test");
-        responses.add("Test");
-        responses.add("Test");
-
-        Question question = new Question("Test Question", responses, 0, 5);
-        Question question1 = new Question("Test Question", responses, 0, 5);
-        Question question2 = new Question("Test Question", responses, 0, 5);
-        Question question3 = new Question("Test Question", responses, 0, 5);
-
-        ArrayList<Question> questions = new ArrayList<>();
-        questions.add(question);
-        //questions.add(question1);
-        //questions.add(question2);
-        //questions.add(question3);
-
-        Quiz quiz1 = new Quiz("Test Quiz", questions);
-        //Quiz quiz2 = new Quiz("Test Quiz 2", questions);
-        //Quiz quiz3 = new Quiz("Test Quiz 3", questions);
-
-        ArrayList<Quiz> quizzes = new ArrayList<>();
-        quizzes.add(quiz1);
-        //quizzes.add(quiz2);
-        //quizzes.add(quiz3);
-
-        Course course = new Course("Test Course", teacherUser, quizzes);
-
-        Course course1 = new Course("Test Course 2", studentUser, quizzes);
-
-        //addCourse(course);
-        addCourse(course1);
-        addCourse(course);
-
-        System.out.println(getCourseList());
-
-        System.out.println(getUsersCourses(studentUser));
-        System.out.println(getUsersCourses(teacherUser));
-
-        //readCourseInfo();
-
-        writeCourseInfo();
-
-
-    }
-*/
-
-    private static ArrayList<Course> courseList = new ArrayList<>();
-
-
-    public static ArrayList<Course> getCourseList() {
-        return courseList;
-    }
-
-    public static void addCourse(Course course) {
-        courseList.add(course);
-    }
-
-    public static void setCourseList(ArrayList<Course> list) {
-        courseList = list;
-    }
-
-    public static ArrayList<Course> getUsersCourses(User user) {
-        ArrayList<Course> courses = new ArrayList<Course>();
-
-        for(int i = 0; i < courseList.size(); i++) {
-            if (courseList.get(i).getOwner().equals(user)) {
-                courses.add(courseList.get(i));
-            }
-        }
-
-        return courses;
-    }
-
-    public static void deleteCourse(Course deleteCourse) {
-        for(int i = 0; i < courseList.size(); i++) {
-            if (courseList.get(i).getCourseName().equals(deleteCourse.getCourseName()) &&
-                    courseList.get(i).getOwner().equals(deleteCourse.getOwner())) {
-                courseList.remove(courseList.get(i));
-            }
-        }    }
-
-    public static void editCourseList(Course course, Course editedCourse) {
-        for(int i = 0; i < courseList.size(); i++) {
-            if (courseList.get(i).getCourseName().equals(course.getCourseName()) &&
-                    courseList.get(i).getOwner().equals(course.getOwner())) {
-                courseList.remove(courseList.get(i));
-                courseList.add(i, editedCourse);
-            }
-        }
-    }
-
-    public static boolean checkIfDuplicate(Course course) {
-        for (int i = 0; i < courseList.size(); i++) {
-            if (courseList.get(i).getCourseName().equals(course.getCourseName()) &&
-                    courseList.get(i).getOwner().equals(course.getOwner())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static void writeCourseInfo() {
+    public static void writeCourseInfo(Class totalClass) {
 
         String courseDetails;
         int index = 0;
@@ -119,16 +13,15 @@ public class CourseInfoHandler {
             FileWriter fileWriter = new FileWriter(courseInfoFile);
             PrintWriter printWriter = new PrintWriter(fileWriter);
 
-            for (int in = 0; in < courseList.size(); in++) {
+            for (int in = 0; in < totalClass.getCourses().size(); in++) {
                 courseDetails = "";
-                Course c = courseList.get(in);
+                Course c = totalClass.getCourses().get(in);
                 if (index == 0) {
                     courseDetails += "Course: " + c.getCourseName();
                     index++;
                 } else {
                     courseDetails += "\nCourse: " + c.getCourseName();
                 }
-                    courseDetails += "\nOwner_Username: " + c.getOwner().getUsername();
                 for (Quiz q : c.getQuizzes()) {
                     courseDetails += "\nQuiz_Name: " + q.getName();
                     for (Question question : q.getQuestions()) {
@@ -142,6 +35,7 @@ public class CourseInfoHandler {
                             }
                         }
                     }
+
                     printWriter.print(courseDetails);
                     printWriter.flush();
                 }
@@ -154,11 +48,12 @@ public class CourseInfoHandler {
         }
     }
 
-    public static void readCourseInfo() {
 
+    public static ArrayList<Course> readCourseInfo() {
+        ArrayList<Course> courses = new ArrayList<>();
         String line;
         String courseName;
-        String owner;
+        //String owner;
         String quizName;
         String prompt;
         int weight;
@@ -175,18 +70,14 @@ public class CourseInfoHandler {
 
             weight = 0;
             answer = 0;
-            owner = "";
             line = bfr.readLine();
 
-            while (line != null) {
+            while (line!= null) {
 
                 if(line.contains("Course: ")) {
                     quizList = new ArrayList<Quiz>();
                     courseName = line.substring(line.indexOf(' ') + 1);
-                    line = bfr.readLine();
-                    if(line.contains("Owner_Username: ")) {
-                        owner = line.substring(line.indexOf(' ') + 1);
-                    }
+
                     line = bfr.readLine();
                     while(line.contains("Quiz_Name: ")) {
                         questionList = new ArrayList<Question>();
@@ -223,10 +114,13 @@ public class CourseInfoHandler {
                             break;
                         }
                     }
-                    courseList.add(new Course(courseName,LoggingIn.getUser(owner),quizList));
+                    courses.add(new Course(courseName, quizList));
                     if (line == null) {
                         break;
                     }
+                }
+                if (line.isEmpty()) {
+                    line = bfr.readLine();
                 }
 
             }
@@ -236,6 +130,8 @@ public class CourseInfoHandler {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+
+        return courses;
     }
 
 }
