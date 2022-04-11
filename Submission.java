@@ -10,15 +10,25 @@ public class Submission {
     private boolean graded;
     private Quiz quizBeingTaken;
     Course courseOfQuiz;
+    double assignedGrade;
 
     public Submission(User student, Quiz quizBeingTaken, Course courseOfQuiz,
-                      ArrayList<String> responses, String time, boolean graded) {
+                      ArrayList<String> responses, String time, boolean graded, double assignedGrade) {
         this.student = student;
         this.responses = responses;
         this.time = time;
         this.graded = graded;
         this.quizBeingTaken = quizBeingTaken;
         this.courseOfQuiz = courseOfQuiz;
+        this.assignedGrade = assignedGrade;
+    }
+
+    public double getAssignedGrade() {
+        return assignedGrade;
+    }
+
+    public void setAssignedGrade(double assignedGrade) {
+        this.assignedGrade = assignedGrade;
     }
 
     public Course getCourseOfQuiz() {
@@ -72,16 +82,19 @@ public class Submission {
     public void writeSubmission(Submission submission) {
 
         try {
-            FileWriter fileWriter = new FileWriter("SubmissionDetails.txt");
+            FileWriter fileWriter = new FileWriter("SubmissionDetails.txt", true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             String readableResponses = "";
             for (int i = 0; i < getResponses().size(); i++) {
                 readableResponses += submission.getResponses().get(i) + ",";
             }
-            String submissionDetail = String.format("Student: %s\nResponses: %s\nTime: %s\nGraded: %s\nQuiz: %s",
-                                                    submission.getStudent().getUsername(), readableResponses,
+            String submissionDetail = String.format("Student: %s\nCourse: %s\nQuiz: %s\nResponses: %s\n" +
+                                                    "Time: %s\nGraded: %s\nGrade: %.2f\n",
+                                                    submission.getStudent().getUsername(),
+                                                    submission.getCourseOfQuiz().getCourseName(),
+                                                    submission.getQuizBeingTaken().getName(), readableResponses,
                                                     submission.getTime(), submission.isGraded(),
-                                                    submission.getQuizBeingTaken());
+                                                    submission.getAssignedGrade());
             bufferedWriter.write(submissionDetail);
             bufferedWriter.close();
         } catch (IOException e) {
