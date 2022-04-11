@@ -5,10 +5,11 @@ import java.util.ArrayList;
  * called CourseDetails.txt using the writeCourseInfo() method in the CourseInfoHandler class and then reads using the
  * readCourseInfo() method in the CourseInfoHandler class which reads from CourseDetails.txt and returns an arraylist
  * of Courses and then using if statements and for loops it checks if the original course arraylist to the one after
- * writing and reading to see if it's the same
+ * writing and reading to see if it's the same if successfully it should output:
+ * "Course 1 Test Passed\n Course 2 Test Passed\n" and then finish
  * <p>
  * <p>
- * Purdue University -- CS18000 -- Spring 2022 -- Project 4 -- Course Info Handler
+ * Purdue University -- CS18000 -- Spring 2022 -- Project 4 -- Course Info Handler Tester
  *
  * @author Rishab Koka CS180-L24
  * @version April 11th, 2022
@@ -18,7 +19,7 @@ public class CourseInfoHandlerTester {
 
     public static void main(String[] args) {
 
-
+        //Setting up all the object for the tester
         User teacherUser = new User("test", "test password", true);
         User studentUser = new User("test 2", "test password", false);
         ArrayList<String> responses = new ArrayList<>();
@@ -48,13 +49,15 @@ public class CourseInfoHandlerTester {
         allCourse.addCourse(course);
         allCourse.addCourse(course1);
 
+
+        //The Arraylist that are being compared one is before the reading and writing and one is after
         ArrayList<Course> original = allCourse.getCourses();
 
         CourseInfoHandler.writeCourseInfo(allCourse);
         ArrayList<Course> afterReadAndWriting = CourseInfoHandler.readCourseInfo();
-
         boolean allQuizzesEqual = false;
 
+        //Testing to see if the Arraylist contain the object with the same value
         //Goes through all course
         for (int i = 0; i < afterReadAndWriting.size(); i++) {
             //Read in Course
