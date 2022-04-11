@@ -185,11 +185,21 @@ public class LoggingIn {
             for (int i = 0; i < userDetailFile.size(); i++) {
                 if (userDetailFile.get(i).contains(user.getUsername())) {
                     if (userDetailFile.get(i + 1).contains(user.getPassword())) {
-                        userDetailFile.set(i, "01100100 01100101 01101100 01100101 01110100 01100101 01100100");
-                        userDetailFile.set(i + 1, "01100100 01100101 01101100 01100101 01110100 01100101 01100100");
-                        userDetailFile.set(i + 2, "01100100 01100101 01101100 01100101 01110100 01100101 01100100");
+                        userDetailFile.set(i, "12823120123");
+                        userDetailFile.set(i + 1, "12823120123");
+                        userDetailFile.set(i + 2, "12823120123");
                         worked = true;
                     }
+                }
+            }
+            for (int i = 0; i < userDetailFile.size(); i++) {
+                if (userDetailFile.get(i).contains("12823120123")) {
+                    userDetailFile.remove(i);
+                }
+            }
+            for (int i = 0; i < userDetailFile.size(); i++) {
+                if (userDetailFile.get(i).contains("12823120123")) {
+                    userDetailFile.remove(i);
                 }
             }
             FileWriter writer = new FileWriter("UserDetails.txt");
