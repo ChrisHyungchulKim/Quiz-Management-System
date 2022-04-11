@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class LoggingIn {
 
-    private static ArrayList<User> userList = new ArrayList<>();
+    static ArrayList<User> userList = new ArrayList<>();
 
     public static boolean checkUser(User user) {
         try {
@@ -260,12 +260,14 @@ public class LoggingIn {
         }
     }
 
-    public static void readUserInfo() {
+    public static ArrayList<User> readUserInfo() {
 
         String username;
         String password;
         boolean teacher;
         String line;
+
+        ArrayList<User> users = new ArrayList<>();
 
         try {
 
@@ -288,14 +290,14 @@ public class LoggingIn {
                 } else {
                     teacher = false;
                 }
-                userList.add(new User(username, password, teacher));
+                users.add(new User(username, password, teacher));
                 line = bfr.readLine();
             }
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-
+        return users;
     }
 
 }
