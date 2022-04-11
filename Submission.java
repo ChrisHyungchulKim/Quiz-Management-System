@@ -10,25 +10,30 @@ public class Submission {
     private boolean graded;
     private Quiz quizBeingTaken;
     Course courseOfQuiz;
-    double assignedGrade;
+    ArrayList<String> grades;
 
     public Submission(User student, Quiz quizBeingTaken, Course courseOfQuiz,
-                      ArrayList<String> responses, String time, boolean graded, double assignedGrade) {
+                      ArrayList<String> responses, String time, boolean graded, ArrayList<String> grades) {
         this.student = student;
         this.responses = responses;
         this.time = time;
         this.graded = graded;
         this.quizBeingTaken = quizBeingTaken;
         this.courseOfQuiz = courseOfQuiz;
-        this.assignedGrade = assignedGrade;
+        this.grades = grades;
     }
 
-    public double getAssignedGrade() {
-        return assignedGrade;
+
+    public ArrayList<String> getGrades() {
+        return grades;
     }
 
-    public void setAssignedGrade(double assignedGrade) {
-        this.assignedGrade = assignedGrade;
+    public void setGrades(ArrayList<String> grades) {
+        this.grades = grades;
+    }
+
+    public void addCertainGrade(String grade) {
+        grades.add(grade);
     }
 
     public Course getCourseOfQuiz() {
@@ -79,22 +84,25 @@ public class Submission {
         this.graded = graded;
     }
 
-    public void writeSubmission(Submission submission) {
+    public void writeSubmission(Submission submission, boolean edit) {
 
         try {
-            FileWriter fileWriter = new FileWriter("SubmissionDetails.txt", true);
+            FileWriter fileWriter = new FileWriter("SubmissionDetails.txt", edit);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             String readableResponses = "";
+            String readableGrades = "";
             for (int i = 0; i < getResponses().size(); i++) {
                 readableResponses += submission.getResponses().get(i) + ",";
             }
-            String submissionDetail = String.format("Student: %s\nResponses: %s\nCourse: %s\nQuiz: %s\n" +
-                                                    "Time: %s\nGraded: %s\nGrade: %.2f\n",
+            for (int i = 0; i < getGrades().size(); i++) {
+                readableGrades += submission.getGrades().get(i) + ",";
+            }
+            String submissionDetail = String.format("Student: %s\nResponses: %s\nCourse: %s\nQuiz: %s\n"+
+                                                    "Time: %s\nGraded: %s\nGrades: %s\n",
                                                     submission.getStudent().getUsername(), readableResponses,
                                                     submission.getCourseOfQuiz().getCourseName(),
                                                     submission.getQuizBeingTaken().getName(),
-                                                    submission.getTime(), submission.isGraded(),
-                                                    submission.getAssignedGrade());
+                                                    submission.getTime(), submission.isGraded(), readableGrades);
             bufferedWriter.write(submissionDetail);
             bufferedWriter.close();
         } catch (IOException e) {
