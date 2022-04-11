@@ -9,6 +9,8 @@ public class MainMenu {
     public static final String TEACHER_QUESTION = "Are you a teacher?\n";
     public static final String GENERAL_MENU_TEACHER = "1. Account Settings\n2. Quiz Menu\n3. Quizzes\n4. Quit";
     public static final String GENERAL_MENU_STUDENT = "1. Account Settings\n2. Quizzes\n3. View results\n4. Quit";
+    public static final String ABOUT_EDIT_QUIZ_QUESTION = "1. The Quiz Name\n2. A Question\n3. An Answer\n" +
+                                                            "4. Which Answer is Correct\n5. Go Back\n";
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -17,6 +19,9 @@ public class MainMenu {
         //scanner.nextLine();
 
         User currentUser = null;
+
+        Class currentClass = new Class(CourseInfoHandler.readCourseInfo());
+
 
         while (ifContinue) {
             int accountQuestion = displayWelcome(scanner);
@@ -61,12 +66,12 @@ public class MainMenu {
                     generalMenuChoice = 4;
                 }
             } else if (generalMenuChoice == 2) {
-                quizMenu(currentUser, scanner);
+                quizMenu(currentUser, currentClass, scanner);
             }
         }
     }
 
-    public static void quizMenu(User user, Scanner scanner) {
+    public static void quizMenu(User user, Class currentClass, Scanner scanner) {
         //Scanner scanner = new Scanner(System.in);
 
         if (user.isTeacher()) {
@@ -100,8 +105,130 @@ public class MainMenu {
                 } while (changeQuizChoice != 1 && changeQuizChoice != 2 && changeQuizChoice != 3);
 
                 if (changeQuizChoice == 1) {
-                    //TODO how to determine which quiz to edit
-                    
+                    System.out.println("Which Course is the quiz in?");
+                    int courseCounter = 0;
+                    for(int f = 0; f < currentClass.getCourses().size(); f++) {
+                        System.out.printf("%d. %s\n", courseCounter + 1,
+                                currentClass.getCourses().get(courseCounter).getCourseName());
+                        courseCounter++;
+                    }
+                    int courseSelection = scanner.nextInt();
+                    System.out.println("Which quiz do you want to edit?");
+                    int quizCounter = 0;
+                    for (int f = 0; f < currentClass.getCourses().get(courseSelection - 1).getQuizzes().size(); f++) {
+                        System.out.printf("%d. %s\n", quizCounter + 1,
+                                currentClass.getCourses().get(courseSelection - 1)
+                                        .getQuizzes().get(quizCounter).getName());
+                        quizCounter++;
+                    }
+                    int quizSelection = scanner.nextInt();
+                    boolean continueEditing = true;
+                    while (continueEditing) {
+                        System.out.println("What do you want to edit about the quiz?");
+                        System.out.print(ABOUT_EDIT_QUIZ_QUESTION);
+                        int editQuizSelection = scanner.nextInt();
+                        scanner.nextLine();
+                        switch (editQuizSelection) {
+                            case 1: {
+                                System.out.println("What is the new name?");
+                                String newName = scanner.nextLine();
+                                currentClass.getCourses().get(courseSelection - 1)
+                                        .getQuizzes().get(quizSelection - 1).setName(newName);
+                                break;
+                            }
+                            case 2: {
+                                System.out.println("Which Question do you want to Edit?");
+                                int questionCounter = 0;
+                                for (int f = 0; f < currentClass.getCourses().get(courseSelection - 1)
+                                        .getQuizzes().get(quizSelection - 1).getQuestions().size(); f++) {
+                                    System.out.printf("%d. %s\n", questionCounter + 1,
+                                            currentClass.getCourses().get(courseSelection - 1)
+                                                    .getQuizzes().get(quizSelection - 1)
+                                                    .getQuestions().get(questionCounter).getPrompt());
+                                    questionCounter++;
+                                }
+                                int questionSelection = scanner.nextInt();
+                                scanner.nextLine();
+                                System.out.println("What do you want the new Question to be?");
+                                String newQuestion = scanner.nextLine();
+                                currentClass.getCourses().get(courseSelection - 1).getQuizzes().get(questionSelection - 1)
+                                        .getQuestions().get(questionSelection - 1).setPrompt(newQuestion);
+                                break;
+                            }
+                            case 3: {
+                                System.out.println("Which Question do you want to Edit?");
+                                int questionCounter = 0;
+                                for (int f = 0; f < currentClass.getCourses().get(courseSelection - 1)
+                                        .getQuizzes().get(quizSelection - 1).getQuestions().size(); f++) {
+                                    System.out.printf("%d. %s\n", questionCounter + 1,
+                                            currentClass.getCourses().get(courseSelection - 1)
+                                                    .getQuizzes().get(quizSelection - 1)
+                                                    .getQuestions().get(questionCounter).getPrompt());
+                                    questionCounter++;
+                                }
+                                int questionSelection = scanner.nextInt();
+                                System.out.println("Which Response do you want to Edit?");
+                                int responseCounter = 0;
+                                for (int f = 0; f < currentClass.getCourses().get(courseSelection - 1)
+                                        .getQuizzes().get(quizSelection - 1)
+                                        .getQuestions().get(questionSelection - 1).getResponses().size(); f++) {
+                                    System.out.printf("%d. %s\n", responseCounter + 1,
+                                            currentClass.getCourses().get(courseSelection - 1)
+                                                    .getQuizzes().get(quizSelection - 1)
+                                                    .getQuestions().get(questionSelection - 1).getResponses()
+                                                    .get(f));
+                                    responseCounter++;
+
+                                }
+                                int responseSelection = scanner.nextInt();
+                                scanner.nextLine();
+                                System.out.println("What do you want to change it to?");
+                                String newResponse = scanner.nextLine();
+                                currentClass.getCourses().get(courseSelection - 1)
+                                        .getQuizzes().get(quizSelection - 1)
+                                        .getQuestions().get(questionSelection - 1).getResponses()
+                                        .set(responseSelection - 1, newResponse);
+                                break;
+                            }
+                            case 4: {
+                                System.out.println("Which Question do you want to Edit?");
+                                int questionCounter = 0;
+                                for (int f = 0; f < currentClass.getCourses().get(courseSelection - 1)
+                                        .getQuizzes().get(quizSelection - 1).getQuestions().size(); f++) {
+                                    System.out.printf("%d. %s\n", questionCounter + 1,
+                                            currentClass.getCourses().get(courseSelection - 1)
+                                                    .getQuizzes().get(quizSelection - 1)
+                                                    .getQuestions().get(questionCounter).getPrompt());
+                                }
+                                int questionSelection = scanner.nextInt();
+                                scanner.nextLine();
+                                System.out.println("Which Response do you want to be the Answer?");
+                                int responseCounter = 0;
+                                for (int f = 0; f < currentClass.getCourses().get(courseSelection - 1)
+                                        .getQuizzes().get(quizSelection - 1)
+                                        .getQuestions().get(questionSelection - 1).getResponses().size(); f++) {
+                                    System.out.printf("%d. %s\n", questionCounter + 1,
+                                            currentClass.getCourses().get(courseSelection - 1)
+                                                    .getQuizzes().get(quizSelection - 1)
+                                                    .getQuestions().get(questionCounter).getResponses()
+                                                    .get(f));
+                                }
+                                int answerSelection = scanner.nextInt();
+                                scanner.nextLine();
+                                currentClass.getCourses().get(courseSelection - 1)
+                                        .getQuizzes().get(quizSelection - 1)
+                                        .getQuestions().get(questionSelection - 1).setAnswer(answerSelection - 1);
+                                break;
+                            }
+                            case 5 : {
+                                continueEditing = false;
+                                break;
+                            }
+                        }
+                    }
+
+
+
                 } else if (changeQuizChoice == 2) {
                     //giving the user a choice to upload a quiz or create it manually
                     int choice = 0;
@@ -113,35 +240,70 @@ public class MainMenu {
                             System.out.println("Please enter a number");
                         }
                         scanner.nextLine();
+                        System.out.println("Which Course is the quiz in?");
+                        int courseCounter = 0;
+                        for(int f = 0; f < currentClass.getCourses().size(); f++) {
+                            System.out.printf("%d. %s\n", courseCounter + 1,
+                                    currentClass.getCourses().get(courseCounter).getCourseName());
+                            courseCounter++;
+                        }
+                        int courseSelection = scanner.nextInt();
                         if (choice == 1) {
                             //Manually creating a quiz
-                            manuallyCreateQuiz(scanner);
+
+                            Quiz quiz = manuallyCreateQuiz(scanner);
+                            currentClass.getCourses().get(courseSelection - 1).addQuiz(quiz);
                         } else if (choice == 2) {
+                            System.out.print("Please have it in the following format:\n" +
+                                    "Quiz_Name: (insert quiz name)\n" +
+                                    "Question: (insert question)\n" +
+                                    "Weight: (insert weight)\n" +
+                                    "Correct_Answer: (insert Correct Answer)\n" +
+                                    "Answer: (insert Wrong answer)\n" +
+                                    "Answer: (insert Wrong answer)\n");
                             System.out.println("Please enter a file name");
                             String fileName = scanner.nextLine();
                             Quiz q = new Quiz(fileName);
-                        }
-                    } while (choice != 1 || choice != 2);
+                            currentClass.getCourses().get(courseSelection - 1).addQuiz(q);
 
-                } else if (changeQuizChoice == 3) {
-                    //TODO there is no delete quiz method in quiz class
-                    System.out.println("Enter the name of the quiz you would like to delete: ");
-                    String name = scanner.nextLine();
-                    if (Course.removeQuiz(name)) {
-                        System.out.println("Quiz removed");
-                    } else {
-                        System.out.println("Could not find the quiz");
+                        }
+                    } while (choice != 1 && choice != 2);
+
+                } else {
+                    System.out.println("Which Course is the quiz in?");
+                    int courseCounter = 0;
+                    for(int f = 0; f < currentClass.getCourses().size(); f++) {
+                        System.out.printf("%d. %s\n", courseCounter + 1,
+                                currentClass.getCourses().get(courseCounter).getCourseName());
+                        courseCounter++;
                     }
+                    int courseSelection = scanner.nextInt();
+
+                    System.out.println("Which quiz do you want to delete?");
+                    int quizCounter = 0;
+                    for (int f = 0; f < currentClass.getCourses().get(courseSelection - 1).getQuizzes().size(); f++) {
+                        System.out.printf("%d. %s\n", quizCounter + 1,
+                                currentClass.getCourses().get(courseSelection - 1)
+                                        .getQuizzes().get(quizCounter).getName());
+                        quizCounter++;
+                    }
+                    int quizSelection = scanner.nextInt();
+                    scanner.nextLine();
+                    currentClass.getCourses().get(courseSelection - 1)
+                            .removeQuiz(currentClass.getCourses().get(courseSelection - 1),
+                                    currentClass.getCourses().get(courseSelection - 1).getQuizzes()
+                                            .get(quizSelection - 1));
                 }
             } else if (quizMenuChoice == 2) {
                 //TODO view student submissions
-                if (Quiz.getAllSubmissions() == null) {
+                if (true) {
                     System.out.println("No submissions");
                 } else {
-                    System.out.println(Quiz.getAllSubmissions());
+                    //System.out.println(Quiz.getAllSubmissions());
                 }
             }
         }
+        CourseInfoHandler.writeCourseInfo(currentClass);
     }
 
     public static boolean accountSettingsDialog(User user, Scanner scanner) {
@@ -224,7 +386,7 @@ public class MainMenu {
             } catch (InputMismatchException e) {
                 System.out.println("Please enter either 1 or 2.");
             }
-           scanner.nextLine();
+            scanner.nextLine();
         } while (accountQuestion != 1 && accountQuestion != 2);
 
         return accountQuestion;
@@ -284,7 +446,7 @@ public class MainMenu {
         return user;
     }
 
-    public static void manuallyCreateQuiz(Scanner scanner) {
+    public static Quiz manuallyCreateQuiz(Scanner scanner) {
         System.out.println("Enter name of the quiz:");
         String name = scanner.nextLine();
         ArrayList<Question> questions = new ArrayList<>();
@@ -295,12 +457,9 @@ public class MainMenu {
                 numberOfQuestions = scanner.nextInt();
                 if (numberOfQuestions < 1) {
                     System.out.println("Enter a number larger than 0");
-                    continue;
-                } else {
-                    break;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Enter a number please");
+                System.out.println("Enter a number please.");
             }
             scanner.nextLine();
         } while (numberOfQuestions < 1);
@@ -310,17 +469,14 @@ public class MainMenu {
             String prompt = scanner.nextLine();
             int numberOfResponses = 0;
             do {
-                System.out.println("How many responses are there");
+                System.out.println("How many responses are there: ");
                 try {
                     numberOfResponses = scanner.nextInt();
                     if (numberOfResponses < 1) {
-                        System.out.println("Enter a number larger than 0");
-                        continue;
-                    } else {
-                        break;
+                        System.out.println("Enter a number larger than 0.");
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println("Enter a number please");
+                    System.out.println("Enter a number please.");
                 }
                 scanner.nextLine();
             } while (numberOfResponses < 1);
@@ -336,12 +492,10 @@ public class MainMenu {
                 try {
                     answer = scanner.nextInt();
                     if (answer > numberOfResponses || answer < 1) {
-                        System.out.println("This answer is not on the list");
-                    } else {
-                        break;
+                        System.out.println("This answer is not on the list.");
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println("Please enter a number");
+                    System.out.println("Please enter a number.");
                 }
                 scanner.nextLine();
             } while (answer > numberOfResponses || answer < 1);
@@ -352,8 +506,6 @@ public class MainMenu {
                     weight = scanner.nextInt();
                     if (weight < 1) {
                         System.out.println("Weight cannot be lower than 1");
-                    } else {
-                        break;
                     }
                 } catch (InputMismatchException e) {
                     System.out.println("Please enter a number");
@@ -363,6 +515,7 @@ public class MainMenu {
             questions.add(q);
         }
         //TODO what are submissions? and what to do with the created quiz object
-        Quiz quiz = new Quiz(name, questions, null);
+        return new Quiz(name, questions);
     }
 }
+
