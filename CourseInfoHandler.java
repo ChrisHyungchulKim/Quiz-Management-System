@@ -17,6 +17,12 @@ import java.util.ArrayList;
 
 public class CourseInfoHandler {
 
+    /**
+     * Write the give Class object's course and their quizs'to the CourseDetail.txt text file in a way that
+     * readCourseInfo can read it
+     *
+     * @param totalClass - Is the class you are writing to the text file
+     */
     public static void writeCourseInfo(Class totalClass) {
 
         String courseDetails;
@@ -63,6 +69,13 @@ public class CourseInfoHandler {
     }
 
 
+    /**
+     * This method reads in the data from the CourseDetails.txt file and creates and instantiates all the course, quiz, and question
+     * objects.
+     *
+     * @return ArrayList<Course> - This is an array of the state of the course arraylist before the program was turn
+     * off based on data from CourseDetails.txt
+     */
     public static ArrayList<Course> readCourseInfo() {
         ArrayList<Course> courses = new ArrayList<>();
         String line;
