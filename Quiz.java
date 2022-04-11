@@ -4,18 +4,17 @@ import java.sql.Timestamp;
 
 public class Quiz {
     // Three Quiz fields, name of quiz, arraylist of questions, and arraylist of submissions
-    private static String name;
-    private static ArrayList<Question> questions;
-    private static ArrayList<String> submissions;
+    private String name;
+    private ArrayList<Question> questions;
+    private ArrayList<String> submissions;
 
     // first constructor creates quiz object from existing name and arraylist
-    public Quiz(String name, ArrayList<Question> questions, ArrayList<String> submissions) {
+    public Quiz(String name, ArrayList<Question> questions) {
         this.name = name;
         this.questions = questions;
-        this.submissions = submissions;
+
     }
 
-    // second constructor reads in quiz details from file to create object
     public Quiz(String fileName) {
         String name = null;
         ArrayList<Question> questions = new ArrayList<>();
@@ -54,34 +53,34 @@ public class Quiz {
         this.submissions = new ArrayList<String>();
     }
 
+
     // accessors and mutators
-    public static String getName() {
+    public String getName() {
         return name;
     }
 
-    public static ArrayList<Question> getQuestions() {
+    public ArrayList<Question> getQuestions() {
         return questions;
     }
 
-    public static ArrayList<String> getAllSubmissions() {
+    public ArrayList<String> getAllSubmissions() {
         return submissions;
     }
 
-    public static void setName(String quizName) {
+    public void setName(String quizName) {
         name = quizName;
     }
 
-    public static void setQuestions(ArrayList<Question> quizQuestions) {
+    public void setQuestions(ArrayList<Question> quizQuestions) {
         questions = quizQuestions;
     }
 
-    public static void setSubmissions(ArrayList<String> quizSubmissions) {
+    public void setSubmissions(ArrayList<String> quizSubmissions) {
         submissions = quizSubmissions;
     }
 
-    // no editQuiz method, can just add and remove questions
-    // questions can be added at index or at end of list (if index integer < 0)
-    public static void addQuestion(Question question, int index) {
+
+    public void addQuestion(Question question, int index) {
         if (index >= 0) {
             questions.add(index, question);
         } else {
@@ -90,7 +89,7 @@ public class Quiz {
     }
 
     // remove method calls question equals method to remove specific question objects from list
-    public static void removeQuestion(Question question) {
+    public void removeQuestion(Question question) {
         for (int i = 0; i < questions.size(); i++) {
             if (questions.get(i).equals(question)) {
                 questions.remove(i);
@@ -99,7 +98,7 @@ public class Quiz {
     }
 
     // calculates max score of quiz
-    public static int calcMaxScore() {
+    public int calcMaxScore() {
         int maxScore = 0;
         int inScore;
         for (int m = 0; m < questions.size(); m++) {
@@ -110,7 +109,7 @@ public class Quiz {
     }
 
     // creates submission trace string that includes all results of quiz taken
-    public static void addSubmission(String userName, ArrayList<Question> correctAnswers) {
+    public void addSubmission(String userName, ArrayList<Question> correctAnswers) {
         String format = "Submission{User = %s";
         ArrayList<Question> results = new ArrayList<>();
         int pointsEarned = 0;
@@ -144,7 +143,7 @@ public class Quiz {
     }
 
     // retrieves submissions pertaining to specific student's username
-    public static ArrayList<String> getStudentSubmissions(String userName) {
+    public ArrayList<String> getStudentSubmissions(String userName) {
         ArrayList<String> userSubs = new ArrayList<>();
         for (int i = 0; i < submissions.size(); i++) {
             String user = "User = " + userName;
@@ -156,7 +155,7 @@ public class Quiz {
     }
 
     // shuffles order of quiz questions
-    public static void randomize() {
+    public void randomize() {
         Collections.shuffle(questions);
     }
 
@@ -182,56 +181,6 @@ public class Quiz {
         }
         format = format.substring(0, format.length() - 2) + "}";
         return String.format(format, this.name);
-    }
-    
-    /*
-    
-    Testing readQuizAnswers
-    
-    public static void main(String[] args) {
-        Quiz q = new Quiz(null,null,null);
-
-        ArrayList<String> test =  q.readQuizAnswers("CourseDetails.txt");
-
-        for (String s : test) {
-            System.out.println(s+ "\n");
-        }
-
-    } 
-    
-     */
-
-
-    public ArrayList<String> readQuizAnswers(String fileName) {
-
-        ArrayList<String> answers = new ArrayList<>();
-        String line;
-        String answer;
-
-        try {
-
-            File courseInfoFile = new File(fileName);
-            FileReader fileReader = new FileReader(courseInfoFile);
-            BufferedReader bfr = new BufferedReader(fileReader);
-            line = bfr.readLine();
-
-            while(line != null) {
-                answer = "";
-
-                answer += line;
-                line = bfr.readLine();
-                answer += "\n" + line;
-                answers.add(answer);
-
-                line = bfr.readLine();
-            }
-
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-
-        return answers;
-
     }
 
 }
