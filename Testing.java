@@ -152,6 +152,33 @@ public class Testing {
         if (allGood) {
             System.out.println("All test cases passed!");
         }
+        
+    //Course class
+        String courseName = "";
+        String Quiz = "";
+        User owner = new User("Teacher 1", "1122", true) ;
+        ArrayList<Quiz> quiz = new ArrayList<>();
+        ArrayList<Course> courses = new ArrayList<>();
+        quiz.add(0, new Quiz("Quiz 2", questions));
+
+
+        Course course = new Course(courseName, quiz);
+
+        course.setCourseName("Math");
+        System.out.println(course.getCourseName());
+
+        quiz.set(0, new Quiz("Quiz 1", questions));
+        course.setQuizzes(quiz);
+        System.out.println(course.getQuizzes());
+
+        course.setOwner(owner);
+        System.out.println(course.getOwner());
+
+        course.addQuiz(new Quiz("Quiz 1", questions));
+        System.out.println(courses);
+
+        course.removeQuiz(new Course("Math", quiz), new Quiz("Math"));
+        System.out.println(courses);
     
     
     }
