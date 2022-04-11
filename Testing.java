@@ -231,5 +231,152 @@ public class Testing {
 
         course.removeQuiz(course, course.getQuizzes().get(0));
         System.out.println(courses);
+        
+         //---------------------------------
+        // Tests methods in question class
+        String prompt = "question prompt";
+        ArrayList<String> responses = new ArrayList<>();
+        for (int i = 1; i < 5; i++) {
+            responses.add("response " + i);
+        }
+        int answer = 1;
+        int weight = 10;
+
+        // Creates question object for testing
+        Question question = new Question(prompt, responses, answer, weight);
+
+        // Tests accessor methods
+        String accessedPrompt = question.getPrompt();
+        ArrayList<String> accessedResponses = question.getResponses();
+        int accessedAnswer = question.getAnswer();
+        int accessedWeight = question.getWeight();
+
+        if (!(prompt.equals(accessedPrompt))) {
+            System.out.println("Error! getPrompt() method output incorrect!");
+        }
+        if (responses != accessedResponses) {
+            System.out.println("Error! getResponses() method output incorrect!");
+        }
+        if (answer != accessedAnswer) {
+            System.out.println("Error! getAnswer() method output incorrect!");
+        }
+        if (weight != accessedWeight) {
+            System.out.println("Error! getWeight() method output incorrect!");
+        }
+
+        // Tests mutator methods
+        String newPrompt = "new prompt";
+        ArrayList<String> newResponses = new ArrayList<>();
+        for (int i = 1; i < 5; i++) {
+            newResponses.add("new response " + i);
+        }
+        int newAnswer = 2;
+        int newWeight = 20;
+
+        question.setPrompt(newPrompt);
+        question.setResponses(newResponses);
+        question.setAnswer(newAnswer);
+        question.setWeight(newWeight);
+
+        accessedPrompt = question.getPrompt();
+        accessedResponses = question.getResponses();
+        accessedAnswer = question.getAnswer();
+        accessedWeight = question.getWeight();
+
+        if (!(newPrompt.equals(accessedPrompt))) {
+            System.out.println("Error! setPrompt() method output incorrect!");
+        }
+        if (newResponses != accessedResponses) {
+            System.out.println("Error! setResponses() method output incorrect!");
+        }
+        if (newAnswer != accessedAnswer) {
+            System.out.println("Error! setAnswer() method output incorrect!");
+        }
+        if (newWeight != accessedWeight) {
+            System.out.println("Error! setWeight() method output incorrect!");
+        }
+
+        // Creates new question objects to test equals method
+        // First object should be equal while third should not
+        Question questionA = new Question(question.getPrompt(), question.getResponses(), question.getAnswer(), question.getWeight());
+        boolean equal = question.equals(questionA);
+        if (!equal) {
+            System.out.println("Error! equals() method output incorrect!");
+        }
+
+        // Tests toString method
+        question.setPrompt(prompt);
+        question.setResponses(responses);
+        question.setAnswer(answer);
+        question.setWeight(weight);
+        String expected = "Question{prompt = question prompt, responses = [response 1, response 2, " +
+                "response 3, response 4], answer = response 2, weight = 10}";
+        String result = question.toString();
+        if (!(expected.equals(result))) {
+            System.out.println("Error! toString() method output incorrect!");
+        }
+
+
+
+        // ------------------------------------------
+        // Tests methods in Quiz class as well
+        String name = "Quiz name";
+        ArrayList<Question> questions = new ArrayList<>();
+
+        // formats question object and adds to quiz
+        String prompt1 = "question prompt";
+        ArrayList<String> responses1 = new ArrayList<>();
+        for (int i = 1; i < 5; i++) {
+            responses1.add("response " + i);
+        }
+        int answer1 = 1;
+        int weight1 = 10;
+        Question question1 = new Question(prompt1, responses1, answer1, weight1);
+
+        questions.add(question1);
+        questions.add(new Question(newPrompt, newResponses, newAnswer, newWeight));
+
+        // Creates quiz object for testing
+        Quiz quiz = new Quiz(name, questions);
+        String userName = "username";
+
+        // Uses addSubmission method, assumes user got all questions correct by passing in complete questions list
+        // Tests method in conjuncture with getAllSubmissions() method
+        quiz.addSubmission(userName, questions);
+
+        // Tests accessor methods and getStudentSubmission(userName) method
+        String accessedName = quiz.getName();
+        ArrayList<Question> accessedQuestions = quiz.getQuestions();
+        ArrayList<String> accessedSubmissions = quiz.getAllSubmissions();
+        ArrayList<String> studentSubmissions = quiz.getStudentSubmissions(userName);
+
+        if (!(name.equals(accessedName))) {
+            System.out.println("Error! getName() method output incorrect!");
+        }
+        if (questions != accessedQuestions) {
+            System.out.println("Error! getQuestions() method output incorrect!");
+        }
+        if (accessedSubmissions.size() != 1) {
+            System.out.println("Error! getAllSubmission() & addSubmissions() methods output incorrect!");
+        }
+        if (studentSubmissions.size() != 1) {
+            System.out.println("Error! getStudentSubmissions() method output incorrect!");
+        }
+
+        // Creates new question object
+        String prompt2 = "prompt2";
+        ArrayList<String> responses2 = new ArrayList<>();
+        for (int i = 1; i < 5; i++) {
+            responses2.add("response " + i);
+        }
+        int answer2 = 1;
+        int weight2 = 10;
+        Question question2 = new Question(prompt2, responses2, answer2, weight2);
+
+        // Tests addQuestion method
+        quiz.addQuestion(question2, -1);
+        if (quiz.getQuestions().size() != 3) {
+            System.out.println("Error! addQuestion() method output incorrect!");
+        }
     }
 }
