@@ -2,7 +2,7 @@ Instructions:
 -> Pretty Simple, just download the files, compile, and run the main method in the MainMenu.java method
 
 Who submitted what:
--> (insert whomever inserted) submitted report on Brightspace
+-> (Hyungchul Kim) submitted report on Brightspace
 -> (insert whomever inserted) submitted Code on Vocareum
 
 
