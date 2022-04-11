@@ -78,7 +78,7 @@ public class Testing {
        if (!user.isTeacher() == true) {
            System.out.println("Not the expected output");
        }
-   }
+  
     
     //for Submission class
 
@@ -129,7 +129,7 @@ public class Testing {
 
 
 }
-
+}
 
 
 
