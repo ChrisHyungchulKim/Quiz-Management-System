@@ -152,7 +152,59 @@ public class Testing {
         if (allGood) {
             System.out.println("All test cases passed!");
         }
+        
+        
+        //for Submission class
+        User student = null;
+        ArrayList<String> responses = new ArrayList<>();
+        ArrayList<Quiz> quizzes = new ArrayList<>();
+        ArrayList<Question> questions = new ArrayList<>();
+        String time = "";
+        boolean graded = true;
+        Quiz quizBeingTaken = new Quiz("Quiz 1", questions);
+        Course courseOfQuiz = new Course("Bio" , quizzes);
+        ArrayList<String> grades = new ArrayList<>();
 
+
+        Submission submission = new Submission(student, quizBeingTaken, courseOfQuiz, responses, time, graded, grades);
+
+        grades.add("30");
+        grades.add("40");
+        grades.add("50");
+        responses.add("answer1");
+
+        grades.set(0, "100");
+        submission.setGrades(grades);
+        submission.getGrades();
+        System.out.println(submission.getGrades());
+
+        submission.setCourseOfQuiz(new Course("Math", quizzes));
+        submission.getCourseOfQuiz();
+        System.out.println(submission.getCourseOfQuiz());
+
+        submission.setQuizBeingTaken(new Quiz("Quiz 2", questions));
+        submission.getQuizBeingTaken();
+        System.out.println(quizBeingTaken.getName());
+
+        submission.setStudent(new User("Teacher", "1122", true));
+        submission.getStudent();
+        System.out.println(submission.getStudent());
+
+        responses.set(0, "answers");
+        submission.setResponses(responses);
+        submission.getResponses();
+        System.out.println(submission.getResponses());
+
+        submission.setTime("10");
+        submission.getTime();
+        System.out.println(submission.getTime());
+
+        submission.setGraded(false);
+        submission.isGraded();
+        System.out.println(submission.isGraded());
+
+
+         //Course class
         String courseName = "";
         String Quiz = "";
         User owner = new User("Teacher 1", "1122", true) ;
@@ -169,7 +221,7 @@ public class Testing {
 
         quiz.set(0, new Quiz("Quiz 1", question));
         course.setQuizzes(quiz);
-        System.out.println(course.getQuizzes());
+        System.out.println(course.getQuizzes().get(0).getName());
 
         course.setOwner(owner);
         System.out.println(course.getOwner());
@@ -177,9 +229,7 @@ public class Testing {
         course.addQuiz(new Quiz("Quiz 1", question));
         System.out.println(courses);
 
-        course.removeQuiz(new Course("Math", quiz), new Quiz("Math"));
+        course.removeQuiz(course, course.getQuizzes().get(0));
         System.out.println(courses);
-
-
     }
 }
