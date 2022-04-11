@@ -5,7 +5,13 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
+
 /**
+ * The LoggingIn class handles method for the login process such as checking if the user the is trying to
+ * sign in is a user in the system and checking if a user already exists when creating a new user.
+ * This class has one field that is an Arraylist<User> which stores all the users. There are also methods
+ * that handle writing and reading the user information to a text file.
+ * <p>
  * Project 4 LoggingIn.java class
  *
  * @author Corey Tuinstra
@@ -44,6 +50,7 @@ public class LoggingIn {
             return false;
         }
     }
+
     public static boolean editPassword(User user, String oldPassword, String newPassword) {
         try {
             boolean worked = false;
@@ -67,7 +74,7 @@ public class LoggingIn {
                             if (checkPassword.equals(oldPassword)) {
                                 editUser[f] = " " + newPassword;
                                 StringBuilder formatEditUser = new StringBuilder();
-                                for(int a = 0; a < editUser.length; a++) {
+                                for (int a = 0; a < editUser.length; a++) {
                                     formatEditUser.append(editUser[a]);
                                 }
                                 userDetailFile.set(i + 1, formatEditUser.toString());
@@ -77,12 +84,12 @@ public class LoggingIn {
                 }
             }
             FileWriter writer = new FileWriter("UserDetails.txt");
-            for(int i = 0; i < userDetailFile.size(); i++) {
+            for (int i = 0; i < userDetailFile.size(); i++) {
                 writer.write(userDetailFile.get(i) + "\n");
             }
 
             //Add by Rishab
-            for(int i = 0; i < userList.size(); i++) {
+            for (int i = 0; i < userList.size(); i++) {
                 if (user.equals(userList.get(i))) {
                     userList.get(i).setPassword(newPassword);
                 }
@@ -119,7 +126,7 @@ public class LoggingIn {
                         }
                     }
                     StringBuilder formatEditUser = new StringBuilder();
-                    for(int a = 0; a < editUser.length; a++) {
+                    for (int a = 0; a < editUser.length; a++) {
                         formatEditUser.append(editUser[a]);
                     }
                     userDetailFile.set(i, formatEditUser.toString());
@@ -128,12 +135,12 @@ public class LoggingIn {
             }
 
             FileWriter writer = new FileWriter("UserDetails.txt");
-            for(int i = 0; i < userDetailFile.size(); i++) {
+            for (int i = 0; i < userDetailFile.size(); i++) {
                 writer.write(userDetailFile.get(i) + "\n");
             }
 
             //Add by Rishab
-            for(int i = 0; i < userList.size(); i++) {
+            for (int i = 0; i < userList.size(); i++) {
                 if (user.equals(userList.get(i))) {
                     userList.get(i).setUsername(newUsername);
                 }
@@ -173,7 +180,7 @@ public class LoggingIn {
         }
     }
 
-    public static boolean deleteAccount(User user)  {
+    public static boolean deleteAccount(User user) {
         try {
             boolean worked = false;
 
@@ -208,13 +215,13 @@ public class LoggingIn {
                 }
             }
             FileWriter writer = new FileWriter("UserDetails.txt");
-            for(int i = 0; i < userDetailFile.size(); i++) {
+            for (int i = 0; i < userDetailFile.size(); i++) {
                 writer.write(userDetailFile.get(i) + "\n");
             }
 
             //Add By Rishab
             for (User u : userList) {
-                if(user.equals(u)) {
+                if (user.equals(u)) {
                     userList.remove(u);
                 }
             }
@@ -250,7 +257,7 @@ public class LoggingIn {
 
     public static User getUser(String username) {
         for (User u : userList) {
-            if(username.equals(u.getUsername())) {
+            if (username.equals(u.getUsername())) {
                 return u;
             }
         }
@@ -259,7 +266,7 @@ public class LoggingIn {
 
     public static void removeUser(String username) {
         for (User u : userList) {
-            if(username.equals(u.getUsername())) {
+            if (username.equals(u.getUsername())) {
                 userList.remove(u);
             }
         }
@@ -305,4 +312,3 @@ public class LoggingIn {
         return users;
     }
 
-}
