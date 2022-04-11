@@ -1,5 +1,10 @@
 import java.util.ArrayList;
-
+/**
+ * Project 4
+ *
+ * @author Corey Tuinstra
+ * @version April 11, 2022
+ */
 public class Course {
     private String courseName;
     private User owner;
