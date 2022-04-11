@@ -1,14 +1,29 @@
 import java.util.*;
 
+/**
+ * Project 4 -- Question.java class
+ * 
+ * This is an object to hold questions and their information in. 
+ * The Question class includes several methods that allow users to 
+ * interact with question objects however they please. For instance, 
+ * it allows teachers to edit specific question attributes like point 
+ * value and to randomize answer choices if desired.
+ *
+ * @author Sean Nowak, lab sec L24
+ *
+ * @version April 11, 2022
+ *
+ */
+
 public class Question {
-    // Four question fields: question prompt, arraylist of answer choices
+    // Four question fields: question prompt, arraylist of answer choices,
     // integer indicating whih choice is correct, and point value/weight
     private static String prompt;
     private static ArrayList<String> responses;
     private static int answer;
     private static int weight;
 
-    // Single constructor
+    // Single constructor to create question objects
     public Question(String prompt, ArrayList<String> responses, int answer, int weight) {
         this.prompt = prompt;
         this.responses = responses;
@@ -16,40 +31,47 @@ public class Question {
         this.weight = weight;
     }
 
-    // accessors and mutators
+    // allows user to access question prompt
     public String getPrompt() {
         return prompt;
     }
 
+    // allows user to access arraylist of question answer choices
     public ArrayList<String> getResponses() {
         return responses;
     }
 
+    // allows user to access answer index
     public int getAnswer() {
         return answer;
     }
 
+    // allows user to access question weight/point value
     public int getWeight() {
         return weight;
     }
 
+    // allows user to change question prompt
     public void setPrompt(String qPrompt) {
         prompt = qPrompt;
     }
 
+    // allows user to change question responses
     public void setResponses(ArrayList<String> qResponses) {
         responses = qResponses;
     }
 
+    // allows user to change question answer index
     public void setAnswer(int qAnswer) {
         answer = qAnswer;
     }
 
+    // allows user to change question weight/point value
     public void setWeight(int qWeight) {
         weight = qWeight;
     }
 
-    // randomizes order of answer choices and ensures index changes with it
+    // randomizes order of answer choices and ensures answer index changes with it
     public void randomize() {
         String correctResponse = responses.get(answer);
         Collections.shuffle(responses);
@@ -73,7 +95,7 @@ public class Question {
         return equal;
     }
 
-    // toString allows question to be printed all at once if anyone wants to see it
+    // toString allows question to be printed all at once if users want to view it
     public String toString() {
         String format = "Question{prompt = %s, responses = [";
         for (int i = 0; i < responses.size(); i++) {
