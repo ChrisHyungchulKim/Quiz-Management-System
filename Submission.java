@@ -2,8 +2,11 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
 /**
  * Project 4 - Submission.java Class
+ * <p>
+ * This class handles the submission to of a certain quiz object using
  *
  * @author Corey Tuinstra
  * @version March 29, 2022
@@ -102,12 +105,12 @@ public class Submission {
             for (int i = 0; i < getGrades().size(); i++) {
                 readableGrades += submission.getGrades().get(i) + ",";
             }
-            String submissionDetail = String.format("Student: %s\nResponses: %s\nCourse: %s\nQuiz: %s\n"+
-                                                    "Time: %s\nGraded: %s\nGrades: %s\n",
-                                                    submission.getStudent().getUsername(), readableResponses,
-                                                    submission.getCourseOfQuiz().getCourseName(),
-                                                    submission.getQuizBeingTaken().getName(),
-                                                    submission.getTime(), submission.isGraded(), readableGrades);
+            String submissionDetail = String.format("Student: %s\nResponses: %s\nCourse: %s\nQuiz: %s\n" +
+                            "Time: %s\nGraded: %s\nGrades: %s\n",
+                    submission.getStudent().getUsername(), readableResponses,
+                    submission.getCourseOfQuiz().getCourseName(),
+                    submission.getQuizBeingTaken().getName(),
+                    submission.getTime(), submission.isGraded(), readableGrades);
             bufferedWriter.write(submissionDetail);
             bufferedWriter.close();
         } catch (IOException e) {
