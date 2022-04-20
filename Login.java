@@ -30,6 +30,31 @@ public class Login extends JComponent implements Runnable {
     JPanel mainTeacherPanel;
     JButton teacherSettingsButton;
     JButton createEditButton;
+    
+    //JPanel and JButtons for the Create and Edit Panel
+    JPanel createAndEditPanel;
+    JButton changeQuizzes;
+    JButton createACourse;
+    JButton viewStudentSubmissions;
+
+    //JPanel and JButtons for Change Quizzes Panel
+    JPanel changeQuizzesPanel;
+    JButton editQuizzes;
+    JButton createAQuiz;
+    JButton deleteQuiz;
+
+    //JPanel and JButtons for Create a Quiz Panel
+    JPanel createAQuizPanel;
+    JButton createAQuizManual;
+    JButton uploadAQuiz;
+
+    //JPanel and JButtons for Select Quiz Panel
+    JPanel selectEditQuizPanel;
+    JButton quizEditSelectSubmit;
+    JTextField quizEditName;
+    JLabel quizEditNameInfo;
+    JTextField courseEditName;
+    JLabel courseEditNameInfo;
 
     JPanel mainStudentPanel;
     JButton studentSettingsButton;
@@ -268,6 +293,36 @@ public class Login extends JComponent implements Runnable {
                             "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
+            if(e.getSource() == changeQuizzes) {
+                createAndEditPanel.setVisible(false);
+                changeQuizzesPanel.setVisible(true);
+            }
+            if(e.getSource() == createACourse) {
+                createAndEditPanel.setVisible(false);
+            }
+            if(e.getSource() == viewStudentSubmissions) {
+                createAndEditPanel.setVisible(false);
+            }
+            if(e.getSource() == editQuizzes) {
+                changeQuizzesPanel.setVisible(false);
+            }
+            if(e.getSource() == createAQuiz) {
+                changeQuizzesPanel.setVisible(false);
+                createAQuizPanel.setVisible(true);
+            }
+            if(e.getSource() == deleteQuiz) {
+                changeQuizzesPanel.setVisible(false);
+            }
+            if(e.getSource() == createAQuizManual) {
+                createAQuizPanel.setVisible(false);
+                selectEditQuizPanel.setVisible(true);
+            }
+            if(e.getSource() == uploadAQuiz) {
+                createAQuizPanel.setVisible(false);
+            }
+            if(e.getSource() == quizEditNameInfo) {
+                quizEditName.getText();
+            }
         }
     };
 
@@ -351,6 +406,88 @@ public class Login extends JComponent implements Runnable {
         mainTeacherPanel.add(createEditButton);
         panel.add(mainTeacherPanel, BorderLayout.CENTER);
         mainTeacherPanel.setVisible(false);
+        
+        // CREATE AND EDIT MENU - creates the Menu
+        createAndEditPanel = new JPanel();
+        panel.add(createAndEditPanel, BorderLayout.CENTER);
+
+
+        //CREATE AND EDIT MENU - Creates the Change Quizzes Menu
+        changeQuizzes = new JButton("Change Quizzes");
+        Dimension accountSettingsSize = changeQuizzes.getPreferredSize();
+        changeQuizzes.setBounds(75, 80, 150, accountSettingsSize.height);
+        changeQuizzes.addActionListener(actionListener);
+
+        //CREATE AND EDIT MENU - creates the Create A Course Button
+        createACourse = new JButton("Create a Course");
+        Dimension createAndEditSiz = createACourse.getPreferredSize();
+        createACourse.setBounds(75, 130, 150, createAndEditSiz.height);
+        createACourse.addActionListener(actionListener);
+
+        //CREATE AND EDIT MENU - Creates the view Student Submissions Button
+        viewStudentSubmissions = new JButton("View Student Submissions");
+        Dimension viewStudentSubmissionsSiz = viewStudentSubmissions.getPreferredSize();
+        viewStudentSubmissions.setBounds(75, 180, 150, viewStudentSubmissionsSiz.height);
+        viewStudentSubmissions.addActionListener(actionListener);
+
+        //CREATE AND EDIT MENU - Adds the Buttons to the JPanel
+        createAndEditPanel.add(changeQuizzes);
+        createAndEditPanel.add(createACourse);
+        createAndEditPanel.add(viewStudentSubmissions);
+        createAndEditPanel.setVisible(false);
+
+        //CHANGE QUIZZES MENU - creates JPanel
+        changeQuizzesPanel = new JPanel();
+        panel.add(changeQuizzesPanel, BorderLayout.CENTER);
+
+        //CHANGE QUIZZES MENU - creates the Edit Quizzes Button
+        editQuizzes = new JButton("Edit Quiz");
+        Dimension editQuizzesSize = editQuizzes.getPreferredSize();
+        editQuizzes.setBounds(75, 80, 150, editQuizzesSize.height);
+        editQuizzes.addActionListener(actionListener);
+
+        //CHANGE QUIZZES MENU - creates the Create A Quiz Button
+        createAQuiz = new JButton("Create a Quiz");
+        Dimension createAQuizSiz = createAQuiz.getPreferredSize();
+        createAQuiz.setBounds(75, 130, 150, createAQuizSiz.height);
+        createAQuiz.addActionListener(actionListener);
+
+        //CHANGE QUIZZES MENU - creates the Delete Quiz Button
+        deleteQuiz = new JButton("Delete Quiz");
+        Dimension deleteQuizPreferredSize = deleteQuiz.getPreferredSize();
+        deleteQuiz.setBounds(75, 180, 150, deleteQuizPreferredSize.height);
+        deleteQuiz.addActionListener(actionListener);
+
+        //CHANGE QUIZZES MENU - adds the buttons to the JPanel
+        changeQuizzesPanel.add(editQuizzes);
+        changeQuizzesPanel.add(createAQuiz);
+        changeQuizzesPanel.add(deleteQuiz);
+        changeQuizzesPanel.setVisible(false);
+
+        //CREATE A QUIZ MENU - creates the JPanel
+        createAQuizPanel = new JPanel();
+        panel.add(createAQuizPanel, BorderLayout.SOUTH);
+
+        //CREATE A QUIZ MENU - adds the Create a Quiz Manually Button
+        createAQuizManual = new JButton("Create a Quiz");
+        Dimension createAQuizManualPreferredSize = createAQuizManual.getPreferredSize();
+        //createAQuizManual.setBounds(75, 200, 150, createAQuizManualPreferredSize.height);
+        createAQuizManual.addActionListener(actionListener);
+
+        //CREATE A QUIZ MENU - adds the Upload a Quiz File Button
+        uploadAQuiz = new JButton("Upload A Quiz File");
+        Dimension uploadAQuizPreferredSize = uploadAQuiz.getPreferredSize();
+        //uploadAQuiz.setBounds(75, 130, 150, uploadAQuizPreferredSize.height);
+        uploadAQuiz.addActionListener(actionListener);
+
+        //CREATE A QUIZ MENU - adds the Buttons to the JPanel
+        createAQuizPanel.add(createAQuizManual);
+        createAQuizPanel.add(uploadAQuiz);
+        createAQuizPanel.setVisible(false);
+
+        //SELECT A QUIZ MENU
+        selectEditQuizPanel = new JPanel();
+        panel.add(selectEditQuizPanel, BorderLayout.SOUTH);
 
         // creates main menu panel for students
         studentSettingsButton = new JButton("Account Settings");
