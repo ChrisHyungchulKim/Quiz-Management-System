@@ -36,8 +36,12 @@ public class LoggingIn {
 
             //go through the userDetailFile and check for the line with the username that you want to edit
             for (int i = 0; i < userDetailFile.size(); i++) {
-                if (userDetailFile.get(i).contains(user.getUsername())) {
-                    if (userDetailFile.get(i + 1).contains(user.getPassword())) {
+                int indexUser = userDetailFile.get(i).indexOf(" ");
+                String subUser = userDetailFile.get(i).substring(indexUser + 1);
+                if (subUser.equals(user.getUsername())) {
+                    int indexPass = userDetailFile.get(i + 1).indexOf(" ");
+                    String subPass = userDetailFile.get(i + 1).substring(indexPass + 1);
+                    if (subPass.equals(user.getPassword())) {
                         if (userDetailFile.get(i + 2).contains(String.valueOf(user.isTeacher()))) {
                             hasCorrectInfo = true;
                         }
@@ -78,6 +82,7 @@ public class LoggingIn {
                                     formatEditUser.append(editUser[a]);
                                 }
                                 userDetailFile.set(i + 1, formatEditUser.toString());
+                                worked = true;
                             }
                         }
                     }
@@ -220,12 +225,7 @@ public class LoggingIn {
             }
 
             //Add By Rishab
-            for (User u : userList) {
-                if (user.equals(u)) {
-                    userList.remove(u);
-                }
-            }
-
+            userList.removeIf(user::equals);
 
             writer.close();
             return worked;
