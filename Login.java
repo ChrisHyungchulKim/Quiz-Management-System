@@ -40,7 +40,7 @@ public class Login extends JComponent implements Runnable {
     JButton editButton;
     JButton deleteButton;
 
-    JPanel editPanel;
+    JPanel editAccountPanel;
     JButton editUserButton;
     JButton editPassButton;
 
@@ -62,12 +62,76 @@ public class Login extends JComponent implements Runnable {
     JComboBox<String> newTeacherBox;
     JButton newSubmitButton;
 
-    ArrayList<User> userList;
+    JPanel selectCoursePanel;
+    JLabel courseLabel;
+    JComboBox<Course> courseBox;
+    JButton courseSubmitButton;
+
+    JPanel selectQuizPanel;
+    JLabel quizLabel;
+    JComboBox<Quiz> quizBox;
+    JButton quizSubmitButton;
+
+    JPanel editQuizPanel;
+    JButton editQuizName;
+    JButton addNewQuestionButton;
+    JButton removeQuestionButton;
+    JButton editQuestion;
+    JButton editResponse;
+    JButton editAnswerIndex;
+    JButton goBack;
+
+    JPanel newQuizNamePanel;
+    JLabel newQuizNameLabel;
+    JTextField newQuizNameField;
+    JButton newQuizNameButton;
+
+    JPanel addQuestionPanel;
+    JLabel questionPromptLabel;
+    JTextField questionPromptField;
+    JLabel questionWeightLabel;
+    JTextField questionWeightField;
+    JLabel responseNumberLabel;
+    JTextField responseNumberField;
+    JButton addQuestionButton;
+
+    JPanel addResponsePanel;
+    JLabel addResponseLabel;
+    JTextField addResponseField;
+    JButton addResponseButton;
+
+    JPanel addAnswerPanel;
+    JLabel addAnswerLabel;
+    JComboBox<String> addAnswerBox;
+    JButton addAnswerButton;
+
+    JPanel removeQuestionPanel;
+    JLabel removeQuestionLabel;
+    JComboBox<String> removeQuestionBox;
+    JButton removeQuestionSubmitButton;
+
+    static ArrayList<User> userList;
     User user;
+
+    static ArrayList<Course> courseList;
+    Course course;
+
+    static ArrayList<Quiz> quizList;
+    Quiz quiz;
+
+    Question question;
+    String prompt;
+    int weight;
+    int index;
+    int numResponses;
+    ArrayList<String> responses;
 
     public Login() {
         userList = LoggingIn.readUserInfo();
         user = null;
+
+        courseList = CourseInfoHandler.readCourseInfo();
+        course = null;
     }
 
     ActionListener actionListener = new ActionListener() {
@@ -79,10 +143,14 @@ public class Login extends JComponent implements Runnable {
                 mainTeacherPanel.setVisible(false);
                 mainStudentPanel.setVisible(false);
                 settingsPanel.setVisible(false);
-                editPanel.setVisible(false);
+                editAccountPanel.setVisible(false);
                 editUserPanel.setVisible(false);
                 editPassPanel.setVisible(false);
                 createPanel.setVisible(false);
+                selectCoursePanel.setVisible(false);
+                selectQuizPanel.setVisible(false);
+                editQuizPanel.setVisible(false);
+                newQuizNamePanel.setVisible(false);
                 welcomePanel.setVisible(true);
                 mainItem.setVisible(false);
                 user = null;
@@ -90,9 +158,13 @@ public class Login extends JComponent implements Runnable {
             if (e.getSource() == mainItem) {
                 // returns user to main menu
                 settingsPanel.setVisible(false);
-                editPanel.setVisible(false);
+                editAccountPanel.setVisible(false);
                 editUserPanel.setVisible(false);
                 editPassPanel.setVisible(false);
+                selectCoursePanel.setVisible(false);
+                selectQuizPanel.setVisible(false);
+                editQuizPanel.setVisible(false);
+                newQuizNamePanel.setVisible(false);
                 if (user.isTeacher()) {
                     mainTeacherPanel.setVisible(true);
                 } else {
@@ -154,7 +226,7 @@ public class Login extends JComponent implements Runnable {
             }
             if (e.getSource() == editButton) {
                 settingsPanel.setVisible(false);
-                editPanel.setVisible(true);
+                editAccountPanel.setVisible(true);
             }
             if (e.getSource() == deleteButton) {
                 // deletes user account
@@ -172,11 +244,11 @@ public class Login extends JComponent implements Runnable {
                 }
             }
             if (e.getSource() == editUserButton) {
-                editPanel.setVisible(false);
+                editAccountPanel.setVisible(false);
                 editUserPanel.setVisible(true);
             }
             if (e.getSource() == editPassButton) {
-                editPanel.setVisible(false);
+                editAccountPanel.setVisible(false);
                 editPassPanel.setVisible(true);
             }
             if (e.getSource() == newUsernameButton) {
@@ -268,6 +340,56 @@ public class Login extends JComponent implements Runnable {
                             "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
+            if (e.getSource() == courseSubmitButton) {
+                // TODO: test course & quiz selection menus
+                selectCoursePanel.setVisible(false);
+                try {
+                    course = (Course) courseBox.getSelectedItem();
+                    quizList = course.getQuizzes();
+                    selectQuizPanel.setVisible(true);
+                } catch (NullPointerException n) {
+                    JOptionPane.showMessageDialog(null, "Error! This course has no quizzes!",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    mainTeacherPanel.setVisible(true);
+                }
+            }
+            if (e.getSource() == quizSubmitButton) {
+                selectQuizPanel.setVisible(false);
+                quiz = (Quiz) quizBox.getSelectedItem();
+                editQuizPanel.setVisible(true);
+            }
+            if (e.getSource() == editQuizName) {
+                editQuizPanel.setVisible(false);
+                newQuizNamePanel.setVisible(true);
+            }
+            if (e.getSource() == addNewQuestionButton) {
+                editQuizPanel.setVisible(false);
+            }
+            if (e.getSource() == removeQuestionButton) {
+                editQuizPanel.setVisible(false);
+            }
+            if (e.getSource() == editQuestion) {
+                editQuizPanel.setVisible(false);
+            }
+            if (e.getSource() == editResponse) {
+                editQuizPanel.setVisible(false);
+            }
+            if (e.getSource() == editAnswerIndex) {
+                editQuizPanel.setVisible(false);
+            }
+            if (e.getSource() == goBack) {
+                editQuizPanel.setVisible(false);
+            }
+            if (e.getSource() == newQuizNameButton) {
+                if (newQuizNameField.getText() != null) {
+                    quiz.setName(newQuizNameField.getText());
+                    newQuizNamePanel.setVisible(false);
+                    editQuizPanel.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error! Please enter a new quiz name!",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
     };
 
@@ -317,6 +439,7 @@ public class Login extends JComponent implements Runnable {
         welcomePanel.add(loginButton);
         welcomePanel.add(createButton);
         panel.add(welcomePanel, BorderLayout.CENTER);
+        welcomePanel.setVisible(true);
 
         // creates login panel
         userLabel = new JLabel("Username:");
@@ -385,11 +508,11 @@ public class Login extends JComponent implements Runnable {
         editPassButton = new JButton("Edit Password");
         editPassButton.addActionListener(actionListener);
 
-        editPanel = new JPanel();
-        editPanel.add(editUserButton);
-        editPanel.add(editPassButton);
-        panel.add(editPanel, BorderLayout.CENTER);
-        editPanel.setVisible(false);
+        editAccountPanel = new JPanel();
+        editAccountPanel.add(editUserButton);
+        editAccountPanel.add(editPassButton);
+        panel.add(editAccountPanel, BorderLayout.CENTER);
+        editAccountPanel.setVisible(false);
 
         // creates username editing panel
         newUsernameLabel = new JLabel("What is your new username?");
@@ -435,5 +558,81 @@ public class Login extends JComponent implements Runnable {
         createPanel.add(newSubmitButton);
         panel.add(createPanel, BorderLayout.CENTER);
         createPanel.setVisible(false);
+
+        // creates course selection panel
+        courseLabel = new JLabel("Please select a course from the list:");
+        Course[] courses = courseList.toArray(new Course[courseList.size()]);
+        courseBox = new JComboBox<>(courses);
+        courseSubmitButton = new JButton("Submit");
+        courseSubmitButton.addActionListener(actionListener);
+
+        selectCoursePanel = new JPanel();
+        selectCoursePanel.add(courseLabel);
+        selectCoursePanel.add(courseBox);
+        selectCoursePanel.add(courseSubmitButton);
+        panel.add(selectCoursePanel, BorderLayout.CENTER);
+        selectCoursePanel.setVisible(false);
+
+        // creates quiz selection panel
+        quizLabel = new JLabel("Please select a quiz from the list");
+        Quiz[] quizzes = quizList.toArray(new Quiz[quizList.size()]);
+        quizBox = new JComboBox<>(quizzes);
+        quizSubmitButton = new JButton("Submit");
+        quizSubmitButton.addActionListener(actionListener);
+
+        selectQuizPanel = new JPanel();
+        selectQuizPanel.add(quizLabel);
+        selectQuizPanel.add(quizBox);
+        selectQuizPanel.add(quizSubmitButton);
+        panel.add(selectQuizPanel, BorderLayout.CENTER);
+        selectQuizPanel.setVisible(false);
+
+        // creates editing menu panel
+        editQuizName = new JButton("Edit Quiz Name");
+        editQuizName.addActionListener(actionListener);
+        addNewQuestionButton = new JButton("Add New Question");
+        addNewQuestionButton.addActionListener(actionListener);
+        removeQuestionButton = new JButton("Remove Question");
+        removeQuestionButton.addActionListener(actionListener);
+        editQuestion = new JButton("Edit Question");
+        editQuestion.addActionListener(actionListener);
+        editResponse = new JButton("Edit Question Answer");
+        editResponse.addActionListener(actionListener);
+        editAnswerIndex = new JButton("Change Which Answer is Correct");
+        editAnswerIndex.addActionListener(actionListener);
+        goBack = new JButton("Go Back");
+        goBack.addActionListener(actionListener);
+
+        editQuizPanel = new JPanel();
+        editQuizPanel.add(editQuizName);
+        editQuizPanel.add(addNewQuestionButton);
+        editQuizPanel.add(removeQuestionButton);
+        editQuizPanel.add(editQuestion);
+        editQuizPanel.add(editResponse);
+        editQuizPanel.add(editAnswerIndex);
+        editQuizPanel.add(goBack);
+        panel.add(editQuizPanel, BorderLayout.CENTER);
+        editQuizPanel.setVisible(false);
+
+        // creates quiz name changing panel
+        newQuizNameLabel = new JLabel("Enter the new quiz name: ");
+        newQuizNameField = new JTextField(20);
+        newQuizNameButton = new JButton("Submit");
+        newQuizNameButton.addActionListener(actionListener);
+
+        newQuizNamePanel = new JPanel();
+        newQuizNamePanel.add(newQuizNameLabel);
+        newQuizNamePanel.add(newQuizNameField);
+        newQuizNamePanel.add(newQuizNameButton);
+        panel.add(newQuizNamePanel, BorderLayout.CENTER);
+        newQuizNamePanel.setVisible(false);
+
+        // creates question adding panel
+
+        // creates response adding panel
+
+        // creates answer choosing panel
+
+        // creates question removing panel
     }
 }
