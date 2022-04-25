@@ -81,6 +81,7 @@ public class Login extends JComponent implements Runnable {
     JButton addNewQuestionButton;
     JButton removeQuestionButton;
     JButton editQuestion;
+    JButton editWeight;
     JButton editResponse;
     JButton editAnswerIndex;
 
@@ -121,6 +122,16 @@ public class Login extends JComponent implements Runnable {
     JLabel newPromptLabel;
     JTextField newPromptField;
     JButton newPromptButton;
+
+    JPanel editWeightPanel;
+    JLabel editWeightLabel;
+    JComboBox<String> editWeightBox;
+    JButton editWeightButton;
+
+    JPanel newWeightPanel;
+    JLabel newWeightLabel;
+    JTextField newWeightField;
+    JButton newWeightButton;
 
     static ArrayList<User> userList;
     User user;
@@ -455,6 +466,19 @@ public class Login extends JComponent implements Runnable {
                 editPromptPanel.add(editPromptButton);
                 editPromptPanel.setVisible(true);
             }
+            if (e.getSource() == editWeight) {
+                editQuizPanel.setVisible(false);
+                String[] editingPrompts = new String[quiz.getQuestions().size()];
+                for (int i = 0; i < quiz.getQuestions().size(); i++) {
+                    editingPrompts[i] = quiz.getQuestions().get(i).getPrompt();
+                }
+                editWeightPanel.remove(editWeightBox);
+                editWeightPanel.remove(editWeightButton);
+                editWeightBox = new JComboBox<>(editingPrompts);
+                editWeightPanel.add(editWeightBox);
+                editWeightPanel.add(editWeightButton);
+                editWeightPanel.setVisible(true);
+            }
             if (e.getSource() == editResponse) {
                 editQuizPanel.setVisible(false);
             }
@@ -562,6 +586,35 @@ public class Login extends JComponent implements Runnable {
                         "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
+            // TODO: test edit weight functionality
+            if (e.getSource() == editWeightButton) {
+                editWeightPanel.setVisible(false);
+                prompt = (String) editWeightBox.getSelectedItem();
+                newWeightPanel.setVisible(true);
+            }
+            if (e.getSource() == newWeightButton) {
+                if (newWeightField.getText() != null) {
+                    try {
+                        String weightString = newWeightField.getText();
+                        weight = Integer.parseInt(weightString);
+                        for (int i = 0; i < quiz.getQuestions().size(); i++) {
+                            assert prompt != null;
+                            if (prompt.equals(quiz.getQuestions().get(i).getPrompt())) {
+                                quiz.getQuestions().get(i).setWeight(weight);
+                            }
+                        }
+                        newWeightPanel.setVisible(false);
+                        editQuizPanel.setVisible(true);
+                    } catch (NumberFormatException n) {
+                        JOptionPane.showMessageDialog(null, "Error! Please enter an integer!",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    newWeightField.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error! Please enter a weight!",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
     };
 
@@ -576,7 +629,7 @@ public class Login extends JComponent implements Runnable {
         login = new Login();
         container.add(login, BorderLayout.CENTER);
 
-        frame.setSize(900, 400);
+        frame.setSize(1000, 400);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
@@ -770,6 +823,8 @@ public class Login extends JComponent implements Runnable {
         removeQuestionButton.addActionListener(actionListener);
         editQuestion = new JButton("Edit Question");
         editQuestion.addActionListener(actionListener);
+        editWeight = new JButton("Edit Weight");
+        editWeight.addActionListener(actionListener);
         editResponse = new JButton("Edit Question Answer");
         editResponse.addActionListener(actionListener);
         editAnswerIndex = new JButton("Change Correct Answer");
@@ -882,5 +937,31 @@ public class Login extends JComponent implements Runnable {
         newPromptPanel.add(newPromptButton);
         panel.add(newPromptPanel, BorderLayout.CENTER);
         newPromptPanel.setVisible(false);
+
+        // creates weight editing panel
+        editWeightLabel = new JLabel("Select question you would like to edit: ");
+        editWeightBox = new JComboBox<>();
+        editWeightButton = new JButton("Submit");
+        editWeightButton.addActionListener(actionListener);
+
+        editWeightPanel = new JPanel();
+        editWeightPanel.add(editWeightLabel);
+        editWeightPanel.add(editWeightBox);
+        editWeightPanel.add(editWeightButton);
+        panel.add(editWeightPanel, BorderLayout.CENTER);
+        editWeightPanel.setVisible(false);
+
+        // creates panel for entering new weight
+        newWeightLabel = new JLabel("Enter new weight: ");
+        newWeightField = new JTextField(10);
+        newWeightButton = new JButton("Submit");
+        newWeightButton.addActionListener(actionListener);
+
+        newWeightPanel = new JPanel();
+        newWeightPanel.add(newWeightLabel);
+        newWeightPanel.add(newWeightField);
+        newWeightPanel.add(newWeightButton);
+        panel.add(newWeightPanel, BorderLayout.CENTER);
+        newWeightPanel.setVisible(false);
     }
 }
