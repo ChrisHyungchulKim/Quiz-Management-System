@@ -173,6 +173,18 @@ public class Login extends JComponent implements Runnable {
     JComboBox<String> responseSelection;
     JButton getResponseSelection;
 
+    // Delete/Create Quiz GUI ------------------------------------------------------
+
+    JPanel deleteQuizPanel;
+    JLabel deleteQuizLabel;
+    JComboBox<String> deleteQuizBox;
+    JButton deleteQuizButton;
+
+    JPanel quizFilePanel;
+    JLabel quizFileLabel;
+    JTextField quizFileField;
+    JButton quizFileButton;
+
     static ArrayList<User> userList;
     User user;
 
@@ -220,6 +232,15 @@ public class Login extends JComponent implements Runnable {
                 removeQuestionPanel.setVisible(false);
                 editPromptPanel.setVisible(false);
                 newPromptPanel.setVisible(false);
+                editWeightPanel.setVisible(false);
+                newWeightPanel.setVisible(false);
+                editResponsePanel.setVisible(false);
+                newResponsePanel.setVisible(false);
+                enterResponsePanel.setVisible(false);
+                editAnswerPanel.setVisible(false);
+                responseSelectionPanel.setVisible(false);
+                deleteQuizPanel.setVisible(false);
+                quizFilePanel.setVisible(false);
                 createAndEditPanel.setVisible(false);
                 changeQuizzesPanel.setVisible(false);
                 createAQuizPanel.setVisible(false);
@@ -242,6 +263,15 @@ public class Login extends JComponent implements Runnable {
                 addAnswerPanel.setVisible(false);
                 removeQuestionPanel.setVisible(false);
                 editPromptPanel.setVisible(false);
+                editWeightPanel.setVisible(false);
+                newWeightPanel.setVisible(false);
+                editResponsePanel.setVisible(false);
+                newResponsePanel.setVisible(false);
+                enterResponsePanel.setVisible(false);
+                editAnswerPanel.setVisible(false);
+                responseSelectionPanel.setVisible(false);
+                deleteQuizPanel.setVisible(false);
+                quizFilePanel.setVisible(false);
                 createAndEditPanel.setVisible(false);
                 changeQuizzesPanel.setVisible(false);
                 createAQuizPanel.setVisible(false);
@@ -460,12 +490,23 @@ public class Login extends JComponent implements Runnable {
             }
             if (e.getSource() == deleteQuiz) {
                 changeQuizzesPanel.setVisible(false);
+                String[] deleteQuizzes = new String[course.getQuizzes().size()];
+                for (int i = 0; i < course.getQuizzes().size(); i++) {
+                    deleteQuizzes[i] = course.getQuizzes().get(i).getName();
+                }
+                deleteQuizPanel.remove(deleteQuizBox);
+                deleteQuizPanel.remove(deleteQuizButton);
+                deleteQuizBox = new JComboBox<>(deleteQuizzes);
+                deleteQuizPanel.add(deleteQuizBox);
+                deleteQuizPanel.add(deleteQuizButton);
+                deleteQuizPanel.setVisible(true);
             }
             if (e.getSource() == createAQuizManual) {
                 createAQuizPanel.setVisible(false);
             }
             if (e.getSource() == uploadAQuiz) {
                 createAQuizPanel.setVisible(false);
+                quizFilePanel.setVisible(true);
             }
 
             if (e.getSource() == courseSubmitButton) {
@@ -785,6 +826,36 @@ public class Login extends JComponent implements Runnable {
                 }
                 question.setAnswer(responseNumber);
                 editQuizPanel.setVisible(true);
+            }
+
+            // Delete/Create Quiz GUI ------------------------------------------------------
+
+            if (e.getSource() == deleteQuizButton) {
+                int confirmDelete = JOptionPane.showConfirmDialog(null,
+                        "Are you sure you want to delete this quiz?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+                if (confirmDelete == JOptionPane.YES_OPTION) {
+                    deleteQuizPanel.setVisible(false);
+                    String deleteQuizName = (String) deleteQuizBox.getSelectedItem();
+                    for (int i = 0; i < course.getQuizzes().size(); i++) {
+                        assert deleteQuizName != null;
+                        if (deleteQuizName.equals(course.getQuizzes().get(i).getName())) {
+                            course.getQuizzes().remove(i);
+                        }
+                    }
+                    changeQuizzesPanel.setVisible(true);
+                }
+            }
+
+            if (e.getSource() == quizFileButton) {
+                if (quizFileField.getText() != null) {
+                    String filename = quizFileField.getText();
+                    quiz = new Quiz(filename);
+                    course.getQuizzes().add(quiz);
+                    quizFileField.setText("");
+                    quizFilePanel.setVisible(false);
+                    changeQuizzesPanel.setVisible(true);
+                } JOptionPane.showMessageDialog(null, "Error! Please enter a file name!",
+                        "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     };
@@ -1266,5 +1337,33 @@ public class Login extends JComponent implements Runnable {
         responseSelectionPanel.add(getResponseSelection);
         panel.add(responseSelectionPanel, BorderLayout.CENTER);
         responseSelectionPanel.setVisible(false);
+
+        // Delete/Create Quiz GUI ------------------------------------------------------
+
+        // creates delete quiz panel
+        deleteQuizLabel = new JLabel("Select a quiz to delete from this course: ");
+        deleteQuizBox = new JComboBox<>();
+        deleteQuizButton = new JButton("Delete");
+        deleteQuizButton.addActionListener(actionListener);
+
+        deleteQuizPanel = new JPanel();
+        deleteQuizPanel.add(deleteQuizLabel);
+        deleteQuizPanel.add(deleteQuizBox);
+        deleteQuizPanel.add(deleteQuizButton);
+        panel.add(deleteQuizPanel, BorderLayout.CENTER);
+        deleteQuizPanel.setVisible(false);
+
+        // creates quiz file entry panel
+        quizFileLabel = new JLabel("Enter a quiz file name: ");
+        quizFileField = new JTextField(20);
+        quizFileButton = new JButton("Submit");
+        quizFileButton.addActionListener(actionListener);
+
+        quizFilePanel = new JPanel();
+        quizFilePanel.add(quizFileLabel);
+        quizFilePanel.add(quizFileField);
+        quizFilePanel.add(quizFileButton);
+        panel.add(quizFilePanel);
+        quizFilePanel.setVisible(false);
     }
 }
