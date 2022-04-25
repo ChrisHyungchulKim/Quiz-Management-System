@@ -133,7 +133,6 @@ public class Login extends JComponent implements Runnable {
 
     Question question;
     String prompt;
-    String[] prompts;
     int weight;
     int index;
     ArrayList<String> responses = new ArrayList<>();
@@ -430,27 +429,28 @@ public class Login extends JComponent implements Runnable {
                 addQuestionPanel.setVisible(true);
             }
             if (e.getSource() == removeQuestionButton) {
+                // TODO: figure out why entries are all the same
                 editQuizPanel.setVisible(false);
-                prompts = new String[quiz.getQuestions().size()];
+                String[] removePrompts = new String[quiz.getQuestions().size()];
                 for (int i = 0; i < quiz.getQuestions().size(); i++) {
-                    prompts[i] = quiz.getQuestions().get(i).getPrompt();
+                    removePrompts[i] = quiz.getQuestions().get(i).getPrompt();
                 }
                 removeQuestionPanel.remove(removeQuestionBox);
                 removeQuestionPanel.remove(removeQuestionSubmitButton);
-                removeQuestionBox = new JComboBox<>(prompts);
+                removeQuestionBox = new JComboBox<>(removePrompts);
                 removeQuestionPanel.add(removeQuestionBox);
                 removeQuestionPanel.add(removeQuestionSubmitButton);
                 removeQuestionPanel.setVisible(true);
             }
             if (e.getSource() == editQuestion) {
                 editQuizPanel.setVisible(false);
-                prompts = new String[quiz.getQuestions().size()];
+                String[] editingPrompts = new String[quiz.getQuestions().size()];
                 for (int i = 0; i < quiz.getQuestions().size(); i++) {
-                    prompts[i] = quiz.getQuestions().get(i).getPrompt();
+                    editingPrompts[i] = quiz.getQuestions().get(i).getPrompt();
                 }
                 editPromptPanel.remove(editPromptBox);
                 editPromptPanel.remove(editPromptButton);
-                editPromptBox = new JComboBox<>(prompts);
+                editPromptBox = new JComboBox<>(editingPrompts);
                 editPromptPanel.add(editPromptBox);
                 editPromptPanel.add(editPromptButton);
                 editPromptPanel.setVisible(true);
@@ -532,9 +532,11 @@ public class Login extends JComponent implements Runnable {
             if (e.getSource() == removeQuestionSubmitButton) {
                 removeQuestionPanel.setVisible(false);
                 String removedPrompt = (String) removeQuestionBox.getSelectedItem();
-                for (int i = 0; i < responses.size(); i++) {
+                for (int i = 0; i < quiz.getQuestions().size(); i++) {
                     assert removedPrompt != null;
-                    responses.removeIf(removedPrompt::equals);
+                    if (removedPrompt.equals(quiz.getQuestions().get(i).getPrompt())) {
+                        quiz.removeQuestion(quiz.getQuestions().get(i));
+                    }
                 }
                 editQuizPanel.setVisible(true);
             }
@@ -846,7 +848,7 @@ public class Login extends JComponent implements Runnable {
         removeQuestionLabel = new JLabel("Select a question to remove: ");
         removeQuestionBox = new JComboBox<>();
         removeQuestionSubmitButton = new JButton("Remove");
-        removeQuestionButton.addActionListener(actionListener);
+        removeQuestionSubmitButton.addActionListener(actionListener);
 
         removeQuestionPanel = new JPanel();
         removeQuestionPanel.add(removeQuestionLabel);
