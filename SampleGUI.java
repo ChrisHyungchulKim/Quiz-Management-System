@@ -40,6 +40,9 @@ public class SampleGUI extends JComponent implements Runnable {
 
 
     @Override
+    /**
+     * Example GUI when merging the codes together
+     */
     public void run() {
         JFrame frame = new JFrame();
         strTextField = new JTextField(10);
@@ -71,10 +74,11 @@ public class SampleGUI extends JComponent implements Runnable {
 
                 input = strTextField.getText();
                 if(input.contains("Update Course Name:")) {
-                    serverCommunicator(socket, "Get ArrayList");
+                    serverCommunicator(socket, "Update Arraylist");
                     readArrayList(socket);
+                    System.out.println(input.substring(test.indexOf(": ") + 1));
                     test.get(0).setCourseName(input.substring(test.indexOf(':') + 1));
-                    serverCommunicator(socket, "Sending Arraylist");
+                    //serverCommunicator(socket, "Sending Arraylist");
                     writeArrayList(socket, test);
                 }
 
@@ -136,6 +140,11 @@ public class SampleGUI extends JComponent implements Runnable {
         return s1;
     }
 
+    /**Handles receiving an arraylist from the server so the client can get the most up to
+     * date arraylist of course
+     *
+     * @param socket - The socket that the arraylist is received on
+     */
     public void readArrayList(Socket socket) {
         try {
             ObjectInputStream objectInput = new ObjectInputStream(socket.getInputStream());
@@ -152,6 +161,12 @@ public class SampleGUI extends JComponent implements Runnable {
         }
     }
 
+    /** Handles sending arraylist from the client to the server so the server can get the most up to
+     * date arraylist of course
+     *
+     * @param socket - The socket that the arraylist is sent on
+     * @param courses - The arraylist that is being sent to the server
+     */
     public void writeArrayList(Socket socket, ArrayList<Course> courses) {
         try {
             ObjectOutputStream objectOutput = new ObjectOutputStream(socket.getOutputStream());
