@@ -2,20 +2,21 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Server {
 
     private static Class info;
-    private static Objects concur;
+    private static Object concur;
 
     public static void main(String[] args) {
 
         info = new Class(CourseInfoHandler.readCourseInfo());
+        concur = new Object();
 
         try {
 
             ServerSocket serverSocket = new ServerSocket(3005);
+            System.out.println("Server Socket Created");
 
             while (true) {
 
@@ -41,7 +42,9 @@ public class Server {
                     } else if (message.equals("Update Arraylist")) {
                         synchronized (concur) {
                             sendArrayList(socket);
+                            System.out.println("test 1");
                             receiveArrayList(socket);
+                            System.out.println("test 2");
                             System.out.printf(info.getCourses().get(0).getCourseName());
                         }
                     }
@@ -51,6 +54,7 @@ public class Server {
             }
 
         } catch (IOException ioe) {
+            System.out.println("Error");
             ioe.printStackTrace();
         }
 
@@ -62,6 +66,11 @@ public class Server {
         }
     }
 
+    /**
+     *
+     *
+     * @param socket - The socket the that the server communication is started on
+     */
     public static void sendArrayList(Socket socket) {
         try {
             ObjectOutputStream objectOutput = new ObjectOutputStream(socket.getOutputStream());
@@ -71,6 +80,10 @@ public class Server {
         }
     }
 
+    /**
+     *
+     * @param socket - the socket the that the server communication is started on
+     */
     public static void receiveArrayList(Socket socket) {
         try {
             ObjectInputStream objectInput = new ObjectInputStream(socket.getInputStream());
@@ -83,10 +96,18 @@ public class Server {
         }
     }
 
+    /**Getter for the Courses Arraylist
+     *
+     * @return - Courses Arraylist
+     */
     public static ArrayList<Course> getInfoCourseArray() {
         return info.getCourses();
     }
 
+    /**Sets the info objects courses arraylist field to the new one provided by the parameter
+     *
+     * @param courses - new version of the courses Arraylist
+     */
     public static void setInfoCourseArray(ArrayList<Course> courses) {
         info.setCourses(courses);
         CourseInfoHandler.writeCourseInfo(info);
