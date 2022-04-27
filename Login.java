@@ -131,6 +131,19 @@ public class Login extends JComponent implements Runnable {
     JButton changeAnswerSubmit;
     int questionNumber;
 
+    // View Submissions
+    JPanel viewChooseCoursePanel;
+    JComboBox<String> courseChoiceView;
+    JButton viewChooseCourseButton;
+
+    JPanel viewChooseQuizPanel;
+    JComboBox<String> quizChoiceView;
+    JButton viewChooseQuizButton;
+
+    JPanel viewSubmission;
+    JTextArea submissionsDetails;
+    JButton mainMenuButton;
+
     ArrayList<String> responses;
 
     public Login() {
@@ -255,15 +268,6 @@ public class Login extends JComponent implements Runnable {
                     quizCounter++;
                 }
 
-                quizSelection = 0;
-                for (int i = 0; i < quizzes.size(); i++) {
-                    if (quizzes.get(i).equals(qSelection)) {
-                        quizSelection = i;
-                    }
-                }
-                quizSelection++;
-                //quizSelection++;
-
                 quizChoice = new JComboBox(quizzes.toArray());
                 pickQuizLabel = new JLabel("Pick a quiz: ");
                 takeChooseQuizPanel.add(pickQuizLabel, 0);
@@ -273,6 +277,14 @@ public class Login extends JComponent implements Runnable {
             if (e.getSource() == quizChoiceSubmit) {
                 panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
                 takeChooseQuizPanel.setVisible(false);
+                qSelection = (String) quizChoice.getSelectedItem();
+                quizSelection = 0;
+                for (int i = 0; i < quizzes.size(); i++) {
+                    if (quizzes.get(i).equals(qSelection)) {
+                        quizSelection = i;
+                    }
+                }
+                quizSelection++;
                 int num = currentClass.getCourses().get(courseSelection - 1)
                         .getQuizzes().get(quizSelection - 1).getQuestions().size();
                 questionPrompt = new JLabel[num];
@@ -348,9 +360,6 @@ public class Login extends JComponent implements Runnable {
                                 .get(quizSelection - 1), currentClass.getCourses().get(courseSelection - 1),
                         responses, timestamp.toString(), false, new ArrayList<String>());
                 mainStudentPanel.setVisible(true);
-            }
-            if (e.getSource() == viewButton) {
-                mainStudentPanel.setVisible(false);
             }
             if (e.getSource() == editButton) {
                 settingsPanel.setVisible(false);
@@ -497,6 +506,107 @@ public class Login extends JComponent implements Runnable {
             }
             if (e.getSource() == quizEditNameInfo) {
                 quizEditName.getText();
+            }
+
+//            ==================================================================================================
+
+            if (e.getSource() == viewButton) {
+                mainStudentPanel.setVisible(false);
+                courses = new ArrayList<>();
+
+                int courseCounter = 0;
+                for (int f = 0; f < currentClass.getCourses().size(); f++) {
+                    courses.add(currentClass.getCourses().get(courseCounter).getCourseName());
+                    courseCounter++;
+                }
+                courseChoiceView = new JComboBox(courses.toArray());
+                pickCourseLabel = new JLabel("Pick a course: ");
+                viewChooseCoursePanel.add(pickCourseLabel, 0);
+                viewChooseCoursePanel.add(courseChoiceView, 1);
+                viewChooseCoursePanel.setVisible(true);
+            }
+            if (e.getSource() == viewChooseCourseButton) {
+                viewChooseCoursePanel.setVisible(false);
+                quizzes = new ArrayList<>();
+                cSelection = (String) courseChoiceView.getSelectedItem();
+                courseSelection = 0;
+
+                for (int i = 0; i < courses.size(); i++) {
+                    if (courses.get(i).equals(cSelection)) {
+                        courseSelection = i;
+                    }
+                }
+
+                courseSelection++;
+                int quizCounter = 0;
+                for (int f = 0; f < currentClass.getCourses().get(courseSelection - 1).getQuizzes().size(); f++) {
+                    quizzes.add(currentClass.getCourses().get(courseSelection - 1)
+                            .getQuizzes().get(quizCounter).getName());
+                    quizCounter++;
+                }
+
+                quizChoiceView = new JComboBox(quizzes.toArray());
+                pickQuizLabel = new JLabel("Pick a quiz: ");
+                viewChooseQuizPanel.add(pickQuizLabel, 0);
+                viewChooseQuizPanel.add(quizChoiceView, 1);
+                viewChooseQuizPanel.setVisible(true);
+            }
+            if (e.getSource() == viewChooseQuizButton) {
+                viewChooseQuizPanel.setVisible(false);
+
+                String results = "";
+
+                // TODO: When implementing delete the scanner call because its not needed
+                ArrayList<Submission> submissions = QuizMenu.readSubmissions(currentClass);
+                //assert submissions != null;
+                panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+                if (submissions != null) {
+                    for (Submission s : submissions) {
+                        if (s.getStudent().getUsername().equals(user.getUsername())
+                                && s.getCourseOfQuiz().getCourseName()
+                                .equals(currentClass.getCourses().get(courseSelection - 1).getCourseName())
+                                && s.getQuizBeingTaken().getName()
+                                .equals(currentClass.getCourses().get(courseSelection - 1)
+                                        .getQuizzes().get(quizSelection).getName())
+                                && !s.isGraded()) {
+                            results += String.format("Quiz Name: %s\n", s.getQuizBeingTaken().getName());
+                            for (int i = 0; i < s.getResponses().size(); i++) {
+                                results += String.format("Question: %s\n", s.getQuizBeingTaken().getQuestions().get(i));
+                                results += String.format("Your Answer: %s\n", s.getResponses().get(i));
+                                results += String.format("Your Grade: Not Graded\n");
+                            }
+                            results += String.format("Submission Timestamp: %s\n", s.getTime());
+
+                        } else if (s.getStudent().getUsername().equals(user.getUsername())
+                                && s.getCourseOfQuiz().getCourseName()
+                                .equals(currentClass.getCourses().get(courseSelection - 1).getCourseName())
+                                && s.getQuizBeingTaken().getName()
+                                .equals(currentClass.getCourses().get(courseSelection - 1)
+                                        .getQuizzes().get(quizSelection).getName())
+                                && s.isGraded()) {
+                            results += String.format("Quiz Name: %s\n", s.getQuizBeingTaken().getName());
+                            for (int i = 0; i < s.getResponses().size(); i++) {
+                                results += String.format("Question: %s\n", s.getQuizBeingTaken().getQuestions().get(i));
+                                results += String.format("Your Answer: %s\n", s.getResponses().get(i));
+                                results += String.format("Your Grade: %s\n", s.getGrades().get(i));
+                            }
+                            results += String.format("Submission Timestamp: %s\n", s.getTime());
+
+                        } else {
+                            results = "No Submissions to view";
+                        }
+                    }
+                } else {
+                    results = "No Submissions to view";
+                }
+                submissionsDetails = new JTextArea(results);
+                viewSubmission.add(submissionsDetails, 0);
+                viewSubmission.setVisible(true);
+            }
+            if (e.getSource() == mainMenuButton) {
+//                panel.setLayout(new FlowLayout(panel, FlowLayout.CENTER));
+                viewSubmission.setVisible(false);
+                mainStudentPanel.setVisible(true);
             }
         }
     };
@@ -814,5 +924,39 @@ public class Login extends JComponent implements Runnable {
 
         panel.add(changeAnswer, BorderLayout.CENTER);
         changeAnswer.setVisible(false);
+
+//      ==================================================================================================
+
+        // Viewing Submissions
+
+        // Choosing a course
+        viewChooseCoursePanel = new JPanel();
+        viewChooseCourseButton = new JButton("Submit");
+        viewChooseCourseButton.addActionListener(actionListener);
+
+        viewChooseCoursePanel.add(viewChooseCourseButton);
+
+        panel.add(viewChooseCoursePanel, BorderLayout.CENTER);
+        viewChooseCoursePanel.setVisible(false);
+
+        // Choosing quiz
+        viewChooseQuizPanel = new JPanel();
+        viewChooseQuizButton = new JButton("Submit");
+        viewChooseQuizButton.addActionListener(actionListener);
+
+        viewChooseQuizPanel.add(viewChooseQuizButton);
+
+        panel.add(viewChooseQuizPanel);
+        viewChooseQuizPanel.setVisible(false);
+
+        // Viewing results
+        viewSubmission = new JPanel();
+        mainMenuButton = new JButton("Main Menu");
+        mainMenuButton.addActionListener(actionListener);
+
+        viewSubmission.add(mainMenuButton);
+
+        panel.add(viewSubmission, BorderLayout.CENTER);
+        viewSubmission.setVisible(false);
     }
 }
