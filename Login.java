@@ -127,7 +127,6 @@ public class Login extends JComponent implements Runnable {
 
     JPanel changeAnswer;
     JLabel changeAnswerPrompt;
-    JComboBox<String> changeAnswerChoices;
     JButton changeAnswerSubmit;
     int questionNumber;
 
@@ -509,7 +508,7 @@ public class Login extends JComponent implements Runnable {
             }
 
 //            ==================================================================================================
-
+//            View submission
             if (e.getSource() == viewButton) {
                 mainStudentPanel.setVisible(false);
                 courses = new ArrayList<>();
@@ -555,12 +554,16 @@ public class Login extends JComponent implements Runnable {
                 viewChooseQuizPanel.setVisible(false);
 
                 String results = "";
-
+                courseSelection = courseChoiceView.getSelectedIndex() + 1;
+                quizSelection = quizChoiceView.getSelectedIndex();
+                System.out.println(courseSelection);
+                System.out.println(quizSelection);
                 // TODO: When implementing delete the scanner call because its not needed
                 ArrayList<Submission> submissions = QuizMenu.readSubmissions(currentClass);
                 //assert submissions != null;
                 panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
                 if (submissions != null) {
+                    int counter = 0;
                     for (Submission s : submissions) {
                         if (s.getStudent().getUsername().equals(user.getUsername())
                                 && s.getCourseOfQuiz().getCourseName()
@@ -576,7 +579,6 @@ public class Login extends JComponent implements Runnable {
                                 results += String.format("Your Grade: Not Graded\n");
                             }
                             results += String.format("Submission Timestamp: %s\n", s.getTime());
-
                         } else if (s.getStudent().getUsername().equals(user.getUsername())
                                 && s.getCourseOfQuiz().getCourseName()
                                 .equals(currentClass.getCourses().get(courseSelection - 1).getCourseName())
@@ -591,20 +593,26 @@ public class Login extends JComponent implements Runnable {
                                 results += String.format("Your Grade: %s\n", s.getGrades().get(i));
                             }
                             results += String.format("Submission Timestamp: %s\n", s.getTime());
-
-                        } else {
-                            results = "No Submissions to view";
+                        } else if (!(s.getStudent().getUsername().equals(user.getUsername())
+                                && s.getCourseOfQuiz().getCourseName()
+                                .equals(currentClass.getCourses().get(courseSelection - 1).getCourseName())
+                                && s.getQuizBeingTaken().getName()
+                                .equals(currentClass.getCourses().get(courseSelection - 1)
+                                        .getQuizzes().get(quizSelection).getName())) && (results.equals(""))) {
+                            results = String.format("Quiz Name: %s\nNo Submissions to view",
+                                    currentClass.getCourses().get(courseSelection - 1)
+                                    .getQuizzes().get(quizSelection).getName());
                         }
                     }
+                    counter++;
                 } else {
-                    results = "No Submissions to view";
+                    results = "No Submissions to view\n";
                 }
                 submissionsDetails = new JTextArea(results);
                 viewSubmission.add(submissionsDetails, 0);
                 viewSubmission.setVisible(true);
             }
             if (e.getSource() == mainMenuButton) {
-//                panel.setLayout(new FlowLayout(panel, FlowLayout.CENTER));
                 viewSubmission.setVisible(false);
                 mainStudentPanel.setVisible(true);
             }
