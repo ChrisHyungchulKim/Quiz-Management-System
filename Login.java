@@ -8,20 +8,24 @@ import java.util.Date;
 public class Login extends JComponent implements Runnable {
     Login login;
 
+    // Top level panel
     JPanel panel;
 
     // Login GUI ------------------------------------------------------
 
+    // JPanel for welcome panel
     JPanel welcomePanel;
     JLabel welcomeLabel;
     JButton loginButton;
     JButton createButton;
 
+    // JMenu for logging out and returning to main menu
     JMenu topMenu;
     JMenuBar menuBar;
     JMenuItem logoutItem;
     JMenuItem mainItem;
 
+    // JPanel for login panel
     JPanel loginPanel;
     JLabel userLabel;
     JTextField userText;
@@ -31,33 +35,40 @@ public class Login extends JComponent implements Runnable {
     JComboBox<String> userBox;
     JButton loginSubmitButton;
 
+    // JPanel for teacher version of main menu
     JPanel mainTeacherPanel;
     JButton teacherSettingsButton;
     JButton createEditButton;
 
+    // JPanel for student version of main menu
     JPanel mainStudentPanel;
     JButton studentSettingsButton;
     JButton takeButton;
     JButton viewButton;
 
+    // JPanel for account settings menu
     JPanel settingsPanel;
     JButton editButton;
     JButton deleteButton;
 
+    // JPanel for account editing options
     JPanel editAccountPanel;
     JButton editUserButton;
     JButton editPassButton;
 
+    // JPanel for editing username
     JPanel editUserPanel;
     JLabel newUsernameLabel;
     JTextField newUsernameText;
     JButton newUsernameButton;
 
+    // JPanel for editing password
     JPanel editPassPanel;
     JLabel newPasswordLabel;
     JPasswordField newPasswordText;
     JButton newPasswordButton;
 
+    // JPanel for creating new account
     JPanel createPanel;
     JLabel createUserLabel;
     JTextField createUserText;
@@ -86,16 +97,19 @@ public class Login extends JComponent implements Runnable {
     JButton createAQuizManual;
     JButton uploadAQuiz;
 
+    // JPanel for selecting a course to edit
     JPanel selectCoursePanel;
     JLabel courseLabel;
     JComboBox<String> courseBox;
     JButton courseSubmitButton;
 
+    // JPanel for selecting quiz to edit
     JPanel selectQuizPanel;
     JLabel quizLabel;
     JComboBox<String> quizBox;
     JButton quizSubmitButton;
 
+    // JPanel for quiz editing menu
     JPanel editQuizPanel;
     JButton editQuizName;
     JButton addNewQuestionButton;
@@ -105,11 +119,13 @@ public class Login extends JComponent implements Runnable {
     JButton editResponse;
     JButton editAnswerIndex;
 
+    // JPanel for changing name of quiz
     JPanel newQuizNamePanel;
     JLabel newQuizNameLabel;
     JTextField newQuizNameField;
     JButton newQuizNameButton;
 
+    // JPanel for adding question to quiz
     JPanel addQuestionPanel;
     JLabel questionPromptLabel;
     JTextField questionPromptField;
@@ -117,78 +133,93 @@ public class Login extends JComponent implements Runnable {
     JTextField questionWeightField;
     JButton addQuestionButton;
 
+    // JPanel for adding response to question
     JPanel addResponsePanel;
     JLabel addResponseLabel;
     JTextField addResponseField;
     JButton newResponseButton;
     JButton lastResponseButton;
 
+    // JPanel for selecting correct answer out of added responses
     JPanel addAnswerPanel;
     JLabel addAnswerLabel;
     JComboBox<String> addAnswerBox;
     JButton addAnswerButton;
     JButton newQuestionButton;
 
+    // JPanel for removing question from quiz
     JPanel removeQuestionPanel;
     JLabel removeQuestionLabel;
     JComboBox<String> removeQuestionBox;
     JButton removeQuestionSubmitButton;
 
+    // JPanel for editing question prompt
     JPanel editPromptPanel;
     JLabel editPromptLabel;
     JComboBox<String> editPromptBox;
     JButton editPromptButton;
 
+    // JPanel for adding prompt to question
     JPanel newPromptPanel;
     JLabel newPromptLabel;
     JTextField newPromptField;
     JButton newPromptButton;
 
+    // JPanel for editing question weight
     JPanel editWeightPanel;
     JLabel editWeightLabel;
     JComboBox<String> editWeightBox;
     JButton editWeightButton;
 
+    // JPanel for adding weight to question
     JPanel newWeightPanel;
     JLabel newWeightLabel;
     JTextField newWeightField;
     JButton newWeightButton;
 
+    // JPanel for editing individual question response
     JPanel editResponsePanel;
     JLabel editResponseLabel;
     JComboBox<String> editResponseBox;
     JButton editResponseButton;
 
+    // JPanel for selecting which response to edit
     JPanel newResponsePanel;
     JComboBox<String> newResponseBox;
     JButton newResponseSubmitButton;
 
+    // JPanel for adding new response to question
     JPanel enterResponsePanel;
     JLabel enterResponseLabel;
     JTextField enterResponseField;
     JButton enterResponseButton;
 
+    // JPanel for editing question answer
     JPanel editAnswerPanel;
     JLabel editAnswerLabel;
     JComboBox<String> editAnswerBox;
     JButton editAnswerButton;
 
+    // JPanel for adding new answer to panel
     JPanel responseSelectionPanel;
     JComboBox<String> responseSelection;
     JButton getResponseSelection;
 
     // Delete/Create Quiz GUI ------------------------------------------------------
 
+    // JPanel for deleting quiz from course
     JPanel deleteQuizPanel;
     JLabel deleteQuizLabel;
     JComboBox<String> deleteQuizBox;
     JButton deleteQuizButton;
 
+    // JPanel for creating new quiz from file
     JPanel quizFilePanel;
     JLabel quizFileLabel;
     JTextField quizFileField;
     JButton quizFileButton;
 
+    // JPanel for creating new quiz manually
     JPanel quizNamePanel;
     JLabel quizNameLabel;
     JTextField quizNameField;
@@ -196,11 +227,13 @@ public class Login extends JComponent implements Runnable {
 
     // Delete/Create Course GUI ------------------------------------------------------
 
+    // JPanel for deleting course
     JPanel deleteCoursePanel;
     JLabel deleteCourseLabel;
     JComboBox<String> deleteCourseBox;
     JButton deleteCourseButton;
 
+    // JPanel for creating new course
     JPanel newCoursePanel;
     JLabel newCourseLabel;
     JTextField newCourseField;
@@ -379,14 +412,17 @@ public class Login extends JComponent implements Runnable {
 
             // Login GUI ------------------------------------------------------
 
+            // Show login panel when login button is pressed
             if (e.getSource() == loginButton) {
                 welcomePanel.setVisible(false);
                 loginPanel.setVisible(true);
             }
+            // show create account panel when create account button is pressed
             if (e.getSource() == createButton) {
                 welcomePanel.setVisible(false);
                 createPanel.setVisible(true);
             }
+            // check if login information is correct when submit button is pressed
             if (e.getSource() == loginSubmitButton) {
                 // checks if account information is correct and creates user object
                 String username = userText.getText();
@@ -419,16 +455,19 @@ public class Login extends JComponent implements Runnable {
                 userText.setText("");
                 passText.setText("");
             }
+            // show account settings panel when pressed
             if (e.getSource() == teacherSettingsButton || e.getSource() == studentSettingsButton) {
                 mainTeacherPanel.setVisible(false);
                 mainStudentPanel.setVisible(false);
                 settingsPanel.setVisible(true);
             }
+            // show create and edit menu when pressed
             if (e.getSource() == createEditButton) {
                 mainTeacherPanel.setVisible(false);
                 createAndEditPanel.setVisible(true);
             }
 
+            // shows course selection menu for students when pressed
             if (e.getSource() == takeButton) {
                 mainStudentPanel.setVisible(false);
                 courses = new ArrayList<>();
@@ -450,10 +489,12 @@ public class Login extends JComponent implements Runnable {
             if (e.getSource() == viewButton) {
                 mainStudentPanel.setVisible(false);
             }
+            // shows account editing menu when pressed
             if (e.getSource() == editButton) {
                 settingsPanel.setVisible(false);
                 editAccountPanel.setVisible(true);
             }
+            // deletes account when pressed
             if (e.getSource() == deleteButton) {
                 // deletes user account
                 int confirmDelete = JOptionPane.showConfirmDialog(null,
@@ -469,14 +510,17 @@ public class Login extends JComponent implements Runnable {
                     }
                 }
             }
+            // shows username editing panel when pressed
             if (e.getSource() == editUserButton) {
                 editAccountPanel.setVisible(false);
                 editUserPanel.setVisible(true);
             }
+            // shows password editing panel when pressed
             if (e.getSource() == editPassButton) {
                 editAccountPanel.setVisible(false);
                 editPassPanel.setVisible(true);
             }
+            // changes the user's username to entered one when pressed
             if (e.getSource() == newUsernameButton) {
                 // changes user's username
                 if (newUsernameText.getText() != null) {
@@ -501,6 +545,7 @@ public class Login extends JComponent implements Runnable {
                             "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
+            // changes user's password to entered one when pressed
             if (e.getSource() == newPasswordButton) {
                 // changes user's password
                 if (newPasswordText.getPassword() != null) {
@@ -529,6 +574,7 @@ public class Login extends JComponent implements Runnable {
                             "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
+            // creates new account when pressed
             if (e.getSource() == newSubmitButton) {
                 // creates new user account
                 if (createUserText.getText() != null && createPassText.getPassword() != null) {
@@ -570,6 +616,7 @@ public class Login extends JComponent implements Runnable {
 
             // Edit Quiz GUI ------------------------------------------------------
 
+            // shows course selection menu when pressed
             if (e.getSource() == changeQuizzes) {
                 createAndEditPanel.setVisible(false);
                 String[] courses = new String[currentClass.getCourses().size()];
@@ -584,11 +631,13 @@ public class Login extends JComponent implements Runnable {
                 selectCoursePanel.setVisible(true);
             }
 
+            // shows course creation panel when pressed
             if (e.getSource() == createACourse) {
                 createAndEditPanel.setVisible(false);
                 newCoursePanel.setVisible(true);
             }
-             if (e.getSource() == deleteACourse) {
+            // shows course deletion panel when pressed
+            if (e.getSource() == deleteACourse) {
                  createAndEditPanel.setVisible(false);
                  String[] deleteCourses = new String[currentClass.getCourses().size()];
                  for (int i = 0; i < currentClass.getCourses().size(); i++) {
@@ -600,18 +649,21 @@ public class Login extends JComponent implements Runnable {
                  deleteCoursePanel.add(deleteCourseBox);
                  deleteCoursePanel.add(deleteCourseButton);
                  deleteCoursePanel.setVisible(true);
-             }
+            }
             if (e.getSource() == viewStudentSubmissions) {
                 createAndEditPanel.setVisible(false);
             }
+            // shows quiz selection panel when pressed
             if (e.getSource() == editQuizzes) {
                 changeQuizzesPanel.setVisible(false);
                 selectQuizPanel.setVisible(true);
             }
+            // shows quiz creation menu when pressed
             if (e.getSource() == createAQuiz) {
                 changeQuizzesPanel.setVisible(false);
                 createAQuizPanel.setVisible(true);
             }
+            // shows quiz deletion panel when pressed
             if (e.getSource() == deleteQuiz) {
                 changeQuizzesPanel.setVisible(false);
                 String[] deleteQuizzes = new String[course.getQuizzes().size()];
@@ -625,15 +677,18 @@ public class Login extends JComponent implements Runnable {
                 deleteQuizPanel.add(deleteQuizButton);
                 deleteQuizPanel.setVisible(true);
             }
+            // prompts user for new quiz name when pressed
             if (e.getSource() == createAQuizManual) {
                 createAQuizPanel.setVisible(false);
                 quizNamePanel.setVisible(true);
             }
+            // prompts user for quiz file name when pressed
             if (e.getSource() == uploadAQuiz) {
                 createAQuizPanel.setVisible(false);
                 quizFilePanel.setVisible(true);
             }
 
+            // sets course and shows quiz menu when pressed
             if (e.getSource() == courseSubmitButton) {
                 selectCoursePanel.setVisible(false);
                 try {
@@ -660,6 +715,7 @@ public class Login extends JComponent implements Runnable {
                     mainTeacherPanel.setVisible(true);
                 }
             }
+            // sets quiz and shows quiz editing menu when pressed
             if (e.getSource() == quizSubmitButton) {
                 selectQuizPanel.setVisible(false);
                 String quizName = (String) quizBox.getSelectedItem();
@@ -672,14 +728,17 @@ public class Login extends JComponent implements Runnable {
                 editQuizPanel.setVisible(true);
             }
 
+            // shows quiz name editing panel when pressed
             if (e.getSource() == editQuizName) {
                 editQuizPanel.setVisible(false);
                 newQuizNamePanel.setVisible(true);
             }
+            // shows question creation panel when pressed
             if (e.getSource() == addNewQuestionButton) {
                 editQuizPanel.setVisible(false);
                 addQuestionPanel.setVisible(true);
             }
+            // shows question removal panel when pressed
             if (e.getSource() == removeQuestionButton) {
                 editQuizPanel.setVisible(false);
                 String[] removePrompts = new String[quiz.getQuestions().size()];
@@ -693,6 +752,7 @@ public class Login extends JComponent implements Runnable {
                 removeQuestionPanel.add(removeQuestionSubmitButton);
                 removeQuestionPanel.setVisible(true);
             }
+            // shows question prompt editing panel when pressed
             if (e.getSource() == editQuestion) {
                 editQuizPanel.setVisible(false);
                 String[] editingPrompts = new String[quiz.getQuestions().size()];
@@ -706,6 +766,7 @@ public class Login extends JComponent implements Runnable {
                 editPromptPanel.add(editPromptButton);
                 editPromptPanel.setVisible(true);
             }
+            // shows question weight editing panel when pressed
             if (e.getSource() == editWeight) {
                 editQuizPanel.setVisible(false);
                 String[] editingWeights = new String[quiz.getQuestions().size()];
@@ -719,6 +780,7 @@ public class Login extends JComponent implements Runnable {
                 editWeightPanel.add(editWeightButton);
                 editWeightPanel.setVisible(true);
             }
+            // shows question response editing panel when pressed
             if (e.getSource() == editResponse) {
                 editQuizPanel.setVisible(false);
                 String[] editingResponses = new String[quiz.getQuestions().size()];
@@ -732,6 +794,7 @@ public class Login extends JComponent implements Runnable {
                 editResponsePanel.add(editResponseButton);
                 editResponsePanel.setVisible(true);
             }
+            // shows question answer editing panel when pressed
             if (e.getSource() == editAnswerIndex) {
                 editQuizPanel.setVisible(false);
                 String[] editingAnswers = new String[quiz.getQuestions().size()];
@@ -748,6 +811,7 @@ public class Login extends JComponent implements Runnable {
 
 
 
+            // prompts user for new quiz name when pressed
             if (e.getSource() == newQuizNameButton) {
                 if (newQuizNameField.getText() != null) {
                     quiz.setName(newQuizNameField.getText());
@@ -760,6 +824,7 @@ public class Login extends JComponent implements Runnable {
                 }
             }
 
+            // prompts user for new question weight and prompt when pressed
             if (e.getSource() == addQuestionButton) {
                 try {
                     weight = Integer.parseInt(questionWeightField.getText());
@@ -774,6 +839,7 @@ public class Login extends JComponent implements Runnable {
                 questionWeightField.setText("");
                 questionPromptField.setText("");
             }
+            // adds response to question then allows user to create another response
             if (e.getSource() == newResponseButton) {
                 if (addResponseField.getText() != null) {
                     response = addResponseField.getText();
@@ -784,6 +850,7 @@ public class Login extends JComponent implements Runnable {
                             "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
+            // adds response to question then sends user to answer selection panel
             if (e.getSource() == lastResponseButton) {
                 if (addResponseField.getText() != null) {
                     response = addResponseField.getText();
@@ -807,6 +874,7 @@ public class Login extends JComponent implements Runnable {
                             "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
+            // allows user to select which response is correct then returns to main menu
             if (e.getSource() == addAnswerButton) {
                 String correct = (String) addAnswerBox.getSelectedItem();
                 for (int i = 0; i < responses.size(); i++) {
@@ -820,6 +888,7 @@ public class Login extends JComponent implements Runnable {
                 addAnswerPanel.setVisible(false);
                 mainTeacherPanel.setVisible(true);
             }
+            // allows user to select which response is correct then create another question
             if (e.getSource() == newQuestionButton) {
                 String correct = (String) addAnswerBox.getSelectedItem();
                 for (int i = 0; i < responses.size(); i++) {
@@ -834,6 +903,7 @@ public class Login extends JComponent implements Runnable {
                 addQuestionPanel.setVisible(true);
             }
 
+            // removes question from quiz when pressed
             if (e.getSource() == removeQuestionSubmitButton) {
                 removeQuestionPanel.setVisible(false);
                 String removedPrompt = (String) removeQuestionBox.getSelectedItem();
@@ -846,11 +916,13 @@ public class Login extends JComponent implements Runnable {
                 editQuizPanel.setVisible(true);
             }
 
+            // allows user to enter new question prompt when pressed
             if (e.getSource() == editPromptButton) {
                 editPromptPanel.setVisible(false);
                 prompt = (String) editPromptBox.getSelectedItem();
                 newPromptPanel.setVisible(true);
             }
+            // changes existing question prompt when pressed
             if (e.getSource() == newPromptButton) {
                 if (newPromptField.getText() != null) {
                     String newPrompt = newPromptField.getText();
@@ -869,11 +941,13 @@ public class Login extends JComponent implements Runnable {
                 }
             }
 
+            // allows user to enter new question weight when pressed
             if (e.getSource() == editWeightButton) {
                 editWeightPanel.setVisible(false);
                 prompt = (String) editWeightBox.getSelectedItem();
                 newWeightPanel.setVisible(true);
             }
+            // changes existing question weight when pressed
             if (e.getSource() == newWeightButton) {
                 if (newWeightField.getText() != null) {
                     try {
@@ -898,6 +972,7 @@ public class Login extends JComponent implements Runnable {
                 }
             }
 
+            // allows user to select which question response to edit when pressed
             if (e.getSource() == editResponseButton) {
                 editResponsePanel.setVisible(false);
                 prompt = (String) editResponseBox.getSelectedItem();
@@ -915,11 +990,13 @@ public class Login extends JComponent implements Runnable {
                 newResponsePanel.add(newResponseBox, BorderLayout.WEST);
                 newResponsePanel.setVisible(true);
             }
+            // allows user to enter new question response when pressed
             if (e.getSource() == newResponseSubmitButton) {
                 newResponsePanel.setVisible(false);
                 response = (String) newResponseBox.getSelectedItem();
                 enterResponsePanel.setVisible(true);
             }
+            // changes existing question response when pressed
             if (e.getSource() == enterResponseButton) {
                 if (enterResponseField.getText() != null) {
                     String enteredResponse = enterResponseField.getText();
@@ -937,6 +1014,7 @@ public class Login extends JComponent implements Runnable {
                 }
             }
 
+            // allows user to select new question answer from existing response list when pressed
             if (e.getSource() == editAnswerButton) {
                 editAnswerPanel.setVisible(false);
                 prompt = (String) editAnswerBox.getSelectedItem();
@@ -954,6 +1032,7 @@ public class Login extends JComponent implements Runnable {
                 responseSelectionPanel.add(responseSelection, BorderLayout.WEST);
                 responseSelectionPanel.setVisible(true);
             }
+            // changes existing question answer when pressed
             if (e.getSource() == getResponseSelection) {
                 responseSelectionPanel.setVisible(false);
                 response = (String) responseSelection.getSelectedItem();
@@ -970,6 +1049,7 @@ public class Login extends JComponent implements Runnable {
 
             // Delete/Create Quiz GUI ------------------------------------------------------
 
+            // deletes quiz from course when pressed
             if (e.getSource() == deleteQuizButton) {
                 int confirmDelete = JOptionPane.showConfirmDialog(null,
                         "Are you sure you want to delete this quiz?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
@@ -986,6 +1066,7 @@ public class Login extends JComponent implements Runnable {
                 }
             }
 
+            // allows user to enter quiz file name and creates quiz when pressed
             if (e.getSource() == quizFileButton) {
                 if (quizFileField.getText() != null) {
                     String filename = quizFileField.getText();
@@ -1000,6 +1081,7 @@ public class Login extends JComponent implements Runnable {
                 }
             }
 
+            // allows user to enter new quiz name and begin question creation when pressed
             if (e.getSource() == quizNameButton) {
                 if (quizNameField.getText() != null) {
                     quizName = quizNameField.getText();
@@ -1017,6 +1099,7 @@ public class Login extends JComponent implements Runnable {
 
             // Delete/Create Course GUI ------------------------------------------------------
 
+            // allows user to delete entire course when pressed
             if (e.getSource() == deleteCourseButton) {
                 int confirmDelete = JOptionPane.showConfirmDialog(null,
                         "Are you sure you want to delete this course?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
@@ -1033,6 +1116,7 @@ public class Login extends JComponent implements Runnable {
                 }
             }
 
+            // allows user to enter course name and begin quiz creation when pressed
             if (e.getSource() == newCourseButton) {
                 if (newCourseField.getText() != null) {
                     courseName = newCourseField.getText();
