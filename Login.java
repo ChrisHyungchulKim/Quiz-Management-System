@@ -556,8 +556,6 @@ public class Login extends JComponent implements Runnable {
                 String results = "";
                 courseSelection = courseChoiceView.getSelectedIndex() + 1;
                 quizSelection = quizChoiceView.getSelectedIndex();
-                System.out.println(courseSelection);
-                System.out.println(quizSelection);
                 // TODO: When implementing delete the scanner call because its not needed
                 ArrayList<Submission> submissions = QuizMenu.readSubmissions(currentClass);
                 //assert submissions != null;
