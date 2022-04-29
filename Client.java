@@ -1,171 +1,271 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Objects;
 
 
-public class ClientHandler implements Runnable {
+public class Client extends JComponent implements Runnable {
 
-    private static Class info;
-    private static Objects concur;
-    private Socket clientSocket;
-    private BufferedReader in = null;
+    private static Socket sock;
+    private static String fileName;
+    private static BufferedReader stdin;
+    private static PrintStream os;
 
-    public ClientHandler(Socket client) {
-        this.clientSocket = client;
+
+    Image image; // the canvas
+    Graphics2D graphics2D;  // this will enable drawing
+    int curX; // current mouse x coordinate
+    int curY; // current mouse y coordinate
+    int oldX; // previous mouse x coordinate
+    int oldY; // previous mouse y coordinate
+    ArrayList<Course> test;
+    JButton enterButton; // button to enter information
+    JTextField strTextField; // text field for input
+
+    Client paint; // variable of the type SimplePaint
+    String input;
+    Socket socket;
+
+
+    public Client() {
+        input = "";
+        test = new ArrayList<>();
+        try {
+            socket = new Socket("localhost", 1112);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
     }
 
-    @Override
-    public void run() {
-        info = new Class(CourseInfoHandler.readCourseInfo());
-        try {
+    public static void main(String[] args) throws IOException {
+//        try {
+//            sock = new Socket("localhost", 1234);
+//            stdin = new BufferedReader(new InputStreamReader(System.in));
+//        } catch (Exception e) {
+//            System.err.println("Cannot connect to the server, try again later.");
+//            System.exit(1);
+        Client sampleGUI = new Client();
+        SwingUtilities.invokeLater(sampleGUI);
+    }
 
-//            in = new BufferedReader(new InputStreamReader(
-//                    clientSocket.getInputStream()));
-//            String clientSelection;
-//            while ((clientSelection = in.readLine()) != null) {
+//        os = new PrintStream(sock.getOutputStream());
+
+//        try {
+//            if ((selectAction()).equals("1")) {
+//
+//                os.println("1");
+//                sendFile();
 //
 //
-//                if (clientSelection.equals("1")) {
-//                    receiveFile();
+////                case "2" -> {
+////                    os.println("2");
+////                    System.err.print("Enter file name: ");
+////                    fileName = stdin.readLine();
+////                    os.println(fileName);
+////                    receiveFile(fileName);
+////                    break;
 //
-////                switch (clientSelection) {
-////                    case "1" -> receiveFile();
-////                    case "2" -> {
-////                        String receivingFileName;
-////                        while ((receivingFileName = in.readLine()) != null) {
-////                            sendFile(receivingFileName);
-////                        }
-////
-////                    }
-//                } else {
-//                    JOptionPane.showMessageDialog(null, "Not a valid input", "Error",
-//                            JOptionPane.PLAIN_MESSAGE);
-//                }
+//
+//            } else {
+//                JOptionPane.showMessageDialog(null, "Not a valid input", "Error",
+//                        JOptionPane.PLAIN_MESSAGE); //just an error message, alt tab if it doesn't pop up.
+//
 //            }
 //
-////
-//            in.close();
-            while (true) {
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
 
-                ObjectOutputStream objectOutput = new ObjectOutputStream(clientSocket.getOutputStream());
-                objectOutput.writeObject(getInfoCourseArray());
+    //sock.close();
+//}
+
+    public void run() {
+        JFrame frame = new JFrame();
+        strTextField = new JTextField(10);
+        enterButton = new JButton("Enter");
+
+        frame.setTitle("Simple Paint Walk through");
+
+        Container content = frame.getContentPane();
+
+        content.setLayout(new BorderLayout());
+        paint = new Client();
+        content.add(paint, BorderLayout.CENTER);
+
+        frame.setSize(250, 100);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setVisible(true);
+
+        JPanel panel = new JPanel();
+        panel.add(strTextField);
+        panel.add(enterButton);
+        content.add(panel, BorderLayout.NORTH);
+
+        this.readArrayList(socket);
 
 
-                while (true) {
+        enterButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
 
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                    PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
-                    String message = null;
-                    while (message == null) {
-                        message = reader.readLine();
-                    }
-
-                    if (message.equals("Get ArrayList")) {
-                        sendArrayList(clientSocket);
-                    } else if (message.equals("Sending Arraylist")) {
-                        receiveArrayList(clientSocket);
-                        System.out.printf(info.getCourses().get(0).getCourseName());
-                    } else if (message.equals("Update Arraylist")) {
-                        synchronized (concur) {
-                            sendArrayList(clientSocket);
-                            receiveArrayList(clientSocket);
-                            System.out.printf(info.getCourses().get(0).getCourseName());
-                        }
-                    }
-
+                input = strTextField.getText();
+                if(input.contains("Update Course Name:")) {
+                    serverCommunicator(socket, "Get ArrayList");
+                    readArrayList(socket);
+                    test.get(0).setCourseName(input.substring(test.indexOf(':') + 1));
+                    serverCommunicator(socket, "Sending Arraylist");
+                    writeArrayList(socket, test);
                 }
-            }
 
+            }
+        });
+
+    }
+
+    public static String selectAction() throws IOException {
+        System.out.println("1. Send file.");
+        System.out.println("2. Receive file.");
+        System.out.print("\nMake selection: ");
+
+        return stdin.readLine();
+    }
+
+    public static void sendFile() {
+        try {
+            System.err.print("Enter file name: ");
+            fileName = stdin.readLine();
+
+            File myFile = new File(fileName);
+            byte[] mybytearray = new byte[(int) myFile.length()];
+
+            FileInputStream fis = new FileInputStream(myFile);
+            BufferedInputStream bis = new BufferedInputStream(fis);
+
+
+            DataInputStream dis = new DataInputStream(bis);
+            dis.readFully(mybytearray, 0, mybytearray.length);
+
+            OutputStream os = sock.getOutputStream();
+
+            //Sending file name and file size to the server
+            DataOutputStream dos = new DataOutputStream(os);
+            dos.writeUTF(myFile.getName());
+            dos.writeLong(mybytearray.length);
+            dos.write(mybytearray, 0, mybytearray.length);
+            dos.flush();
+            System.out.println("File "+fileName+" sent to Server.");
+        } catch (Exception e) {
+            System.err.println("File does not exist!");
+        }
+    }
+
+    public static void serverCommunicator(Socket socket, String message) {
+        try {
+            PrintWriter writer = new PrintWriter(socket.getOutputStream());
+            writer.write(message);
+            writer.println();
+            writer.flush();
+
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    /**
+     * This method is to be used after you use the serverCommunicator() to get any message that the server
+     * sends back
+     *
+     * @param socket -  The socket the that the server communication is started on
+     * @return - The string that the server writes back
+     */
+    public static String readCommunication(Socket socket) {
+        String s1 = "";
+
+        try {
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String line = reader.readLine();
+
+            do {
+                if (s1.equals("")) {
+                    s1 += line;
+                } else {
+                    s1 += "\n" + line;
+                }
+                line = reader.readLine();
+                if (line.equals("end")) {
+                    return s1;
+                }
+            } while (true);
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+        return s1;
+    }
+
+    public void readArrayList(Socket socket) {
+        try {
+            ObjectInputStream objectInput = new ObjectInputStream(socket.getInputStream());
+
+            Object object = objectInput.readObject();
+            test =  (ArrayList<Course>) object;
+            System.out.println(test.get(0).getCourseName());
+
+        } catch (ClassNotFoundException e) {
+            System.out.println("The title list has not come from the server");
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
-    public static void sendArrayList(Socket socket) {
+    public void writeArrayList(Socket socket, ArrayList<Course> courses) {
         try {
             ObjectOutputStream objectOutput = new ObjectOutputStream(socket.getOutputStream());
-            objectOutput.writeObject(getInfoCourseArray());
+            objectOutput.writeObject(courses);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
 
-    public static void receiveArrayList(Socket socket) {
-        try {
-            ObjectInputStream objectInput = new ObjectInputStream(socket.getInputStream());
-            Object object = objectInput.readObject();
-            setInfoCourseArray((ArrayList<Course>) object);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static ArrayList<Course> getInfoCourseArray() {
-        return info.getCourses();
-    }
-
-    public static void setInfoCourseArray(ArrayList<Course> courses) {
-        info.setCourses(courses);
-        CourseInfoHandler.writeCourseInfo(info);
-    }
 
 
-    public void receiveFile() {
-        try {
-            int bytesRead;
-
-            DataInputStream clientData = new DataInputStream(clientSocket.getInputStream());
-
-            String fileName = clientData.readUTF();
-            OutputStream output = new FileOutputStream(("received_from_client_" + fileName));
-            long size = clientData.readLong();
-            byte[] buffer = new byte[1024];
-            while (size > 0 && (bytesRead = clientData.read(buffer, 0, (int) Math.min(buffer.length, size))) != -1) {
-                output.write(buffer, 0, bytesRead);
-                size -= bytesRead;
-            }
-
-            output.close(); //closing OS
-            clientData.close(); //closing DIS
-
-            System.out.println("File "+fileName+" received from client."); //file stored into the server
-        } catch (Exception ex) {
-            System.err.println("Client error. Connection closed.");
-        }
-    }
 
 
-//    public void sendFile(String fileName) {
+// We don't need the following method.
+
+//    public static void receiveFile(String fileName) {
 //        try {
-//            //handle file read
-//            File myFile = new File(fileName);
-//            byte[] byteArrayFile = new byte[(int) myFile.length()]; //making the file into a byte array to be read
+//            int bytesRead;
+//            InputStream in = sock.getInputStream();
 //
-//            FileInputStream fis = new FileInputStream(myFile);
-//            BufferedInputStream bis = new BufferedInputStream(fis);
+//            DataInputStream clientData = new DataInputStream(in);
 //
+//            fileName = clientData.readUTF();
+//            OutputStream output = new FileOutputStream(("received_from_server_" + fileName));
+//            long size = clientData.readLong();
+//            byte[] buffer = new byte[1024];
+//            while (size > 0 && (bytesRead = clientData.read(buffer, 0, (int) Math.min(buffer.length, size))) != -1) {
+//                //Condition: first checks to see if the remaining size is not 0.
+//                //Secondly, the read is limited to the minimum of the buffer length and the remaining size.
+//                output.write(buffer, 0, bytesRead);
+//                size -= bytesRead;
+//            }
 //
-//            DataInputStream dis = new DataInputStream(bis);
-//            dis.readFully(byteArrayFile, 0, byteArrayFile.length); //this readFully will ensure to read exactly the requested number of bytes.
+//            output.close();
+//            in.close();
 //
-//
-//            //handle file send over socket
-//            OutputStream os = clientSocket.getOutputStream();
-//
-//            //Sending "file name" and "file size" to the server
-//            DataOutputStream dos = new DataOutputStream(os);
-//            dos.writeUTF(myFile.getName()); //sending filename using writeUTF
-//            dos.writeLong(byteArrayFile.length); //sending file size using writeLong
-//            dos.write(byteArrayFile, 0, byteArrayFile.length);
-//            dos.flush();
-//            System.out.println("File "+fileName+" sent to client.");
-//        } catch (Exception e) {
+//            System.out.println("File "+fileName+" received from Server.");
+//        } catch (Exception ex) {
 //            System.err.println("File does not exist!");
+//
 //        }
 //    }
 }
