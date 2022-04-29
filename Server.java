@@ -1,4 +1,4 @@
-import java.io.IOException;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -7,10 +7,10 @@ public class Server {
     private static ServerSocket serverSocket;
     private static Socket clientSocket = null;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         try {
-            serverSocket = new ServerSocket(1234);
+            serverSocket = new ServerSocket(1112);
             System.out.println("Server started.");
         } catch (Exception e) {
             System.err.println("Port already in use.");
