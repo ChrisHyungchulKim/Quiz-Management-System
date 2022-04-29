@@ -22,22 +22,14 @@ public class Client {
         os = new PrintStream(sock.getOutputStream());
 
         try {
-            switch ((selectAction())) {
-                case "1" -> {
-                    os.println("1");
-                    sendFile();
-                    break;
-                }
-                case "2" -> {
-                    os.println("2");
-                    System.err.print("Enter file name: ");
-                    fileName = stdin.readLine();
-                    os.println(fileName);
-                    receiveFile(fileName);
-                    break;
+            if ((selectAction()).equals("1")) {
 
-                }
-                default -> JOptionPane.showMessageDialog(null, "Not a valid input", "Error",
+                os.println("1");
+                sendFile();
+
+            } else {
+                //Just an error GUI
+            JOptionPane.showMessageDialog(null, "Not a valid input", "Error",
                         JOptionPane.PLAIN_MESSAGE); //just an error message, alt tab if it doesn't pop up.
 
             }
@@ -47,7 +39,7 @@ public class Client {
         }
 
 
-        sock.close();
+        sock.close(); //closes socket
     }
 
     public static String selectAction() throws IOException {
@@ -84,34 +76,6 @@ public class Client {
             System.out.println("File "+fileName+" sent to Server.");
         } catch (Exception e) {
             System.err.println("File does not exist!");
-        }
-    }
-
-    public static void receiveFile(String fileName) {
-        try {
-            int bytesRead;
-            InputStream in = sock.getInputStream();
-
-            DataInputStream clientData = new DataInputStream(in);
-
-            fileName = clientData.readUTF();
-            OutputStream output = new FileOutputStream(("received_from_server_" + fileName));
-            long size = clientData.readLong();
-            byte[] buffer = new byte[1024];
-            while (size > 0 && (bytesRead = clientData.read(buffer, 0, (int) Math.min(buffer.length, size))) != -1) {
-                //Condition: first checks to see if the remaining size is not 0.
-                //Secondly, the read is limited to the minimum of the buffer length and the remaining size.
-                output.write(buffer, 0, bytesRead);
-                size -= bytesRead;
-            }
-
-            output.close();
-            in.close();
-
-            System.out.println("File "+fileName+" received from Server.");
-        } catch (IOException ex) {
-            System.out.println("Critical error!");
-
         }
     }
 }
