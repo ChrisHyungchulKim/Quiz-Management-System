@@ -321,7 +321,7 @@ public class Login extends JComponent implements Runnable {
     ArrayList<String> responses = new ArrayList<>();
     int questionIndex;
 
-    static Class currentClass;
+    Class currentClass;
 
     Socket socket;
 
@@ -493,7 +493,10 @@ public class Login extends JComponent implements Runnable {
             // shows course selection menu for students when pressed
             if (e.getSource() == takeButton) {
                 mainStudentPanel.setVisible(false);
+
                 courses = new ArrayList<>();
+                serverCommunicator(socket, "Get ArrayList");
+                readArrayList(socket);
 
                 int courseCounter = 0;
                 for (int f = 0; f < currentClass.getCourses().size(); f++) {
@@ -1240,9 +1243,21 @@ public class Login extends JComponent implements Runnable {
                     questions = new ArrayList<>();
                     quiz = new Quiz(quizName, questions);
 
+                    for (int i = 0; i < currentClass.getCourses().size(); i++) {
+                        System.out.println(currentClass.getCourses().get(i).getCourseName());
+                    }
+
                     serverCommunicator(socket, "Update Arraylist");
                     readArrayList(socket);
+
+                    for (int i = 0; i < currentClass.getCourses().size(); i++) {
+                        System.out.println(currentClass.getCourses().get(i).getCourseName());
+                    }
+
+                    System.out.println(courseIndex);
+                    System.out.println(currentClass.getCourses().size());
                     currentClass.getCourses().get(courseIndex).getQuizzes().add(quiz);
+                    //serverCommunicator(socket, "Sending Arraylist");
                     writeArrayList(socket, currentClass.getCourses());
 
                     quizIndex = currentClass.getCourses().get(courseIndex).getQuizzes().size() - 1;
@@ -1292,6 +1307,7 @@ public class Login extends JComponent implements Runnable {
                     writeArrayList(socket, currentClass.getCourses());
 
                     courseIndex = currentClass.getCourses().size() - 1;
+                    System.out.println(courseIndex);
                     newCourseField.setText("");
                     newCoursePanel.setVisible(false);
                     createAQuizPanel.setVisible(true);
@@ -1305,6 +1321,8 @@ public class Login extends JComponent implements Runnable {
 
             if (e.getSource() == courseChoiceSubmit) {
                 takeChooseCoursePanel.setVisible(false);
+                serverCommunicator(socket, "Get ArrayList");
+                readArrayList(socket);
                 quizList = new ArrayList<>();
                 cSelection = (String) courseChoice.getSelectedItem();
                 courseSelection = 0;
@@ -1422,6 +1440,8 @@ public class Login extends JComponent implements Runnable {
 
             if (e.getSource() == viewButton) {
                 mainStudentPanel.setVisible(false);
+                serverCommunicator(socket, "Get ArrayList");
+                readArrayList(socket);
                 courses = new ArrayList<>();
 
                 int courseCounter = 0;
@@ -2267,6 +2287,10 @@ public class Login extends JComponent implements Runnable {
 
             Object object = objectInput.readObject();
             currentClass.setCourses((ArrayList<Course>) object);
+            for (Course c : currentClass.getCourses()) {
+                System.out.println(c.getCourseName());
+            }
+            System.out.println("");
 
         } catch (ClassNotFoundException e) {
             System.out.println("The title list has not come from the server");
