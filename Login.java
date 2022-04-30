@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
+import java.net.Socket;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -276,12 +278,25 @@ public class Login extends JComponent implements Runnable {
 
     JPanel changeAnswer;
     JLabel changeAnswerPrompt;
-    //JComboBox<String> changeAnswerChoices; - unused
     JButton changeAnswerSubmit;
     int questionNumber;
 
     // formerly responses
     ArrayList<String> responseList;
+
+    // Submissions GUI ------------------------------------------------------
+
+    JPanel viewChooseCoursePanel;
+    JComboBox<String> courseChoiceView;
+    JButton viewChooseCourseButton;
+
+    JPanel viewChooseQuizPanel;
+    JComboBox<String> quizChoiceView;
+    JButton viewChooseQuizButton;
+
+    JPanel viewSubmission;
+    JTextArea submissionsDetails;
+    JButton mainMenuButton;
 
     // Other Fields ------------------------------------------------------
 
@@ -291,26 +306,34 @@ public class Login extends JComponent implements Runnable {
     Course course;
     String courseName;
     ArrayList<Quiz> quizzes;
+    int courseIndex;
 
     Quiz quiz;
     String quizName;
     ArrayList<Question> questions;
+    int quizIndex;
 
     Question question;
     String prompt;
-    String response;
     int weight;
     int index;
+    String response;
     ArrayList<String> responses = new ArrayList<>();
+    int questionIndex;
 
-    static Class currentClass = new Class(CourseInfoHandler.readCourseInfo());
+    static Class currentClass;
+
+    Socket socket;
 
     public Login() {
-        userList = LoggingIn.readUserInfo();
+        try {
+            socket = new Socket("localhost", 3005);
+        } catch (IOException i) {
+            JOptionPane.showMessageDialog(null, "Error! Failed connection!",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        userList = LoggingIn.readUserInfo(); // server
         user = null;
-
-        course = null;
-        quiz = null;
     }
 
     ActionListener actionListener = new ActionListener() {
@@ -438,7 +461,7 @@ public class Login extends JComponent implements Runnable {
                     teacherInput = false;
                 }
                 User userAttempt = new User(username, password.toString(), teacherInput);
-                boolean checkUser = LoggingIn.checkUser(userAttempt);
+                boolean checkUser = LoggingIn.checkUser(userAttempt); // server
                 if (checkUser) {
                     user = userAttempt;
                     loginPanel.setVisible(false);
@@ -500,7 +523,7 @@ public class Login extends JComponent implements Runnable {
                 int confirmDelete = JOptionPane.showConfirmDialog(null,
                         "Are you sure you want to delete this account?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
                 if (confirmDelete == JOptionPane.YES_OPTION) {
-                    boolean worked = LoggingIn.deleteAccount(user);
+                    boolean worked = LoggingIn.deleteAccount(user); // server
                     if (worked) {
                         settingsPanel.setVisible(false);
                         welcomePanel.setVisible(true);
@@ -526,7 +549,7 @@ public class Login extends JComponent implements Runnable {
                 if (newUsernameText.getText() != null) {
                     String newUsername = newUsernameText.getText();
                     // calls editUsername method
-                    boolean userSuccess = LoggingIn.editUsername(user, newUsername);
+                    boolean userSuccess = LoggingIn.editUsername(user, newUsername); // server
                     if (userSuccess) {
                         user.setUsername(newUsername);
                         editUserPanel.setVisible(false);
@@ -555,7 +578,7 @@ public class Login extends JComponent implements Runnable {
                         newPassword.append(c);
                     }
                     // calls editPassword method
-                    boolean passSuccess = LoggingIn.editPassword(user, user.getPassword(), newPassword.toString());
+                    boolean passSuccess = LoggingIn.editPassword(user, user.getPassword(), newPassword.toString()); // server
                     if (passSuccess) {
                         user.setPassword(newPassword.toString());
                         editPassPanel.setVisible(false);
@@ -593,7 +616,7 @@ public class Login extends JComponent implements Runnable {
                     }
                     user = new User(createUsername, createPassword.toString(), createTeacher);
                     // creates new user account or outputs error message
-                    boolean success = LoggingIn.createUser(user);
+                    boolean success = LoggingIn.createUser(user); // server
                     if (success) {
                         createPanel.setVisible(false);
                         if (createTeacher) {
@@ -619,6 +642,8 @@ public class Login extends JComponent implements Runnable {
             // shows course selection menu when pressed
             if (e.getSource() == changeQuizzes) {
                 createAndEditPanel.setVisible(false);
+                serverCommunicator(socket, "Get ArrayList");
+                readArrayList(socket);
                 String[] courses = new String[currentClass.getCourses().size()];
                 for (int i = 0; i < currentClass.getCourses().size(); i++) {
                     courses[i] = currentClass.getCourses().get(i).getCourseName();
@@ -638,17 +663,19 @@ public class Login extends JComponent implements Runnable {
             }
             // shows course deletion panel when pressed
             if (e.getSource() == deleteACourse) {
-                 createAndEditPanel.setVisible(false);
-                 String[] deleteCourses = new String[currentClass.getCourses().size()];
-                 for (int i = 0; i < currentClass.getCourses().size(); i++) {
-                     deleteCourses[i] = currentClass.getCourses().get(i).getCourseName();
-                 }
-                 deleteCoursePanel.remove(deleteCourseBox);
-                 deleteCoursePanel.remove(deleteCourseButton);
-                 deleteCourseBox = new JComboBox<>(deleteCourses);
-                 deleteCoursePanel.add(deleteCourseBox);
-                 deleteCoursePanel.add(deleteCourseButton);
-                 deleteCoursePanel.setVisible(true);
+                createAndEditPanel.setVisible(false);
+                serverCommunicator(socket, "Get ArrayList");
+                readArrayList(socket);
+                String[] deleteCourses = new String[currentClass.getCourses().size()];
+                for (int i = 0; i < currentClass.getCourses().size(); i++) {
+                    deleteCourses[i] = currentClass.getCourses().get(i).getCourseName();
+                }
+                deleteCoursePanel.remove(deleteCourseBox);
+                deleteCoursePanel.remove(deleteCourseButton);
+                deleteCourseBox = new JComboBox<>(deleteCourses);
+                deleteCoursePanel.add(deleteCourseBox);
+                deleteCoursePanel.add(deleteCourseButton);
+                deleteCoursePanel.setVisible(true);
             }
             if (e.getSource() == viewStudentSubmissions) {
                 createAndEditPanel.setVisible(false);
@@ -666,9 +693,11 @@ public class Login extends JComponent implements Runnable {
             // shows quiz deletion panel when pressed
             if (e.getSource() == deleteQuiz) {
                 changeQuizzesPanel.setVisible(false);
-                String[] deleteQuizzes = new String[course.getQuizzes().size()];
-                for (int i = 0; i < course.getQuizzes().size(); i++) {
-                    deleteQuizzes[i] = course.getQuizzes().get(i).getName();
+                serverCommunicator(socket, "Get ArrayList");
+                readArrayList(socket);
+                String[] deleteQuizzes = new String[course.getQuizzes().size()]; // use courseIndex
+                for (int i = 0; i < course.getQuizzes().size(); i++) { // use courseIndex
+                    deleteQuizzes[i] = course.getQuizzes().get(i).getName(); // use courseIndex
                 }
                 deleteQuizPanel.remove(deleteQuizBox);
                 deleteQuizPanel.remove(deleteQuizButton);
@@ -693,15 +722,17 @@ public class Login extends JComponent implements Runnable {
                 selectCoursePanel.setVisible(false);
                 try {
                     String courseName = (String) courseBox.getSelectedItem();
+                    serverCommunicator(socket, "Get ArrayList");
+                    readArrayList(socket);
                     for (int i = 0; i < currentClass.getCourses().size(); i++) {
                         assert courseName != null;
                         if (courseName.equals(currentClass.getCourses().get(i).getCourseName())) {
-                            course = currentClass.getCourses().get(i);
+                            courseIndex = i;
                         }
                     }
-                    String[] quizzes = new String[course.getQuizzes().size()];
-                    for (int i = 0; i < course.getQuizzes().size(); i++) {
-                        quizzes[i] = course.getQuizzes().get(i).getName();
+                    String[] quizzes = new String[currentClass.getCourses().get(courseIndex).getQuizzes().size()];
+                    for (int i = 0; i < currentClass.getCourses().get(courseIndex).getQuizzes().size(); i++) {
+                        quizzes[i] = currentClass.getCourses().get(courseIndex).getQuizzes().get(i).getName();
                     }
                     selectQuizPanel.remove(quizBox);
                     selectQuizPanel.remove(quizSubmitButton);
@@ -718,11 +749,13 @@ public class Login extends JComponent implements Runnable {
             // sets quiz and shows quiz editing menu when pressed
             if (e.getSource() == quizSubmitButton) {
                 selectQuizPanel.setVisible(false);
+                serverCommunicator(socket, "Get ArrayList");
+                readArrayList(socket);
                 String quizName = (String) quizBox.getSelectedItem();
-                for (int i = 0; i < course.getQuizzes().size(); i++) {
+                for (int i = 0; i < currentClass.getCourses().get(courseIndex).getQuizzes().size(); i++) {
                     assert quizName != null;
-                    if (quizName.equals(course.getQuizzes().get(i).getName())) {
-                        quiz = course.getQuizzes().get(i);
+                    if (quizName.equals(currentClass.getCourses().get(courseIndex).getQuizzes().get(i).getName())) {
+                        quizIndex = i;
                     }
                 }
                 editQuizPanel.setVisible(true);
@@ -741,9 +774,14 @@ public class Login extends JComponent implements Runnable {
             // shows question removal panel when pressed
             if (e.getSource() == removeQuestionButton) {
                 editQuizPanel.setVisible(false);
-                String[] removePrompts = new String[quiz.getQuestions().size()];
-                for (int i = 0; i < quiz.getQuestions().size(); i++) {
-                    removePrompts[i] = quiz.getQuestions().get(i).getPrompt();
+                serverCommunicator(socket, "Get ArrayList");
+                readArrayList(socket);
+                String[] removePrompts = new String[currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions().size()];
+                for (int i = 0; i < currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions().size(); i++) {
+                    removePrompts[i] = currentClass.getCourses().get(courseIndex)
+                            .getQuizzes().get(quizIndex).getQuestions().get(i).getPrompt();
                 }
                 removeQuestionPanel.remove(removeQuestionBox);
                 removeQuestionPanel.remove(removeQuestionSubmitButton);
@@ -755,9 +793,14 @@ public class Login extends JComponent implements Runnable {
             // shows question prompt editing panel when pressed
             if (e.getSource() == editQuestion) {
                 editQuizPanel.setVisible(false);
-                String[] editingPrompts = new String[quiz.getQuestions().size()];
-                for (int i = 0; i < quiz.getQuestions().size(); i++) {
-                    editingPrompts[i] = quiz.getQuestions().get(i).getPrompt();
+                serverCommunicator(socket, "Get ArrayList");
+                readArrayList(socket);
+                String[] editingPrompts = new String[currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions().size()];
+                for (int i = 0; i < currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions().size(); i++) {
+                    editingPrompts[i] = currentClass.getCourses().get(courseIndex)
+                            .getQuizzes().get(quizIndex).getQuestions().get(i).getPrompt();
                 }
                 editPromptPanel.remove(editPromptBox);
                 editPromptPanel.remove(editPromptButton);
@@ -769,9 +812,14 @@ public class Login extends JComponent implements Runnable {
             // shows question weight editing panel when pressed
             if (e.getSource() == editWeight) {
                 editQuizPanel.setVisible(false);
-                String[] editingWeights = new String[quiz.getQuestions().size()];
-                for (int i = 0; i < quiz.getQuestions().size(); i++) {
-                    editingWeights[i] = quiz.getQuestions().get(i).getPrompt();
+                serverCommunicator(socket, "Get ArrayList");
+                readArrayList(socket);
+                String[] editingWeights = new String[currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions().size()];
+                for (int i = 0; i < currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions().size(); i++) {
+                    editingWeights[i] = currentClass.getCourses().get(courseIndex)
+                            .getQuizzes().get(quizIndex).getQuestions().get(i).getPrompt();
                 }
                 editWeightPanel.remove(editWeightBox);
                 editWeightPanel.remove(editWeightButton);
@@ -783,9 +831,14 @@ public class Login extends JComponent implements Runnable {
             // shows question response editing panel when pressed
             if (e.getSource() == editResponse) {
                 editQuizPanel.setVisible(false);
-                String[] editingResponses = new String[quiz.getQuestions().size()];
-                for (int i = 0; i < quiz.getQuestions().size(); i++) {
-                    editingResponses[i] = quiz.getQuestions().get(i).getPrompt();
+                serverCommunicator(socket, "Get ArrayList");
+                readArrayList(socket);
+                String[] editingResponses = new String[currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions().size()];
+                for (int i = 0; i < currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions().size(); i++) {
+                    editingResponses[i] = currentClass.getCourses().get(courseIndex)
+                            .getQuizzes().get(quizIndex).getQuestions().get(i).getPrompt();
                 }
                 editResponsePanel.remove(editResponseBox);
                 editResponsePanel.remove(editResponseButton);
@@ -797,9 +850,14 @@ public class Login extends JComponent implements Runnable {
             // shows question answer editing panel when pressed
             if (e.getSource() == editAnswerIndex) {
                 editQuizPanel.setVisible(false);
-                String[] editingAnswers = new String[quiz.getQuestions().size()];
-                for (int i = 0; i < quiz.getQuestions().size(); i++) {
-                    editingAnswers[i] = quiz.getQuestions().get(i).getPrompt();
+                serverCommunicator(socket, "Get ArrayList");
+                readArrayList(socket);
+                String[] editingAnswers = new String[currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions().size()];
+                for (int i = 0; i < currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions().size(); i++) {
+                    editingAnswers[i] = currentClass.getCourses().get(courseIndex)
+                            .getQuizzes().get(quizIndex).getQuestions().get(i).getPrompt();
                 }
                 editAnswerPanel.remove(editAnswerBox);
                 editAnswerPanel.remove(editAnswerButton);
@@ -814,7 +872,11 @@ public class Login extends JComponent implements Runnable {
             // prompts user for new quiz name when pressed
             if (e.getSource() == newQuizNameButton) {
                 if (newQuizNameField.getText() != null) {
-                    quiz.setName(newQuizNameField.getText());
+                    serverCommunicator(socket, "Update Arraylist");
+                    readArrayList(socket);
+                    currentClass.getCourses().get(courseIndex)
+                            .getQuizzes().get(quizIndex).setName(newQuizNameField.getText());
+                    writeArrayList(socket, currentClass.getCourses());
                     newQuizNameField.setText("");
                     newQuizNamePanel.setVisible(false);
                     editQuizPanel.setVisible(true);
@@ -884,7 +946,13 @@ public class Login extends JComponent implements Runnable {
                     }
                 }
                 question = new Question(prompt, responses, index, weight);
-                quiz.addQuestion(question, -1);
+
+                serverCommunicator(socket, "Update Arraylist");
+                readArrayList(socket);
+                currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).addQuestion(question, -1);
+                writeArrayList(socket, currentClass.getCourses());
+
                 addAnswerPanel.setVisible(false);
                 mainTeacherPanel.setVisible(true);
             }
@@ -898,7 +966,13 @@ public class Login extends JComponent implements Runnable {
                     }
                 }
                 question = new Question(prompt, responses, index, weight);
-                quiz.addQuestion(question, -1);
+
+                serverCommunicator(socket, "Update Arraylist");
+                readArrayList(socket);
+                currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).addQuestion(question, -1);
+                writeArrayList(socket, currentClass.getCourses());
+
                 addAnswerPanel.setVisible(false);
                 addQuestionPanel.setVisible(true);
             }
@@ -906,13 +980,22 @@ public class Login extends JComponent implements Runnable {
             // removes question from quiz when pressed
             if (e.getSource() == removeQuestionSubmitButton) {
                 removeQuestionPanel.setVisible(false);
+
+                serverCommunicator(socket, "Update Arraylist");
+                readArrayList(socket);
                 String removedPrompt = (String) removeQuestionBox.getSelectedItem();
-                for (int i = 0; i < quiz.getQuestions().size(); i++) {
+                for (int i = 0; i < currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions().size(); i++) {
                     assert removedPrompt != null;
-                    if (removedPrompt.equals(quiz.getQuestions().get(i).getPrompt())) {
-                        quiz.removeQuestion(quiz.getQuestions().get(i));
+                    if (removedPrompt.equals(currentClass.getCourses().get(courseIndex)
+                            .getQuizzes().get(quizIndex).getQuestions().get(i).getPrompt())) {
+                        currentClass.getCourses().get(courseIndex)
+                                .getQuizzes().get(quizIndex).removeQuestion(currentClass.getCourses().get(courseIndex)
+                                        .getQuizzes().get(quizIndex).getQuestions().get(i));
                     }
                 }
+                writeArrayList(socket, currentClass.getCourses());
+
                 editQuizPanel.setVisible(true);
             }
 
@@ -925,13 +1008,21 @@ public class Login extends JComponent implements Runnable {
             // changes existing question prompt when pressed
             if (e.getSource() == newPromptButton) {
                 if (newPromptField.getText() != null) {
+
+                    serverCommunicator(socket, "Update Arraylist");
+                    readArrayList(socket);
                     String newPrompt = newPromptField.getText();
-                    for (int i = 0; i < quiz.getQuestions().size(); i++) {
+                    for (int i = 0; i < currentClass.getCourses().get(courseIndex)
+                            .getQuizzes().get(quizIndex).getQuestions().size(); i++) {
                         assert prompt != null;
-                        if (prompt.equals(quiz.getQuestions().get(i).getPrompt())) {
-                            quiz.getQuestions().get(i).setPrompt(newPrompt);
+                        if (prompt.equals(currentClass.getCourses().get(courseIndex)
+                                .getQuizzes().get(quizIndex).getQuestions().get(i).getPrompt())) {
+                            currentClass.getCourses().get(courseIndex)
+                                    .getQuizzes().get(quizIndex).getQuestions().get(i).setPrompt(newPrompt);
                         }
                     }
+                    writeArrayList(socket, currentClass.getCourses());
+
                     newPromptField.setText("");
                     newPromptPanel.setVisible(false);
                     editQuizPanel.setVisible(true);
@@ -953,12 +1044,20 @@ public class Login extends JComponent implements Runnable {
                     try {
                         String weightString = newWeightField.getText();
                         weight = Integer.parseInt(weightString);
-                        for (int i = 0; i < quiz.getQuestions().size(); i++) {
+
+                        serverCommunicator(socket, "Update Arraylist");
+                        readArrayList(socket);
+                        for (int i = 0; i < currentClass.getCourses().get(courseIndex)
+                                .getQuizzes().get(quizIndex).getQuestions().size(); i++) {
                             assert prompt != null;
-                            if (prompt.equals(quiz.getQuestions().get(i).getPrompt())) {
-                                quiz.getQuestions().get(i).setWeight(weight);
+                            if (prompt.equals(currentClass.getCourses().get(courseIndex)
+                                    .getQuizzes().get(quizIndex).getQuestions().get(i).getPrompt())) {
+                                currentClass.getCourses().get(courseIndex)
+                                        .getQuizzes().get(quizIndex).getQuestions().get(i).setWeight(weight);
                             }
                         }
+                        writeArrayList(socket, currentClass.getCourses());
+
                         newWeightPanel.setVisible(false);
                         editQuizPanel.setVisible(true);
                     } catch (NumberFormatException n) {
@@ -976,14 +1075,23 @@ public class Login extends JComponent implements Runnable {
             if (e.getSource() == editResponseButton) {
                 editResponsePanel.setVisible(false);
                 prompt = (String) editResponseBox.getSelectedItem();
-                for (int i = 0; i < quiz.getQuestions().size(); i++) {
-                    if (prompt.equals(quiz.getQuestions().get(i).getPrompt())) {
-                        question = quiz.getQuestions().get(i);
+                serverCommunicator(socket, "Get ArrayList");
+                readArrayList(socket);
+                for (int i = 0; i < currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions().size(); i++) {
+                    if (prompt.equals(currentClass.getCourses().get(courseIndex)
+                            .getQuizzes().get(quizIndex).getQuestions().get(i).getPrompt())) {
+                        questionIndex = i;
                     }
                 }
-                String[] questionResponses = new String[question.getResponses().size()];
-                for (int x = 0; x < question.getResponses().size(); x++) {
-                    questionResponses[x] = question.getResponses().get(x);
+                String[] questionResponses = new String[currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions().get(questionIndex).getResponses().size()];
+                for (int x = 0; x < currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions()
+                        .get(questionIndex).getResponses().size(); x++) {
+                    questionResponses[x] = currentClass.getCourses().get(courseIndex)
+                            .getQuizzes().get(quizIndex).getQuestions()
+                            .get(questionIndex).getResponses().get(x);
                 }
                 newResponsePanel.remove(newResponseBox);
                 newResponseBox = new JComboBox<>(questionResponses);
@@ -1000,11 +1108,22 @@ public class Login extends JComponent implements Runnable {
             if (e.getSource() == enterResponseButton) {
                 if (enterResponseField.getText() != null) {
                     String enteredResponse = enterResponseField.getText();
-                    for (int i = 0; i < question.getResponses().size(); i++) {
-                        if (response.equals(question.getResponses().get(i))) {
-                            question.getResponses().set(i, enteredResponse);
+
+                    serverCommunicator(socket, "Update Arraylist");
+                    readArrayList(socket);
+                    for (int i = 0; i < currentClass.getCourses().get(courseIndex)
+                            .getQuizzes().get(quizIndex).getQuestions()
+                            .get(questionIndex).getResponses().size(); i++) {
+                        if (response.equals(currentClass.getCourses().get(courseIndex)
+                                .getQuizzes().get(quizIndex).getQuestions()
+                                .get(questionIndex).getResponses().get(i))) {
+                            currentClass.getCourses().get(courseIndex)
+                                    .getQuizzes().get(quizIndex).getQuestions()
+                                    .get(questionIndex).getResponses().set(i, enteredResponse);
                         }
                     }
+                    writeArrayList(socket, currentClass.getCourses());
+
                     enterResponseField.setText("");
                     enterResponsePanel.setVisible(false);
                     editQuizPanel.setVisible(true);
@@ -1018,14 +1137,24 @@ public class Login extends JComponent implements Runnable {
             if (e.getSource() == editAnswerButton) {
                 editAnswerPanel.setVisible(false);
                 prompt = (String) editAnswerBox.getSelectedItem();
-                for (int i = 0; i < quiz.getQuestions().size(); i++) {
-                    if (prompt.equals(quiz.getQuestions().get(i).getPrompt())) {
-                        question = quiz.getQuestions().get(i);
+                serverCommunicator(socket, "Get ArrayList");
+                readArrayList(socket);
+                for (int i = 0; i < currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions().size(); i++) {
+                    if (prompt.equals(currentClass.getCourses().get(courseIndex)
+                            .getQuizzes().get(quizIndex).getQuestions().get(i).getPrompt())) {
+                        questionIndex = i;
                     }
                 }
-                String[] questionResponses = new String[question.getResponses().size()];
-                for (int x = 0; x < question.getResponses().size(); x++) {
-                    questionResponses[x] = question.getResponses().get(x);
+                String[] questionResponses = new String[currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions()
+                        .get(questionIndex).getResponses().size()];
+                for (int x = 0; x < currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions()
+                        .get(questionIndex).getResponses().size(); x++) {
+                    questionResponses[x] = currentClass.getCourses().get(courseIndex)
+                            .getQuizzes().get(quizIndex).getQuestions()
+                            .get(questionIndex).getResponses().get(x);
                 }
                 responseSelectionPanel.remove(responseSelection);
                 responseSelection = new JComboBox<>(questionResponses);
@@ -1037,13 +1166,24 @@ public class Login extends JComponent implements Runnable {
                 responseSelectionPanel.setVisible(false);
                 response = (String) responseSelection.getSelectedItem();
                 int responseNumber = 0;
-                for (int i = 0; i < question.getResponses().size(); i++) {
+
+                serverCommunicator(socket, "Update Arraylist");
+                readArrayList(socket);
+                for (int i = 0; i < currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions()
+                        .get(questionIndex).getResponses().size(); i++) { //use question index
                     assert response != null;
-                    if (response.equals(question.getResponses().get(i))) {
+                    if (response.equals(currentClass.getCourses().get(courseIndex)
+                            .getQuizzes().get(quizIndex).getQuestions()
+                            .get(questionIndex).getResponses().get(i))) { // use question index
                         responseNumber = i;
                     }
                 }
-                question.setAnswer(responseNumber);
+                currentClass.getCourses().get(courseIndex)
+                        .getQuizzes().get(quizIndex).getQuestions()
+                        .get(questionIndex).setAnswer(responseNumber);
+                writeArrayList(socket, currentClass.getCourses());
+
                 editQuizPanel.setVisible(true);
             }
 
@@ -1056,12 +1196,18 @@ public class Login extends JComponent implements Runnable {
                 if (confirmDelete == JOptionPane.YES_OPTION) {
                     deleteQuizPanel.setVisible(false);
                     String deleteQuizName = (String) deleteQuizBox.getSelectedItem();
-                    for (int i = 0; i < course.getQuizzes().size(); i++) {
+
+                    serverCommunicator(socket, "Update Arraylist");
+                    readArrayList(socket);
+                    for (int i = 0; i < currentClass.getCourses().get(courseIndex).getQuizzes().size(); i++) {
                         assert deleteQuizName != null;
-                        if (deleteQuizName.equals(course.getQuizzes().get(i).getName())) {
-                            course.getQuizzes().remove(i);
+                        if (deleteQuizName.equals(currentClass.getCourses().get(courseIndex)
+                                .getQuizzes().get(i).getName())) {
+                            currentClass.getCourses().get(courseIndex).getQuizzes().remove(i);
                         }
                     }
+                    writeArrayList(socket, currentClass.getCourses());
+
                     changeQuizzesPanel.setVisible(true);
                 }
             }
@@ -1071,7 +1217,13 @@ public class Login extends JComponent implements Runnable {
                 if (quizFileField.getText() != null) {
                     String filename = quizFileField.getText();
                     quiz = new Quiz(filename);
-                    course.getQuizzes().add(quiz);
+
+                    serverCommunicator(socket, "Update Arraylist");
+                    readArrayList(socket);
+                    currentClass.getCourses().get(courseIndex).getQuizzes().add(quiz);
+                    writeArrayList(socket, currentClass.getCourses());
+
+                    quizIndex = currentClass.getCourses().get(courseIndex).getQuizzes().size() - 1;
                     quizFileField.setText("");
                     quizFilePanel.setVisible(false);
                     changeQuizzesPanel.setVisible(true);
@@ -1087,7 +1239,13 @@ public class Login extends JComponent implements Runnable {
                     quizName = quizNameField.getText();
                     questions = new ArrayList<>();
                     quiz = new Quiz(quizName, questions);
-                    course.getQuizzes().add(quiz);
+
+                    serverCommunicator(socket, "Update Arraylist");
+                    readArrayList(socket);
+                    currentClass.getCourses().get(courseIndex).getQuizzes().add(quiz);
+                    writeArrayList(socket, currentClass.getCourses());
+
+                    quizIndex = currentClass.getCourses().get(courseIndex).getQuizzes().size() - 1;
                     quizNameField.setText("");
                     quizNamePanel.setVisible(false);
                     addQuestionPanel.setVisible(true);
@@ -1106,12 +1264,17 @@ public class Login extends JComponent implements Runnable {
                 if (confirmDelete == JOptionPane.YES_OPTION) {
                     deleteCoursePanel.setVisible(false);
                     String deleteCourseName = (String) deleteCourseBox.getSelectedItem();
+
+                    serverCommunicator(socket, "Update Arraylist");
+                    readArrayList(socket);
                     for (int i = 0; i < currentClass.getCourses().size(); i++) {
                         assert deleteCourseName != null;
                         if (deleteCourseName.equals(currentClass.getCourses().get(i).getCourseName())) {
                             currentClass.getCourses().remove(i);
                         }
                     }
+                    writeArrayList(socket, currentClass.getCourses());
+
                     createAndEditPanel.setVisible(true);
                 }
             }
@@ -1122,7 +1285,13 @@ public class Login extends JComponent implements Runnable {
                     courseName = newCourseField.getText();
                     quizzes = new ArrayList<>();
                     course = new Course(courseName, quizzes);
+
+                    serverCommunicator(socket, "Update Arraylist");
+                    readArrayList(socket);
                     currentClass.getCourses().add(course);
+                    writeArrayList(socket, currentClass.getCourses());
+
+                    courseIndex = currentClass.getCourses().size() - 1;
                     newCourseField.setText("");
                     newCoursePanel.setVisible(false);
                     createAQuizPanel.setVisible(true);
@@ -1205,7 +1374,7 @@ public class Login extends JComponent implements Runnable {
                 Submission submission = new Submission(user,
                         currentClass.getCourses().get(courseSelection - 1).getQuizzes()
                                 .get(quizSelection - 1), currentClass.getCourses().get(courseSelection - 1),
-                        responseList, timestamp.toString(), false, new ArrayList<String>());
+                        responseList, timestamp.toString(), false, new ArrayList<>());
                 submission.writeSubmission(submission, true);
                 mainStudentPanel.setVisible(true);
             }
@@ -1245,7 +1414,119 @@ public class Login extends JComponent implements Runnable {
                 Submission submission = new Submission(user,
                         currentClass.getCourses().get(courseSelection - 1).getQuizzes()
                                 .get(quizSelection - 1), currentClass.getCourses().get(courseSelection - 1),
-                        responseList, timestamp.toString(), false, new ArrayList<String>());
+                        responseList, timestamp.toString(), false, new ArrayList<>());
+                mainStudentPanel.setVisible(true);
+            }
+
+            // Submissions GUI ------------------------------------------------------
+
+            if (e.getSource() == viewButton) {
+                mainStudentPanel.setVisible(false);
+                courses = new ArrayList<>();
+
+                int courseCounter = 0;
+                for (int f = 0; f < currentClass.getCourses().size(); f++) {
+                    courses.add(currentClass.getCourses().get(courseCounter).getCourseName());
+                    courseCounter++;
+                }
+                viewChooseCoursePanel.remove(pickCourseLabel);
+                viewChooseCoursePanel.remove(courseChoiceView);
+                courseChoiceView = new JComboBox(courses.toArray());
+                pickCourseLabel = new JLabel("Pick a course: ");
+                viewChooseCoursePanel.add(pickCourseLabel, 0);
+                viewChooseCoursePanel.add(courseChoiceView, 1);
+                viewChooseCoursePanel.setVisible(true);
+            }
+            if (e.getSource() == viewChooseCourseButton) {
+                viewChooseCoursePanel.setVisible(false);
+                quizList = new ArrayList<>();
+                cSelection = (String) courseChoiceView.getSelectedItem();
+                courseSelection = 0;
+
+                for (int i = 0; i < courses.size(); i++) {
+                    if (courses.get(i).equals(cSelection)) {
+                        courseSelection = i;
+                    }
+                }
+
+                courseSelection++;
+                int quizCounter = 0;
+                for (int f = 0; f < currentClass.getCourses().get(courseSelection - 1).getQuizzes().size(); f++) {
+                    quizList.add(currentClass.getCourses().get(courseSelection - 1)
+                            .getQuizzes().get(quizCounter).getName());
+                    quizCounter++;
+                }
+
+                viewChooseQuizPanel.remove(pickQuizLabel);
+                viewChooseQuizPanel.remove(quizChoiceView);
+                quizChoiceView = new JComboBox(quizList.toArray());
+                pickQuizLabel = new JLabel("Pick a quiz: ");
+                viewChooseQuizPanel.add(pickQuizLabel, 0);
+                viewChooseQuizPanel.add(quizChoiceView, 1);
+                viewChooseQuizPanel.setVisible(true);
+            }
+            if (e.getSource() == viewChooseQuizButton) {
+                viewChooseQuizPanel.setVisible(false);
+
+                String results = "";
+                courseSelection = courseChoiceView.getSelectedIndex() + 1;
+                quizSelection = quizChoiceView.getSelectedIndex();
+                ArrayList<Submission> submissions = QuizMenu.readSubmissions(currentClass);
+                //assert submissions != null;
+                panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+                if (submissions != null) {
+                    int counter = 0;
+                    for (Submission s : submissions) {
+                        if (s.getStudent().getUsername().equals(user.getUsername())
+                                && s.getCourseOfQuiz().getCourseName()
+                                .equals(currentClass.getCourses().get(courseSelection - 1).getCourseName())
+                                && s.getQuizBeingTaken().getName()
+                                .equals(currentClass.getCourses().get(courseSelection - 1)
+                                        .getQuizzes().get(quizSelection).getName())
+                                && !s.isGraded()) {
+                            results += String.format("Quiz Name: %s\n", s.getQuizBeingTaken().getName());
+                            for (int i = 0; i < s.getResponses().size(); i++) {
+                                results += String.format("Question: %s\n", s.getQuizBeingTaken().getQuestions().get(i));
+                                results += String.format("Your Answer: %s\n", s.getResponses().get(i));
+                                results += String.format("Your Grade: Not Graded\n");
+                            }
+                            results += String.format("Submission Timestamp: %s\n", s.getTime());
+                        } else if (s.getStudent().getUsername().equals(user.getUsername())
+                                && s.getCourseOfQuiz().getCourseName()
+                                .equals(currentClass.getCourses().get(courseSelection - 1).getCourseName())
+                                && s.getQuizBeingTaken().getName()
+                                .equals(currentClass.getCourses().get(courseSelection - 1)
+                                        .getQuizzes().get(quizSelection).getName())
+                                && s.isGraded()) {
+                            results += String.format("Quiz Name: %s\n", s.getQuizBeingTaken().getName());
+                            for (int i = 0; i < s.getResponses().size(); i++) {
+                                results += String.format("Question: %s\n", s.getQuizBeingTaken().getQuestions().get(i));
+                                results += String.format("Your Answer: %s\n", s.getResponses().get(i));
+                                results += String.format("Your Grade: %s\n", s.getGrades().get(i));
+                            }
+                            results += String.format("Submission Timestamp: %s\n", s.getTime());
+                        } else if (!(s.getStudent().getUsername().equals(user.getUsername())
+                                && s.getCourseOfQuiz().getCourseName()
+                                .equals(currentClass.getCourses().get(courseSelection - 1).getCourseName())
+                                && s.getQuizBeingTaken().getName()
+                                .equals(currentClass.getCourses().get(courseSelection - 1)
+                                        .getQuizzes().get(quizSelection).getName())) && (results.equals(""))) {
+                            results = String.format("Quiz Name: %s\nNo Submissions to view",
+                                    currentClass.getCourses().get(courseSelection - 1)
+                                            .getQuizzes().get(quizSelection).getName());
+                        }
+                    }
+                    counter++;
+                } else {
+                    results = "No Submissions to view\n";
+                }
+                viewSubmission.remove(submissionsDetails);
+                submissionsDetails = new JTextArea(results);
+                viewSubmission.add(submissionsDetails, 0);
+                viewSubmission.setVisible(true);
+            }
+            if (e.getSource() == mainMenuButton) {
+                viewSubmission.setVisible(false);
                 mainStudentPanel.setVisible(true);
             }
         }
@@ -1261,6 +1542,11 @@ public class Login extends JComponent implements Runnable {
         container.setLayout(new BorderLayout());
         login = new Login();
         container.add(login, BorderLayout.CENTER);
+
+        serverCommunicator(socket, "Get ArrayList");
+        ArrayList<Course> firstCourses = new ArrayList<>();
+        currentClass = new Class(firstCourses);
+        readArrayList(socket);
 
         frame.setSize(1000, 400);
         frame.setLocationRelativeTo(null);
@@ -1877,5 +2163,132 @@ public class Login extends JComponent implements Runnable {
 
         panel.add(changeAnswer, BorderLayout.CENTER);
         changeAnswer.setVisible(false);
+
+        // Submissions GUI ------------------------------------------------------
+
+        // Choosing a course
+        viewChooseCoursePanel = new JPanel();
+        viewChooseCourseButton = new JButton("Submit");
+        pickCourseLabel = new JLabel();
+        courseChoiceView = new JComboBox<>();
+        viewChooseCourseButton.addActionListener(actionListener);
+
+        viewChooseCoursePanel.add(viewChooseCourseButton);
+
+        panel.add(viewChooseCoursePanel, BorderLayout.CENTER);
+        viewChooseCoursePanel.setVisible(false);
+
+        // Choosing quiz
+        viewChooseQuizPanel = new JPanel();
+        viewChooseQuizButton = new JButton("Submit");
+        pickQuizLabel = new JLabel();
+        quizChoiceView = new JComboBox<>();
+        viewChooseQuizButton.addActionListener(actionListener);
+
+        viewChooseQuizPanel.add(viewChooseQuizButton);
+
+        panel.add(viewChooseQuizPanel);
+        viewChooseQuizPanel.setVisible(false);
+
+        // Viewing results
+        viewSubmission = new JPanel();
+        mainMenuButton = new JButton("Main Menu");
+        submissionsDetails = new JTextArea();
+        mainMenuButton.addActionListener(actionListener);
+
+        viewSubmission.add(mainMenuButton);
+
+        panel.add(viewSubmission, BorderLayout.CENTER);
+        viewSubmission.setVisible(false);
     }
+
+    /**
+     * This method is used to take to the server and in conjunction with the readCommunication() can be used
+     * to talk with a server to get necessary information
+     *
+     * @param socket -  The socket the that the server communication is started on
+     * @param message - The String message that you want to write to the server
+     */
+    public static void serverCommunicator(Socket socket, String message) {
+        try {
+            PrintWriter writer = new PrintWriter(socket.getOutputStream());
+            writer.write(message);
+            writer.println();
+            writer.flush();
+
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    /**
+     * This method is to be used after you use the serverCommunicator() to get any message that the server
+     * sends back
+     *
+     * @param socket -  The socket that the server communication is started on
+     * @return - The string that the server writes back
+     */
+    public static String readCommunication(Socket socket) {
+        String s1 = "";
+
+        try {
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String line = reader.readLine();
+
+            do {
+                if (s1.equals("")) {
+                    s1 += line;
+                } else {
+                    s1 += "\n" + line;
+                }
+                line = reader.readLine();
+                if (line.equals("end")) {
+                    return s1;
+                }
+            } while (true);
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+        return s1;
+    }
+
+    /**Handles receiving an arraylist from the server so the client can get the most up to
+     * date arraylist of course
+     *
+     * @param socket - The socket that the arraylist is received on
+     */
+    public void readArrayList(Socket socket) {
+        try {
+            ObjectInputStream objectInput = new ObjectInputStream(socket.getInputStream());
+
+            Object object = objectInput.readObject();
+            currentClass.setCourses((ArrayList<Course>) object);
+
+        } catch (ClassNotFoundException e) {
+            System.out.println("The title list has not come from the server");
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /** Handles sending arraylist from the client to the server so the server can get the most up to
+     * date arraylist of course
+     *
+     * @param socket - The socket that the arraylist is sent on
+     * @param courses - The arraylist that is being sent to the server
+     */
+    public void writeArrayList(Socket socket, ArrayList<Course> courses) {
+        try {
+            ObjectOutputStream objectOutput = new ObjectOutputStream(socket.getOutputStream());
+            objectOutput.writeObject(courses);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
 }
