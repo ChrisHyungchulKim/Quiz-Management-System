@@ -20,32 +20,7 @@ public class ClientHandler implements Runnable {
         info = new Class(CourseInfoHandler.readCourseInfo());
         try {
 
-//            in = new BufferedReader(new InputStreamReader(
-//                    clientSocket.getInputStream()));
-//            String clientSelection;
-//            while ((clientSelection = in.readLine()) != null) {
-//
-//
-//                if (clientSelection.equals("1")) {
-//                    receiveFile();
-//
-////                switch (clientSelection) {
-////                    case "1" -> receiveFile();
-////                    case "2" -> {
-////                        String receivingFileName;
-////                        while ((receivingFileName = in.readLine()) != null) {
-////                            sendFile(receivingFileName);
-////                        }
-////
-////                    }
-//                } else {
-//                    JOptionPane.showMessageDialog(null, "Not a valid input", "Error",
-//                            JOptionPane.PLAIN_MESSAGE);
-//                }
-//            }
-//
-////
-//            in.close();
+//            
             while (true) {
 
 
@@ -139,33 +114,3 @@ public class ClientHandler implements Runnable {
         }
     }
 
-
-//    public void sendFile(String fileName) {
-//        try {
-//            //handle file read
-//            File myFile = new File(fileName);
-//            byte[] byteArrayFile = new byte[(int) myFile.length()]; //making the file into a byte array to be read
-//
-//            FileInputStream fis = new FileInputStream(myFile);
-//            BufferedInputStream bis = new BufferedInputStream(fis);
-//
-//
-//            DataInputStream dis = new DataInputStream(bis);
-//            dis.readFully(byteArrayFile, 0, byteArrayFile.length); //this readFully will ensure to read exactly the requested number of bytes.
-//
-//
-//            //handle file send over socket
-//            OutputStream os = clientSocket.getOutputStream();
-//
-//            //Sending "file name" and "file size" to the server
-//            DataOutputStream dos = new DataOutputStream(os);
-//            dos.writeUTF(myFile.getName()); //sending filename using writeUTF
-//            dos.writeLong(byteArrayFile.length); //sending file size using writeLong
-//            dos.write(byteArrayFile, 0, byteArrayFile.length);
-//            dos.flush();
-//            System.out.println("File "+fileName+" sent to client.");
-//        } catch (Exception e) {
-//            System.err.println("File does not exist!");
-//        }
-//    }
-}
