@@ -138,7 +138,7 @@ public class QuizMenu {
                     }
                     int quizSelection = scanner.nextInt();
                     scanner.nextLine();
-                    ArrayList<Submission> submissions = readSubmissions(currentClass, scanner);
+                    ArrayList<Submission> submissions = readSubmissions(currentClass);
                     assert submissions != null;
                     System.out.println("If your Quiz isn't graded, it won't show up.");
                     for (Submission s : submissions) {
@@ -195,7 +195,7 @@ public class QuizMenu {
 
     }
 
-    public static ArrayList<Submission> readSubmissions(Class currentClass, Scanner scanner) {
+    public static ArrayList<Submission> readSubmissions(Class currentClass) {
         BufferedReader reader;
         try {
             FileReader filereader = new FileReader("SubmissionDetails.txt");
@@ -400,7 +400,7 @@ public class QuizMenu {
             Course newCourse = new Course(newCourseName, new ArrayList<Quiz>());
             currentClass.addCourse(newCourse);
         } else {
-            gradeSubmissions(currentClass, scanner, Objects.requireNonNull(readSubmissions(currentClass, scanner)));
+            gradeSubmissions(currentClass, scanner, Objects.requireNonNull(readSubmissions(currentClass)));
 
         }
 

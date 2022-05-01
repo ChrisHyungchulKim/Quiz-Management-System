@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -10,7 +11,7 @@ import java.util.ArrayList;
  * @author Corey Tuinstra
  * @version April 11, 2022
  */
-public class Course {
+public class Course implements Serializable {
     private String courseName; //Name of the Course
     private User owner; // Creator of the course
     private ArrayList<Quiz> quizzes; // The quiz object that are in the course

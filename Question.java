@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.Serializable;
 
 /**
  * Project 4 -- Question.java class
@@ -13,13 +14,13 @@ import java.util.*;
  * @version April 11, 2022
  */
 
-public class Question {
+public class Question implements Serializable {
     // Four question fields: question prompt, arraylist of answer choices,
     // integer indicating whih choice is correct, and point value/weight
-    private static String prompt;
-    private static ArrayList<String> responses;
-    private static int answer;
-    private static int weight;
+    private String prompt;
+    private ArrayList<String> responses;
+    private int answer;
+    private int weight;
 
     // Single constructor to create question objects
     public Question(String prompt, ArrayList<String> responses, int answer, int weight) {
