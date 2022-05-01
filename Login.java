@@ -120,6 +120,7 @@ public class Login extends JComponent implements Runnable {
     JButton editWeight;
     JButton editResponse;
     JButton editAnswerIndex;
+    JButton randomize;
 
     // JPanel for changing name of quiz
     JPanel newQuizNamePanel;
@@ -146,6 +147,7 @@ public class Login extends JComponent implements Runnable {
     JPanel addAnswerPanel;
     JLabel addAnswerLabel;
     JComboBox<String> addAnswerBox;
+    JCheckBox randomCheck;
     JButton addAnswerButton;
     JButton newQuestionButton;
 
@@ -870,6 +872,16 @@ public class Login extends JComponent implements Runnable {
                 editAnswerPanel.setVisible(true);
             }
 
+            // randomizes order of questions in quiz when pressed
+            if (e.getSource() == randomize) {
+                serverCommunicator(socket, "Update Arraylist");
+                readArrayList(socket);
+                currentClass.getCourses().get(courseIndex).getQuizzes().get(quizIndex).randomize();
+                writeArrayList(socket, currentClass.getCourses());
+                JOptionPane.showMessageDialog(null, "Quiz has been successfully randomized!",
+                        "Operation Successful", JOptionPane.INFORMATION_MESSAGE);
+            }
+
 
 
             // prompts user for new quiz name when pressed
@@ -927,10 +939,12 @@ public class Login extends JComponent implements Runnable {
                     addResponseField.setText("");
                     addResponsePanel.setVisible(false);
                     addAnswerPanel.remove(addAnswerBox);
+                    addAnswerPanel.remove(randomCheck);
                     addAnswerPanel.remove(addAnswerButton);
                     addAnswerPanel.remove(newQuestionButton);
                     addAnswerBox = new JComboBox<>(responseArray);
                     addAnswerPanel.add(addAnswerBox);
+                    addAnswerPanel.add(randomCheck);
                     addAnswerPanel.add(addAnswerButton);
                     addAnswerPanel.add(newQuestionButton);
                     addAnswerPanel.setVisible(true);
@@ -949,6 +963,10 @@ public class Login extends JComponent implements Runnable {
                     }
                 }
                 question = new Question(prompt, responses, index, weight);
+
+                if (randomCheck.isSelected()) {
+                    question.randomize();
+                }
 
                 serverCommunicator(socket, "Update Arraylist");
                 readArrayList(socket);
@@ -969,6 +987,10 @@ public class Login extends JComponent implements Runnable {
                     }
                 }
                 question = new Question(prompt, responses, index, weight);
+
+                if (randomCheck.isSelected()) {
+                    question.randomize();
+                }
 
                 serverCommunicator(socket, "Update Arraylist");
                 readArrayList(socket);
@@ -1243,19 +1265,19 @@ public class Login extends JComponent implements Runnable {
                     questions = new ArrayList<>();
                     quiz = new Quiz(quizName, questions);
 
-                    for (int i = 0; i < currentClass.getCourses().size(); i++) {
+                    /*for (int i = 0; i < currentClass.getCourses().size(); i++) {
                         System.out.println(currentClass.getCourses().get(i).getCourseName());
-                    }
+                    }*/
 
                     serverCommunicator(socket, "Update Arraylist");
                     readArrayList(socket);
 
-                    for (int i = 0; i < currentClass.getCourses().size(); i++) {
+                    /*for (int i = 0; i < currentClass.getCourses().size(); i++) {
                         System.out.println(currentClass.getCourses().get(i).getCourseName());
                     }
 
                     System.out.println(courseIndex);
-                    System.out.println(currentClass.getCourses().size());
+                    System.out.println(currentClass.getCourses().size());*/
                     currentClass.getCourses().get(courseIndex).getQuizzes().add(quiz);
                     //serverCommunicator(socket, "Sending Arraylist");
                     writeArrayList(socket, currentClass.getCourses());
@@ -1568,7 +1590,7 @@ public class Login extends JComponent implements Runnable {
         currentClass = new Class(firstCourses);
         readArrayList(socket);
 
-        frame.setSize(1000, 400);
+        frame.setSize(1200, 400);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
@@ -1843,6 +1865,8 @@ public class Login extends JComponent implements Runnable {
         editResponse.addActionListener(actionListener);
         editAnswerIndex = new JButton("Change Correct Answer");
         editAnswerIndex.addActionListener(actionListener);
+        randomize = new JButton("Randomize Quiz");
+        randomize.addActionListener(actionListener);
 
         editQuizPanel = new JPanel();
         editQuizPanel.add(editQuizName);
@@ -1852,6 +1876,7 @@ public class Login extends JComponent implements Runnable {
         editQuizPanel.add(editWeight);
         editQuizPanel.add(editResponse);
         editQuizPanel.add(editAnswerIndex);
+        editQuizPanel.add(randomize);
         panel.add(editQuizPanel, BorderLayout.CENTER);
         editQuizPanel.setVisible(false);
 
@@ -1904,6 +1929,7 @@ public class Login extends JComponent implements Runnable {
         // creates answer choosing panel
         addAnswerLabel = new JLabel("Select which answer choice is correct: ");
         addAnswerBox = new JComboBox<>();
+        randomCheck = new JCheckBox("Randomize question");
         addAnswerButton = new JButton("Submit Question");
         addAnswerButton.addActionListener(actionListener);
         newQuestionButton = new JButton("Add Another Question");
@@ -1912,6 +1938,7 @@ public class Login extends JComponent implements Runnable {
         addAnswerPanel = new JPanel();
         addAnswerPanel.add(addAnswerLabel);
         addAnswerPanel.add(addAnswerBox);
+        addAnswerPanel.add(randomCheck);
         addAnswerPanel.add(addAnswerButton);
         addAnswerPanel.add(newQuestionButton);
         panel.add(addAnswerPanel, BorderLayout.CENTER);
@@ -2287,10 +2314,10 @@ public class Login extends JComponent implements Runnable {
 
             Object object = objectInput.readObject();
             currentClass.setCourses((ArrayList<Course>) object);
-            for (Course c : currentClass.getCourses()) {
+            /*for (Course c : (ArrayList<Course>) object) {
                 System.out.println(c.getCourseName());
-            }
-            System.out.println("");
+            }*/
+            System.out.println();
 
         } catch (ClassNotFoundException e) {
             System.out.println("The title list has not come from the server");
