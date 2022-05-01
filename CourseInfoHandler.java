@@ -70,7 +70,7 @@ public class CourseInfoHandler {
 
 
     /**
-     * This method reads in the data from the CourseDetails.txt file and creates and instantiates all the course, quiz, 
+     * This method reads in the data from the CourseDetails.txt file and creates and instantiates all the course, quiz,
      * and question objects.
      *
      * @return ArrayList<Course> - This is an array of the state of the course arraylist before the program was turn
@@ -106,10 +106,16 @@ public class CourseInfoHandler {
                     courseName = line.substring(line.indexOf(' ') + 1);
 
                     line = bfr.readLine();
+                    if (line == null) {
+                        break;
+                    }
                     while (line.contains("Quiz_Name: ")) {
                         questionList = new ArrayList<Question>();
                         quizName = line.substring(line.indexOf(' ') + 1);
                         line = bfr.readLine();
+                        if (line == null) {
+                            break;
+                        }
                         while (line.contains("Question: ")) {
                             answerChoices = new ArrayList<String>();
                             prompt = line.substring(line.indexOf(' ') + 1);
@@ -118,6 +124,10 @@ public class CourseInfoHandler {
                                 weight = Integer.parseInt(line.substring(line.indexOf(' ') + 1));
                             }
                             line = bfr.readLine();
+
+                            if (line == null) {
+                                break;
+                            }
 
                             while (line.contains("Answer: ")) {
                                 if (line.contains("Correct_Answer: ")) {
