@@ -656,7 +656,7 @@ Test 30: Load quiz creation menu
 
   Expected Result: Application loads quiz creation menu automatically.
   
-  Test Status: Passed
+  Test Status: Passed.
   
 Test 31: Create new quiz manually
 
@@ -696,7 +696,81 @@ Test 31: Create new quiz manually
   33. Repeat steps 18-30.
   34. User selects the "Submit Question" button.
 
-  Expected Result: Application adds 
+  Expected Result: Application adds newly created quiz and questions to file* and loads main teacher menu automatically.
   
-  Test Status: Passed
+  Test Status: Passed.
+  
+Test 32: Create new quiz from file name
+
+  Steps: 
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+  11. User selects the "Change Quizzes" button.
+  12. User selects course to edit from dropdown menu.
+  13. User selects the "Submit" button.
+  14. User selects the "Create a Quiz" button.
+  15. User selects the "Upload a Quiz File" button.
+  16. User selects the quiz file name textbox.
+  17. User enters new quiz file name via keyboard.
+  18. User selects the "Submit" button.
+
+  Expected Result: Application creates new quiz from file if file is in correct format and loads main teacher menu automatically.
+  
+  Test Status: Passed.
+  
+Test 33: Delete quiz
+
+  Steps: 
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+  11. User selects the "Change Quizzes" button.
+  12. User selects course to edit from dropdown menu.
+  13. User selects the "Submit" button.
+  14. User selects the "Delete Quiz" button.
+  15. User selects quiz to delete from dropdown menu.
+  16. User selects the "Delete" button.
+  17. User selects the "Yes" button from the pop-up window.
+
+  Expected Result: Pop-up window disappears. Application deletes specified quiz from file* and loads main teacher menu automatically.
+  
+  Test Status: Passed.
+  
+Test 34: Create new course
+
+  Steps: 
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+  11. User selects the "Create A Course" button.
+  12. User selects the course name textbox.
+  13. User enters new course name via keyboard.
+  14. User selects the "Add Quiz" button.
+
+  Expected Result: Application adds newly created course to file* and loads quiz creation menu automatically.
+  
+  Test Status: Passed.
+  
   
