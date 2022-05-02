@@ -4,8 +4,8 @@ Test 0: Check socket connection
   1. User launches Server.java.
   2. User launches Login.java. 
   3. User checks for GUI pop-up. 
-  4. User checks for successful network connection: "Accepted connection : Socket..."
-  5. User checks for successful thread execution: "Accepted thread: Thread[Thread-0,5,main]"
+  4. User checks for successful network connection in Server terminal: "Accepted connection : Socket..."
+  5. User checks for successful thread execution in Server terminal: "Accepted thread: Thread[Thread-0,5,main]"
 
   Expected Result: Connection is successful.
   
@@ -17,16 +17,13 @@ Test 0: Check multi-thread connection
   1. User launches Server.java.
   2. User launches Login.java. 
   3. User checks for GUI pop-up. 
-  4. User checks for successful network connection: "Accepted connection : Socket..."
-  5. User checks for successful thread execution: "Accepted thread: Thread[Thread-0,5,main]"
+  4. User checks for successful network connection in Server terminal: "Accepted connection : Socket..."
+  5. User checks for successful thread execution in Server terminal: "Accepted thread: Thread[Thread-0,5,main]"
   6. User launches another Login.java.   
   7. User checks for a new GUI pop-up.
-  8. User checks for successful network connection: "Accepted connection : Socket[same address,...,same localport]"
-  9. User checks for successful thread execution: "Accepted thread: Thread[Thread-1,5,main]"
-  
-  Expected Result: Connectio is successful. 
-  
-  Test Status: Passed. 
+  8. User checks for successful network connection in Server terminal: "Accepted connection : Socket[same address,...,same localport]"
+  9. User checks for successful thread execution in Server terminal: "Accepted thread: Thread[Thread-1,5,main]"
+
   
   
 Test 1: Begin user log in
@@ -219,4 +216,62 @@ Test 9: Delete account failure
   Expected Result: Pop-up window disappears.
   
   Test Status: Passed.
+  
+  Test 10: Main menu option
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects whether they are a teacher or student from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Account Settings" button.
+  11. User selects the "Options" menu bar item.
+  12. User selects the "Main Menu" menu item from dropdown menu.
+
+  Expected Result: Application loads main menu automatically.
+
+  Test Status: Passed.
+
+Test 11: Log out option
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects whether they are a teacher or student from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Options" menu bar item.
+  11. User selects the "Log Out" menu item from dropdown menu.
+
+  Expected Result: Application loads welcome page automatically.
+
+  Test Status: Passed.
+
+Test 12: Begin user account creation
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Create New Account" button.
+
+  Expected Result: Application loads account creation page automatically.
+
+  Test Status: Passed.
+
+Test 13: Create new account
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Create New Account" button.
+  4. 
   
