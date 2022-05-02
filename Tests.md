@@ -635,3 +635,69 @@ Test 29: Randomize question order
   Expected Result: Application closes displayed pop-up window and randomly rearranges question order in file*.
   
   Test Status: Passed.
+  
+Test 30: Load quiz creation menu
+
+  Steps: 
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+  11. User selects the "Change Quizzes" button.
+  12. User selects course to edit from dropdown menu.
+  13. User selects the "Submit" button.
+  14. User selects the "Create a Quiz" button.
+
+  Expected Result: Application loads quiz creation menu automatically.
+  
+  Test Status: Passed
+  
+Test 31: Create new quiz manually
+
+  Steps: 
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+  11. User selects the "Change Quizzes" button.
+  12. User selects course to edit from dropdown menu.
+  13. User selects the "Submit" button.
+  14. User selects the "Create a Quiz" button.
+  15. User selects the "Create a Quiz" button.
+  16. User selects the quiz name textbox.
+  17. User enters new quiz name via keyboard.
+  18. User selects the "Submit & Add Questions" button.
+  19. User selects the new prompt textbox. 
+  20. User enters new question prompt via keyboard.
+  21. User selects question weight textbox.
+  22. User enters new weight as integer via keyboard.
+  23. User selects the "Submit" button.
+  24. User selects the new answer choice textbox.
+  25. User enters new answer choice viz keyboard.
+  26. User selects the "Add Another Answer Choice" button.
+  27. User selects the new answer choice textbox.
+  28. User enters new answer choice via keyboard.
+  29. User selects the "Submit Answer Choice" button.
+  30. User selects the correct response from the dropdown menu.
+  31. User checks the "Randomize question" checkbox if desired.
+  32. User selects the "Add Another Question" button.
+  33. Repeat steps 18-30.
+  34. User selects the "Submit Question" button.
+
+  Expected Result: Application adds 
+  Expected Result: Application loads quiz creation menu automatically.
+  
+  Test Status: Passed
+  
