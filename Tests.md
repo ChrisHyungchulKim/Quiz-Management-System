@@ -24,6 +24,9 @@ Test 0: Check multi-thread connection
   8. User checks for successful network connection in Server terminal: "Accepted connection : Socket[same address,...,same localport]"
   9. User checks for successful thread execution in Server terminal: "Accepted thread: Thread[Thread-1,5,main]"
 
+  Expected Result: Multi-client connection is successful.
+  
+  Test Status: Passed.
   
   
 Test 1: Begin user log in
