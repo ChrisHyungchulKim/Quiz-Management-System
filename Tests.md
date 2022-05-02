@@ -773,4 +773,24 @@ Test 34: Create new course
   
   Test Status: Passed.
   
+Test 35: Delete course
+
+  Steps: 
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+  11. User selects the "Delete A Course" button.
+  12. User selects course to delete from dropdown menu.
+  13. User selects the "Delete" button.
+  14. User selects the "Yes" button from the pop-up window.
+
+  Expected Result: Pop-up window disappears. Application deletes specified course from file* and loads main teacher menu automatically.
   
+  Test Status: Passed.
