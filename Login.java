@@ -368,6 +368,7 @@ public class Login extends JComponent implements Runnable {
                 quizFilePanel.setVisible(false);
                 quizNamePanel.setVisible(false);
                 deleteCoursePanel.setVisible(false);
+                newCoursePanel.setVisible(false);
                 createAndEditPanel.setVisible(false);
                 changeQuizzesPanel.setVisible(false);
                 createAQuizPanel.setVisible(false);
@@ -378,7 +379,7 @@ public class Login extends JComponent implements Runnable {
                 submitPanel.setVisible(false);
                 submitPanelNo.setVisible(false);
                 changeAnswer.setVisible(false);
-                // Actions
+                // Return to welcome page
                 welcomePanel.setVisible(true);
                 mainItem.setVisible(false);
                 user = null;
@@ -408,6 +409,7 @@ public class Login extends JComponent implements Runnable {
                 editAnswerPanel.setVisible(false);
                 responseSelectionPanel.setVisible(false);
                 deleteQuizPanel.setVisible(false);
+                newCoursePanel.setVisible(false);
                 quizFilePanel.setVisible(false);
                 quizNamePanel.setVisible(false);
                 deleteCoursePanel.setVisible(false);
@@ -421,7 +423,7 @@ public class Login extends JComponent implements Runnable {
                 submitPanel.setVisible(false);
                 submitPanelNo.setVisible(false);
                 changeAnswer.setVisible(false);
-                // Actions
+                // Return to main menu
                 if (user.isTeacher()) {
                     mainTeacherPanel.setVisible(true);
                 } else {
@@ -877,11 +879,10 @@ public class Login extends JComponent implements Runnable {
             }
 
 
-
             // prompts user for new quiz name when pressed
             if (e.getSource() == newQuizNameButton) {
                 if (newQuizNameField.getText() != null) {
-                   serverCommunicator(socket, "Update Arraylist");
+                    serverCommunicator(socket, "Update Arraylist");
                     readArrayList(socket);
                     currentClass.getCourses().get(courseIndex)
                             .getQuizzes().get(quizIndex).setName(newQuizNameField.getText());
@@ -1052,8 +1053,8 @@ public class Login extends JComponent implements Runnable {
                     newPromptPanel.setVisible(false);
                     editQuizPanel.setVisible(true);
                 } else {
-                JOptionPane.showMessageDialog(null, "Error! Please enter a prompt!",
-                        "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Error! Please enter a prompt!",
+                            "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
 
@@ -2262,7 +2263,7 @@ public class Login extends JComponent implements Runnable {
      * This method is used to take to the server and in conjunction with the readCommunication() can be used
      * to talk with a server to get necessary information
      *
-     * @param socket -  The socket the that the server communication is started on
+     * @param socket  -  The socket the that the server communication is started on
      * @param message - The String message that you want to write to the server
      */
     public static void serverCommunicator(Socket socket, String message) {
@@ -2312,7 +2313,8 @@ public class Login extends JComponent implements Runnable {
         return s1;
     }
 
-    /**Handles receiving an arraylist from the server so the client can get the most up to
+    /**
+     * Handles receiving an arraylist from the server so the client can get the most up to
      * date arraylist of course
      *
      * @param socket - The socket that the arraylist is received on
@@ -2336,10 +2338,11 @@ public class Login extends JComponent implements Runnable {
         }
     }
 
-    /** Handles sending arraylist from the client to the server so the server can get the most up to
+    /**
+     * Handles sending arraylist from the client to the server so the server can get the most up to
      * date arraylist of course
      *
-     * @param socket - The socket that the arraylist is sent on
+     * @param socket  - The socket that the arraylist is sent on
      * @param courses - The arraylist that is being sent to the server
      */
     public void writeArrayList(Socket socket, ArrayList<Course> courses) {
