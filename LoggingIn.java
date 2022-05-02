@@ -311,4 +311,33 @@ public class LoggingIn {
         }
         return users;
     }
+
+    public static void writeUserInfo(ArrayList<User> userList) {
+
+        String userDetails;
+        int index;
+
+        try {
+            index = 0;
+            FileWriter writer = new FileWriter("UserDetails.txt");
+            PrintWriter printWriter = new PrintWriter(writer);
+            for (User u : userList) {
+                userDetails = "";
+                if (index == 0) {
+                    userDetails += "Username: " + u.getUsername();
+                    index++;
+                } else {
+                    userDetails += "\nUsername: " + u.getUsername();
+                }
+                userDetails += "\nPassword: " + u.getPassword();
+                printWriter.println(userDetails);
+                printWriter.flush();
+
+            }
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
 }
+
