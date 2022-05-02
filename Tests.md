@@ -5,7 +5,7 @@ Test 1: Begin user log in
   2. User launches Login.java.
   3. User selects the "Log in" button.
 
-  Expected Result: Application loads log in automatically.
+  Expected Result: Application loads log in page automatically.
 
   Test Status: Passed.
 
@@ -189,3 +189,60 @@ Test 9: Delete account failure
   
   Test Status: Passed.
   
+Test 10: Main menu option
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects whether they are a teacher or student from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Account Settings" button.
+  11. User selects the "Options" menu bar item.
+  12. User selects the "Main Menu" menu item from dropdown menu.
+
+  Expected Result: Application loads main menu automatically.
+  
+  Test Status: Passed.
+  
+Test 11: Log out option
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects whether they are a teacher or student from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Options" menu bar item.
+  11. User selects the "Log Out" menu item from dropdown menu.
+
+  Expected Result: Application loads welcome page automatically.
+  
+  Test Status: Passed.
+  
+Test 12: Begin user account creation
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Create New Account" button.
+
+  Expected Result: Application loads account creation page automatically.
+  
+  Test Status: Passed.
+  
+Test 13: Create new account
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Create New Account" button.
+  4. 
