@@ -286,3 +286,109 @@ Test 16: Create new account
   Expected Result: Application adds new user account if username is unique and loads their main menu automatically.
   
   Test Status: Passed.
+  
+Test 17: Load create & edit menu
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+
+  Expected Result: Application loads create & edit menu automatically.
+  
+  Test Status: Passed.
+  
+Test 18: Load course selection page
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+  11. User selects the "Change Quizzes" button.
+
+  Expected Result: Application loads course selection page automatically.
+  
+  Test Status: Passed.
+  
+Test 19: Choose course to edit
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+  11. User selects the "Change Quizzes" button.
+  12. User selects course to edit from dropdown menu.
+  13. User selects the "Submit" button.
+
+  Expected Result: Application loads quiz operations menu automatically.
+  
+  Test Status: Passed.
+  
+Test 20: Load quiz selection page
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+  11. User selects the "Change Quizzes" button.
+  12. User selects course to edit from dropdown menu.
+  13. User selects the "Submit" button.
+  14. User selects the "Edit Quiz" button.
+
+  Expected Result: Application loads quiz selection page automatically.
+  
+  Test Status: Passed.
+  
+Test 21: Choose quiz to edit
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+  11. User selects the "Change Quizzes" button.
+  12. User selects course to edit from dropdown menu.
+  13. User selects the "Submit" button.
+  14. User selects the "Edit Quiz" button.
+  15. User selects quiz to edit from dropdown menu.
+  16. User selects the "Submit" button.
+
+  Expected Result: Application loads quiz editing menu automatically.
+  
+  Test Status: Passed.
+  
+  
