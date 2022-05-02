@@ -813,7 +813,7 @@ Test 36: Load course selection page
   
   Test Status: Passed.
   
-Test 37: Load course selection page
+Test 37: Load quiz selection page
 
   Steps:
   1. User launches Server.java.
@@ -825,8 +825,162 @@ Test 37: Load course selection page
   7. Use enters password via the keyboard.
   8. User selects student from dropdown menu.
   9. User selects the "Submit" button.
-  10. User selects the "View Quiz Results" button.
+  10. User selects the "Take Quiz" button.
+  11. User selects a course from the dropdown menu.
+  12. User selects the "Submit" button.
 
-  Expected Result: Application loads course selection page automatically.
+  Expected Result: Application loads quiz selection page automatically.
+  
+  Test Status: Passed.
+  
+Test 38: Load take quiz panel
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters student username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects student from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Take Quiz" button.
+  11. User selects a course from the dropdown menu.
+  12. User selects the "Submit" button.
+  13. User selects a quiz from the dropdown menu.
+  14. User selects the "Submit" button.
+
+  Expected Result: Application loads page with quiz questions automatically.
+  
+  Test Status: Passed.
+  
+Test 39: Load YES/NO submission prompt
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters student username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects student from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Take Quiz" button.
+  11. User selects a course from the dropdown menu.
+  12. User selects the "Submit" button.
+  13. User selects a quiz from the dropdown menu.
+  14. User selects the "Submit" button.
+  15. User answers all the questions using the dropdown menu.
+  16. User selects "Submit" button.
+
+  Expected Result: Application loads a YES or NO submission prompt.
+  
+  Test Status: Passed.
+  
+Test 40: Submission Yes choice
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters student username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects student from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Take Quiz" button.
+  11. User selects a course from the dropdown menu.
+  12. User selects the "Submit" button.
+  13. User selects a quiz from the dropdown menu.
+  14. User selects the "Submit" button.
+  15. User answers all the questions using the dropdown menu.
+  16. User selects "Submit" button.
+  17. User selects "Yes" button in the submission prompt
+
+  Expected Result: Application loads main student menu and writes the submission.
+  
+  Test Status: Passed.
+  
+Test 41: Submission NO choice
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters student username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects student from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Take Quiz" button.
+  11. User selects a course from the dropdown menu.
+  12. User selects the "Submit" button.
+  13. User selects a quiz from the dropdown menu.
+  14. User selects the "Submit" button.
+  15. User answers all the questions using the dropdown menu.
+  16. User selects "Submit" button.
+  17. User selects "No" button in the submission prompt.
+
+  Expected Result: Application loads prompt asking which question does the user want to change.
+  
+  Test Status: Passed.
+  
+Test 42: Changing question answer
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters student username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects student from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Take Quiz" button.
+  11. User selects a course from the dropdown menu.
+  12. User selects the "Submit" button.
+  13. User selects a quiz from the dropdown menu.
+  14. User selects the "Submit" button.
+  15. User answers all the questions using the dropdown menu.
+  16. User selects "Submit" button.
+  17. User selects "No" button in the submission prompt.
+  18. User selects question number to change from a dropdown menu.
+  19. User selects "Submit" button.
+
+  Expected Result: Application loads prompt re-asking the question.
+  
+  Test Status: Passed.
+  
+Test 43: Re-asking the question prompt
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters student username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects student from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Take Quiz" button.
+  11. User selects a course from the dropdown menu.
+  12. User selects the "Submit" button.
+  13. User selects a quiz from the dropdown menu.
+  14. User selects the "Submit" button.
+  15. User answers all the questions using the dropdown menu.
+  16. User selects "Submit" button.
+  17. User selects "No" button in the submission prompt.
+  18. User selects question number to change from a dropdown menu.
+  19. User selects "Submit" button.
+  20. User selects their new answer to the question from a dropdown menu.
+  21. User selects "Submit" button.
+
+  Expected Result: Application loads main student menu and records the submission.
   
   Test Status: Passed.
