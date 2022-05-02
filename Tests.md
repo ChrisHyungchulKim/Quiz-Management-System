@@ -697,7 +697,6 @@ Test 31: Create new quiz manually
   34. User selects the "Submit Question" button.
 
   Expected Result: Application adds 
-  Expected Result: Application loads quiz creation menu automatically.
   
   Test Status: Passed
   
