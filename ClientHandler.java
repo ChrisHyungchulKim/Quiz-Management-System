@@ -2,9 +2,15 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-
-public class ClientHandler implements Runnable {
+/**
+ * Project 5 - ClientHandler.java
+ * <p>
+ * This Class is a thread that is explicitly made to run client-requested tasks by the server.
+ *
+ * @author Hyungchul Kim
+ * @version May 2, 2022
+ */
+public class ClientHandler implements Runnable { //a thread
 
     private static Class info;
     private static Object concur;
@@ -12,10 +18,13 @@ public class ClientHandler implements Runnable {
     private BufferedReader in = null;
     private static ArrayList<Submission> submissions;
 
+    //a ClientHandler constructor used in the server.java to start threads
     public ClientHandler(Socket client) {
+
         this.clientSocket = client;
     }
 
+    //run method
     @Override
     public void run() {
         info = new Class(CourseInfoHandler.readCourseInfo());
@@ -24,6 +33,7 @@ public class ClientHandler implements Runnable {
         try {
 
             while (true) {
+
 
 
                 ObjectOutputStream objectOutput = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -93,29 +103,6 @@ public class ClientHandler implements Runnable {
     }
 
 
-    public void receiveFile() {
-        try {
-            int bytesRead;
-
-            DataInputStream clientData = new DataInputStream(clientSocket.getInputStream());
-
-            String fileName = clientData.readUTF();
-            OutputStream output = new FileOutputStream(("received_from_client_" + fileName));
-            long size = clientData.readLong();
-            byte[] buffer = new byte[1024];
-            while (size > 0 && (bytesRead = clientData.read(buffer, 0, (int) Math.min(buffer.length, size))) != -1) {
-                output.write(buffer, 0, bytesRead);
-                size -= bytesRead;
-            }
-
-            output.close(); //closing OS
-            clientData.close(); //closing DIS
-
-            System.out.println("File " + fileName + " received from client."); //file stored into the server
-        } catch (Exception ex) {
-            System.err.println("Client error. Connection closed.");
-        }
-    }
 }
 
 
