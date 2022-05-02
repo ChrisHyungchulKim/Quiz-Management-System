@@ -518,3 +518,94 @@ Test 25: Change question prompt
   Expected Result: Application changes question prompt in file* and loads quiz editing menu automatically.
   
   Test Status: Passed.
+
+Test 26: Change question weight
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+  11. User selects the "Change Quizzes" button.
+  12. User selects course to edit from dropdown menu.
+  13. User selects the "Submit" button.
+  14. User selects the "Edit Quiz" button.
+  15. User selects quiz to edit from dropdown menu.
+  16. User selects the "Submit" button.
+  17. User selects the "Edit Weight" button.
+  18. User selects the prompt of the question they would like to edit from dropdown menu.
+  19. User selects the "Submit" button.
+  20. User selects the new weight textbox.
+  21. User enters new question weight as integer via keyboard.
+  22. User selects the "Submit" button.
+
+  Expected Result: Application changes question weight in file* and loads quiz editing menu automatically.
+  
+  Test Status: Passed.
+  
+Test 27: Change question answer choice
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+  11. User selects the "Change Quizzes" button.
+  12. User selects course to edit from dropdown menu.
+  13. User selects the "Submit" button.
+  14. User selects the "Edit Quiz" button.
+  15. User selects quiz to edit from dropdown menu.
+  16. User selects the "Submit" button.
+  17. User selects the "Edit Question Answer" button.
+  18. User selects the prompt of the question they would like to edit from dropdown menu.
+  19. User selects the "Submit" button.
+  20. User selects which answer choice they would like to edit from dropdown menu.
+  21. User selects the "Select Response to Edit" button. 
+  22. User selects the new response textbox.
+  23. User enters new question response via keyboard.
+  24. User selects the "Submit" button.
+
+  Expected Result: Application changes question response in file* and loads quiz editing menu automatically.
+  
+  Test Status: Passed.
+  
+Test 28: Change correct question response.
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+  11. User selects the "Change Quizzes" button.
+  12. User selects course to edit from dropdown menu.
+  13. User selects the "Submit" button.
+  14. User selects the "Edit Quiz" button.
+  15. User selects quiz to edit from dropdown menu.
+  16. User selects the "Submit" button.
+  17. User selects the "Change Correct Answer" button.
+  18. User selects the prompt of the question they would like to edit from dropdown menu.
+  19. User selects the "Submit" button.
+  20. User selects the answer the would like to set as correct from dropdown menu.
+  21. User selects the "Select New Correct Answer" button.
+
+  Expected Result: Application changes response labeled Correct_Answer in file* and loads quiz editing menu automatically.
+  
+  Test Status: Passed.
