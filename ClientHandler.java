@@ -2,12 +2,14 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
+
 /**
  * Project 5 - ClientHandler.java
  * <p>
  * This Class is a thread that is explicitly made to run client-requested tasks by the server.
  *
- * @author Hyungchul Kim
+ * @author Hyungchul Kim, Rishab Koka
  * @version May 2, 2022
  */
 public class ClientHandler implements Runnable { //a thread
@@ -59,7 +61,12 @@ public class ClientHandler implements Runnable { //a thread
                             receiveArrayList(clientSocket);
                         }
                     } else if (message.equalsIgnoreCase("Get Submissions Arraylist")) {
-                        sendArrayList(clientSocket);
+                        sendSubmissions(clientSocket);
+                    } else if (message.equalsIgnoreCase("Update Submissions Arraylist")) {
+                        synchronized (concur) {
+                            sendSubmissions(clientSocket);
+                            receiveSubmissions(clientSocket);
+                        }
                     } else if (message.equalsIgnoreCase("Get User Arraylist")) {
                         sendArrayList(clientSocket);
                     } else if (message.equalsIgnoreCase("Update User Arraylist")) {
@@ -134,5 +141,28 @@ public class ClientHandler implements Runnable { //a thread
         }
     }
 
+    public static void sendSubmissions(Socket socket) {
+        try {
+            ObjectOutputStream objectOutput = new ObjectOutputStream(socket.getOutputStream());
+            objectOutput.writeObject(Submission.readSubmissions(info));
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    public static void receiveSubmissions(Socket socket) {
+        try {
+            ObjectInputStream objectInput = new ObjectInputStream(socket.getInputStream());
+            Object object = objectInput.readObject();
+            Submission.writeSubmissions((ArrayList<Submission>) object);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
+
+
 
