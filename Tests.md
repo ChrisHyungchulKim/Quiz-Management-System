@@ -1,3 +1,5 @@
+*For tests 8-18, "in file" refers to UserDetails.txt, while for tests 22-, "in file" refers to CourseDetails.txt
+
 Test 1: Check socket connection
 
   Steps: 
@@ -133,7 +135,7 @@ Test 8: Edit username
   14. User enters new username via the keyboard.
   15. User selects the "Submit" button.
 
-  Expected Result: Application changes account username to entered username and loads main menu automatically.
+  Expected Result: Application changes account username to entered username in file* and loads main menu automatically.
   
   Test Status: Passed.
   
@@ -176,7 +178,7 @@ Test 10: Edit password
   14. User enters new password via the keyboard.
   15. User selects the "Submit" button.
 
-  Expected Result: Application changes account password to entered password and loads main menu automatically.
+  Expected Result: Application changes account password to entered password in file* and loads main menu automatically.
   
   Test Status: Passed.
   
@@ -196,7 +198,7 @@ Test 11: Delete account
   11. User selects the "Delete Account" button.
   12. User selects the "Yes" button from the pop-up window.
 
-  Expected Result: Pop-up window disappears. Application deletes account and loads main menu automatically.
+  Expected Result: Pop-up window disappears. Application deletes account in file* and loads main menu automatically.
   
   Test Status: Passed.
   
@@ -283,7 +285,7 @@ Test 16: Create new account
   8. User selects whether they are a teacher or student from dropdown menu.
   9. User selects the "Submit" button.
 
-  Expected Result: Application adds new user account if username is unique and loads their main menu automatically.
+  Expected Result: Application adds new user account in file* if username is unique and loads their main menu automatically.
   
   Test Status: Passed.
   
@@ -415,7 +417,7 @@ Test 22: Change quiz name
   19. User enters new name of quiz via keyboard.
   20. User selects the "Submit" button.
 
-  Expected Result: Application changes quiz name and loads quiz editing menu automatically.
+  Expected Result: Application changes quiz name in file* and loads quiz editing menu automatically.
   
   Test Status: Passed.
   
@@ -456,6 +458,63 @@ Test 23: Add question
   32. Repeat steps 18-30.
   33. User selects the "Submit Question" button.
 
-  Expected Result: Application adds both newly created questions to previously selected course and loads main teacher menu automatically.
+  Expected Result: Application adds both newly created questions to previously selected quiz in file* and loads main teacher menu automatically.
+  
+  Test Status: Passed.
+  
+Test 24: Remove quiz question
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+  11. User selects the "Change Quizzes" button.
+  12. User selects course to edit from dropdown menu.
+  13. User selects the "Submit" button.
+  14. User selects the "Edit Quiz" button.
+  15. User selects quiz to edit from dropdown menu.
+  16. User selects the "Submit" button.
+  17. User selects the "Remove Question" button.
+  18. User selects which question they would like to remove from dropdown menu.
+  19. User selects the "Submit" button.
+
+  Expected Result: Application removes specified question from quiz in file* and loads main teacher menu automatically.
+  
+  Test Status: Passed.
+  
+Test 25: Change question prompt
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+  11. User selects the "Change Quizzes" button.
+  12. User selects course to edit from dropdown menu.
+  13. User selects the "Submit" button.
+  14. User selects the "Edit Quiz" button.
+  15. User selects quiz to edit from dropdown menu.
+  16. User selects the "Submit" button.
+  17. User selects the "Edit Question" button.
+  18. User selects which question prompt they would like to edit from dropdown menu.
+  19. User selects the "Submit" button.
+  20. User selects the new prompt textbox.
+  21. User enters new question prompt via keyboard.
+  22. User selects the "Submit" button.
+
+  Expected Result: Application changes question prompt in file* and loads quiz editing menu automatically.
   
   Test Status: Passed.
