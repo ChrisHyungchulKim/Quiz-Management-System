@@ -1,4 +1,4 @@
-Test 0: Check socket connection
+Test 1: Check socket connection
 
   Steps: 
   1. User launches Server.java.
@@ -11,7 +11,7 @@ Test 0: Check socket connection
   
   Test Status: Passed.
   
-Test 0: Check multi-thread connection
+Test 2: Check multi-thread connection
   
   Steps: 
   1. User launches Server.java.
@@ -29,7 +29,7 @@ Test 0: Check multi-thread connection
   Test Status: Passed.
   
   
-Test 1: Begin user log in
+Test 3: Begin user log in
 
   Steps: 
   1. User launches Server.java.
@@ -40,7 +40,7 @@ Test 1: Begin user log in
 
   Test Status: Passed.
 
-Test 2: User log in
+Test 4: User log in
 
   Steps: 
   1. User launches Server.java.
@@ -57,7 +57,7 @@ Test 2: User log in
   
   Test Status: Passed.
   
-Test 3: Load account settings menu
+Test 5: Load account settings menu
 
   Steps:
   1. User launches Server.java.
@@ -75,7 +75,7 @@ Test 3: Load account settings menu
   
   Test Status: Passed.
   
-Test 4: Load account editing menu
+Test 6: Load account editing menu
 
   Steps:
   1. User launches Server.java.
@@ -94,7 +94,7 @@ Test 4: Load account editing menu
   
   Test Status: Passed.
   
-Test 5: Load username editing page
+Test 7: Load username editing page
 
   Steps: 
   1. User launches Server.java.
@@ -114,7 +114,7 @@ Test 5: Load username editing page
   
   Test Status: Passed.
   
-Test 6: Edit username
+Test 8: Edit username
   
   Steps: 
   1. User launches Server.java.
@@ -137,10 +137,10 @@ Test 6: Edit username
   
   Test Status: Passed.
   
-Test 7: Load password editing page
+Test 9: Load password editing page
 
   Steps:
-  User launches Server.java.
+  1. User launches Server.java.
   2. User launches Login.java.
   3. User selects the "Log in" button.
   4. User selects the username textbox.
@@ -157,7 +157,7 @@ Test 7: Load password editing page
   
   Test Status: Passed.
   
-Test 8: Edit password
+Test 10: Edit password
   
   Steps: 
   1. User launches Server.java.
@@ -180,7 +180,7 @@ Test 8: Edit password
   
   Test Status: Passed.
   
-Test 8: Delete account
+Test 11: Delete account
   
   Steps: 
   1. User launches Server.java.
@@ -200,7 +200,7 @@ Test 8: Delete account
   
   Test Status: Passed.
   
-Test 9: Delete account failure
+Test 12: Delete account failure
   
   Steps: 
   1. User launches Server.java.
@@ -220,7 +220,7 @@ Test 9: Delete account failure
   
   Test Status: Passed.
   
-  Test 10: Main menu option
+Test 13: Main menu option
 
   Steps:
   1. User launches Server.java.
@@ -240,7 +240,7 @@ Test 9: Delete account failure
 
   Test Status: Passed.
 
-Test 11: Log out option
+Test 14: Log out option
 
   Steps:
   1. User launches Server.java.
@@ -259,7 +259,7 @@ Test 11: Log out option
 
   Test Status: Passed.
 
-Test 12: Begin user account creation
+Test 15: Begin user account creation
 
   Steps:
   1. User launches Server.java.
@@ -270,11 +270,19 @@ Test 12: Begin user account creation
 
   Test Status: Passed.
 
-Test 13: Create new account
+Test 16: Create new account
 
   Steps:
   1. User launches Server.java.
   2. User launches Login.java.
   3. User selects the "Create New Account" button.
-  4. 
+  4. User selects the username textbox.
+  5. User enters new username via keyboard.
+  6. User selects the password textbox.
+  7. User enters password via the keyboard.
+  8. User selects whether they are a teacher or student from dropdown menu.
+  9. User selects the "Submit" button.
+
+  Expected Result: Application adds new user account if username is unique and loads their main menu automatically.
   
+  Test Status: Passed.
