@@ -391,4 +391,71 @@ Test 21: Choose quiz to edit
   
   Test Status: Passed.
   
+Test 22: Change quiz name
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+  11. User selects the "Change Quizzes" button.
+  12. User selects course to edit from dropdown menu.
+  13. User selects the "Submit" button.
+  14. User selects the "Edit Quiz" button.
+  15. User selects quiz to edit from dropdown menu.
+  16. User selects the "Submit" button.
+  17. User selects the "Edit Quiz Name" button.
+  18. User selects new quiz name textbox.
+  19. User enters new name of quiz via keyboard.
+  20. User selects the "Submit" button.
+
+  Expected Result: Application changes quiz name and loads quiz editing menu automatically.
   
+  Test Status: Passed.
+  
+Test 23: Add question
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+  11. User selects the "Change Quizzes" button.
+  12. User selects course to edit from dropdown menu.
+  13. User selects the "Submit" button.
+  14. User selects the "Edit Quiz" button.
+  15. User selects quiz to edit from dropdown menu.
+  16. User selects the "Submit" button.
+  17. User selects the "Add Question" button.
+  18. User selects the new prompt textbox. 
+  19. User enters new question prompt via keyboard.
+  20. User selects question weight textbox.
+  21. User enters new weight as integer via keyboard.
+  22. User selects the "Submit" button.
+  23. User selects the new answer choice textbox.
+  24. User enters new answer choice viz keyboard.
+  25. User selects the "Add Another Answer Choice" button.
+  26. User selects the new answer choice textbox.
+  27. User enters new answer choice via keyboard.
+  28. User selects the "Submit Answer Choice" button.
+  29. User selects the correct response from the dropdown menu.
+  30. User checks the "Randomize question" checkbox if desired.
+  31. User selects the "Add Another Question" button.
+  32. Repeat steps 18-30.
+  33. User selects the "Submit Question" button.
+
+  Expected Result: Application
+  
+  Test Status: Passed.
