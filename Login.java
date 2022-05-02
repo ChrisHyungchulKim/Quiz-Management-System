@@ -2353,5 +2353,33 @@ public class Login extends JComponent implements Runnable {
             ioe.printStackTrace();
         }
     }
+    
+    
+    public ArrayList<User> readUserArrayList(Socket socket) {
+        try {
+            ObjectInputStream objectInput = new ObjectInputStream(socket.getInputStream());
+
+            Object object = objectInput.readObject();
+            return (ArrayList<User>) object;
+
+        } catch (ClassNotFoundException e) {
+            System.out.println("The title list has not come from the server");
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList<>();
+    }
+
+    public void writeUserArrayList(Socket socket, ArrayList<User> users) {
+        try {
+            ObjectOutputStream objectOutput = new ObjectOutputStream(socket.getOutputStream());
+            objectOutput.writeObject(users);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+    
 
 }
