@@ -57,10 +57,16 @@ public class ClientHandler implements Runnable { //a thread
                         synchronized (concur) {
                             sendArrayList(clientSocket);
                             receiveArrayList(clientSocket);
-                            System.out.printf(info.getCourses().get(0).getCourseName());
                         }
                     } else if (message.equalsIgnoreCase("Get Submissions Arraylist")) {
                         sendArrayList(clientSocket);
+                    } else if (message.equalsIgnoreCase("Get User Arraylist")) {
+                        sendArrayList(clientSocket);
+                    } else if (message.equalsIgnoreCase("Update User Arraylist")) {
+                        synchronized (concur) {
+                            sendUserInfo(clientSocket);
+                            receiveArrayList(clientSocket);
+                        }
                     }
 
                 }
@@ -94,15 +100,39 @@ public class ClientHandler implements Runnable { //a thread
     }
 
     public static ArrayList<Course> getInfoCourseArray() {
-        return info.getCourses();
+        return CourseInfoHandler.readCourseInfo();
+        //return info.getCourses();
     }
 
     public static void setInfoCourseArray(ArrayList<Course> courses) {
         info.setCourses(courses);
         CourseInfoHandler.writeCourseInfo(info);
     }
-
+    
+    public static void sendUserInfo(Socket socket){
+        try {
+            ObjectOutputStream objectOutput = new ObjectOutputStream(socket.getOutputStream());
+            objectOutput.writeObject(getUserInfo());
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+    
+    public static ArrayList<User> getUserInfo() {
+        return LoggingIn.readUserInfo();
+    }
+    
+    public static void receiveUserInfo(Socket socket) {
+        try {
+            ObjectInputStream objectInput = new ObjectInputStream(socket.getInputStream());
+            Object object = objectInput.readObject();
+            LoggingIn.writeUserInfo((ArrayList<User>) object);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
-
 
