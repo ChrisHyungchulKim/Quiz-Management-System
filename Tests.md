@@ -794,3 +794,39 @@ Test 35: Delete course
   Expected Result: Pop-up window disappears. Application deletes specified course from file* and loads main teacher menu automatically.
   
   Test Status: Passed.
+  
+Test 36: Load course selection page
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters student username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects student from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Take Quiz" button.
+
+  Expected Result: Application loads course selection page automatically.
+  
+  Test Status: Passed.
+  
+Test 37: Load course selection page
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters student username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects student from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "View Quiz Results" button.
+
+  Expected Result: Application loads course selection page automatically.
+  
+  Test Status: Passed.
