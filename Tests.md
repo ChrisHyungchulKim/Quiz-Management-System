@@ -456,6 +456,6 @@ Test 23: Add question
   32. Repeat steps 18-30.
   33. User selects the "Submit Question" button.
 
-  Expected Result: Application
+  Expected Result: Application adds both newly created questions to previously selected course and loads main teacher menu automatically.
   
   Test Status: Passed.
