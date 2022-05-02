@@ -609,3 +609,29 @@ Test 28: Change correct question response.
   Expected Result: Application changes response labeled Correct_Answer in file* and loads quiz editing menu automatically.
   
   Test Status: Passed.
+  
+Test 29: Randomize question order
+
+  Steps:
+  1. User launches Server.java.
+  2. User launches Login.java.
+  3. User selects the "Log in" button.
+  4. User selects the username textbox.
+  5. User enters teacher username via the keyboard.
+  6. User selects the password textbox.
+  7. Use enters password via the keyboard.
+  8. User selects teacher from dropdown menu.
+  9. User selects the "Submit" button.
+  10. User selects the "Create and Edit" button.
+  11. User selects the "Change Quizzes" button.
+  12. User selects course to edit from dropdown menu.
+  13. User selects the "Submit" button.
+  14. User selects the "Edit Quiz" button.
+  15. User selects quiz to edit from dropdown menu.
+  16. User selects the "Submit" button.
+  17. User selects the "Randomize Quiz" button.
+  18. User selects the "Ok" button from the pop-up window.
+
+  Expected Result: Application closes displayed pop-up window and randomly rearranges question order in file*.
+  
+  Test Status: Passed.
