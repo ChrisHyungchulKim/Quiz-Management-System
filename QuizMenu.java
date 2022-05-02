@@ -118,7 +118,7 @@ public class QuizMenu {
                     }
                 } else if (studentGeneralMenuChoice == 2) {
                     Submission submission = takeQuiz(currentUser, currentClass, scanner);
-                    submission.writeSubmission(submission, true);
+                    submission.addSubmission(submission, true);
                 } else if (studentGeneralMenuChoice == 3) {
                     System.out.println("Which Course is the quiz in?");
                     int courseCounter = 0;
@@ -187,7 +187,7 @@ public class QuizMenu {
 
                     submissions.get(i).addCertainGrade(String.valueOf(gradeToAdd));
                     submissions.get(i).setGraded(true);
-                    submissions.get(i).writeSubmission(submissions.get(i), false);
+                    submissions.get(i).addSubmission(submissions.get(i), false);
                 }
             }
 
