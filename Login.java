@@ -379,6 +379,9 @@ public class Login extends JComponent implements Runnable {
                 submitPanel.setVisible(false);
                 submitPanelNo.setVisible(false);
                 changeAnswer.setVisible(false);
+                viewChooseCoursePanel.setVisible(false);
+                viewChooseQuizPanel.setVisible(false);
+                viewSubmission.setVisible(false);
                 // Return to welcome page
                 welcomePanel.setVisible(true);
                 mainItem.setVisible(false);
@@ -423,6 +426,9 @@ public class Login extends JComponent implements Runnable {
                 submitPanel.setVisible(false);
                 submitPanelNo.setVisible(false);
                 changeAnswer.setVisible(false);
+                viewChooseCoursePanel.setVisible(false);
+                viewChooseQuizPanel.setVisible(false);
+                viewSubmission.setVisible(false);
                 // Return to main menu
                 if (user.isTeacher()) {
                     mainTeacherPanel.setVisible(true);
