@@ -107,8 +107,7 @@ public class ClientHandler implements Runnable { //a thread
     }
 
     public static ArrayList<Course> getInfoCourseArray() {
-        return CourseInfoHandler.readCourseInfo();
-        //return info.getCourses();
+        return info.getCourses();
     }
 
     public static void setInfoCourseArray(ArrayList<Course> courses) {
