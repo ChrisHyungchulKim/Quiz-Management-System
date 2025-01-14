@@ -1,11 +1,6 @@
 Instructions: 
 -> Pretty Simple, just download the files, compile, and run the main method in the MainMenu.java method
 
-Who submitted what:
--> (Hyungchul Kim) submitted report on Brightspace
--> (insert whomever inserted) submitted Code on Vocareum
-
-
 
 User Class:
 This allows you to create a user with a username and password and role. Used in LoggingIn Feature whenever you read the UserDetails.txt file. When the LoggingIn Class reads the UserDetails.txt file, it creates the user object and then edits from it. Tested with a main method and tested whenever I use the LoggingIn class.
